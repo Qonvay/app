@@ -1,0 +1,18 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "orderTracking",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "order_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "order_timestamp",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ]
+}
