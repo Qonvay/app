@@ -11,20 +11,17 @@ abstract class TransactionsRecord
   static Serializer<TransactionsRecord> get serializer =>
       _$transactionsRecordSerializer;
 
-  @nullable
-  double get amount;
+  double? get amount;
 
-  @nullable
   @BuiltValueField(wireName: 'mileage_purchased')
-  double get mileagePurchased;
+  double? get mileagePurchased;
 
-  @nullable
   @BuiltValueField(wireName: 'transaction_timestamp')
-  DateTime get transactionTimestamp;
+  DateTime? get transactionTimestamp;
 
-  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
+  DocumentReference? get ffRef;
+  DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(TransactionsRecordBuilder builder) => builder
     ..amount = 0.0
@@ -35,11 +32,11 @@ abstract class TransactionsRecord
 
   static Stream<TransactionsRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   static Future<TransactionsRecord> getDocumentOnce(DocumentReference ref) =>
       ref.get().then(
-          (s) => serializers.deserializeWith(serializer, serializedData(s)));
+          (s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   TransactionsRecord._();
   factory TransactionsRecord(
@@ -49,17 +46,23 @@ abstract class TransactionsRecord
   static TransactionsRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
 Map<String, dynamic> createTransactionsRecordData({
-  double amount,
-  double mileagePurchased,
-  DateTime transactionTimestamp,
-}) =>
-    serializers.toFirestore(
-        TransactionsRecord.serializer,
-        TransactionsRecord((t) => t
-          ..amount = amount
-          ..mileagePurchased = mileagePurchased
-          ..transactionTimestamp = transactionTimestamp));
+  double? amount,
+  double? mileagePurchased,
+  DateTime? transactionTimestamp,
+}) {
+  final firestoreData = serializers.toFirestore(
+    TransactionsRecord.serializer,
+    TransactionsRecord(
+      (t) => t
+        ..amount = amount
+        ..mileagePurchased = mileagePurchased
+        ..transactionTimestamp = transactionTimestamp,
+    ),
+  );
+
+  return firestoreData;
+}

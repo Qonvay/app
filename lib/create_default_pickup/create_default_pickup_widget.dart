@@ -1,18 +1,17 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
+import '../onboarding/onboarding_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateDefaultPickupWidget extends StatefulWidget {
-  const CreateDefaultPickupWidget({Key key}) : super(key: key);
+  const CreateDefaultPickupWidget({Key? key}) : super(key: key);
 
   @override
   _CreateDefaultPickupWidgetState createState() =>
@@ -21,15 +20,21 @@ class CreateDefaultPickupWidget extends StatefulWidget {
 
 class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
     with TickerProviderStateMixin {
-  TextEditingController busStopController;
-  TextEditingController fullAddressController;
-  TextEditingController popularLandmarkController;
+  TextEditingController? addressController;
+
+  TextEditingController? busStopController;
+
+  TextEditingController? popularLandmarkController;
+
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
-    'textFieldOnPageLoadAnimation': AnimationInfo(
+    'buttonOnPageLoadAnimation': AnimationInfo(
+      curve: Curves.bounceOut,
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
+      delay: 400,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 40),
@@ -51,19 +56,22 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
       this,
     );
 
+    addressController = TextEditingController();
     busStopController = TextEditingController();
-    fullAddressController = TextEditingController();
     popularLandmarkController = TextEditingController();
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'createDefaultPickup'});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Color(0xFFFFCD3C),
-        body: Column(
+    return Scaffold(
+      key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).background,
+      body: Form(
+        key: formKey,
+        autovalidateMode: AutovalidateMode.disabled,
+        child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
             Material(
@@ -79,7 +87,7 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
               ),
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.8,
+                height: MediaQuery.of(context).size.height * 1,
                 decoration: BoxDecoration(
                   color: Color(0xFF1A1F24),
                   borderRadius: BorderRadius.only(
@@ -100,112 +108,58 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                         children: [
                           Text(
                             'Default Pickup Location',
-                            style: FlutterFlowTheme.title1,
-                          ),
-                          Card(
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            color: FlutterFlowTheme.background,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: FlutterFlowIconButton(
-                              borderColor: Colors.transparent,
-                              borderRadius: 30,
-                              buttonSize: 48,
-                              icon: Icon(
-                                Icons.close_rounded,
-                                color: FlutterFlowTheme.textColor,
-                                size: 30,
-                              ),
-                              onPressed: () async {
-                                Navigator.pop(context);
-                              },
-                            ),
+                            style: FlutterFlowTheme.of(context).title1,
                           ),
                         ],
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: 100,
-                        constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width * 0.8,
-                        ),
-                        decoration: BoxDecoration(),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: TextFormField(
-                            controller: fullAddressController,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              hintText: 'Full Address',
-                              hintStyle: FlutterFlowTheme.title1.override(
-                                fontFamily: 'Lexend Deca',
-                                color: FlutterFlowTheme.grayLight,
-                                fontWeight: FontWeight.w300,
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.background,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.background,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                  20, 24, 24, 24),
-                              prefixIcon: Icon(
-                                Icons.add_location,
-                                color: FlutterFlowTheme.textColor,
-                                size: 32,
-                              ),
-                            ),
-                            style: FlutterFlowTheme.title1,
-                            textAlign: TextAlign.center,
-                            validator: (val) {
-                              if (val.isEmpty) {
-                                return 'Please enter an amount';
-                              }
-
-                              return null;
-                            },
-                          ).animated(
-                              [animationsMap['textFieldOnPageLoadAnimation']]),
-                        ),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                         child: TextFormField(
-                          controller: popularLandmarkController,
+                          controller: addressController,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Popular Landmark',
-                            labelStyle: FlutterFlowTheme.subtitle1,
-                            hintText: 'Popular Landmark',
-                            hintStyle: FlutterFlowTheme.bodyText1,
+                            labelText: 'Full Address',
+                            labelStyle: FlutterFlowTheme.of(context).subtitle1,
+                            hintStyle: FlutterFlowTheme.of(context).bodyText1,
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: FlutterFlowTheme.background,
+                                color: Color(0x00000000),
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: FlutterFlowTheme.background,
+                                color: Color(0x00000000),
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(8),
                             ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            filled: true,
+                            fillColor:
+                                FlutterFlowTheme.of(context).darkBackground,
                             contentPadding:
                                 EdgeInsetsDirectional.fromSTEB(20, 32, 24, 32),
+                            prefixIcon: Icon(
+                              Icons.add_location,
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
                           ),
-                          style: FlutterFlowTheme.title3,
+                          style: FlutterFlowTheme.of(context).bodyText1,
                           textAlign: TextAlign.start,
                         ),
                       ),
@@ -215,122 +169,167 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                           controller: busStopController,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Bus stop',
-                            labelStyle: FlutterFlowTheme.subtitle1,
-                            hintText: 'Bus stop',
-                            hintStyle: FlutterFlowTheme.bodyText1,
+                            labelText: 'Bus stop (Optional)',
+                            labelStyle: FlutterFlowTheme.of(context).subtitle1,
+                            hintStyle: FlutterFlowTheme.of(context).bodyText1,
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: FlutterFlowTheme.background,
+                                color: Color(0x00000000),
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: FlutterFlowTheme.background,
+                                color: Color(0x00000000),
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(8),
                             ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            filled: true,
+                            fillColor:
+                                FlutterFlowTheme.of(context).darkBackground,
                             contentPadding:
                                 EdgeInsetsDirectional.fromSTEB(20, 32, 24, 32),
                           ),
-                          style: FlutterFlowTheme.title3,
+                          style: FlutterFlowTheme.of(context).bodyText1,
                           textAlign: TextAlign.start,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                        child: TextFormField(
+                          controller: popularLandmarkController,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'Popular Landmark (Optional)',
+                            labelStyle: FlutterFlowTheme.of(context).subtitle1,
+                            hintStyle: FlutterFlowTheme.of(context).bodyText1,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            filled: true,
+                            fillColor:
+                                FlutterFlowTheme.of(context).darkBackground,
+                            contentPadding:
+                                EdgeInsetsDirectional.fromSTEB(20, 32, 24, 32),
+                          ),
+                          style: FlutterFlowTheme.of(context).bodyText1,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                        child: StreamBuilder<UsersRecord>(
+                          stream:
+                              UsersRecord.getDocument(currentUserReference!),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: SpinKitFadingGrid(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
+                                    size: 50,
+                                  ),
+                                ),
+                              );
+                            }
+                            final buttonLoginUsersRecord = snapshot.data!;
+                            return FFButtonWidget(
+                              onPressed: () async {
+                                logFirebaseEvent(
+                                    'CREATE_DEFAULT_PICKUP_Button-Login_ON_TA');
+                                logFirebaseEvent('Button-Login_Backend-Call');
+
+                                final usersUpdateData = createUsersRecordData(
+                                  address: addressController!.text,
+                                  userLandmark: addressController!.text,
+                                  busStop: busStopController!.text,
+                                );
+                                await buttonLoginUsersRecord.reference
+                                    .update(usersUpdateData);
+                                logFirebaseEvent('Button-Login_Navigate-To');
+                                await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.fade,
+                                    duration: Duration(milliseconds: 300),
+                                    reverseDuration:
+                                        Duration(milliseconds: 300),
+                                    child: OnboardingWidget(),
+                                  ),
+                                );
+                              },
+                              text: 'Finish',
+                              options: FFButtonOptions(
+                                width: 230,
+                                height: 50,
+                                color: Color(0xFFFFCD3C),
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle2
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context)
+                                          .background,
+                                    ),
+                                elevation: 3,
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ).animated(
+                                [animationsMap['buttonOnPageLoadAnimation']!]);
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      StreamBuilder<List<UsersRecord>>(
-                        stream: queryUsersRecord(
-                          singleRecord: true,
-                        ),
-                        builder: (context, snapshot) {
-                          // Customize what your widget looks like when it's loading.
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: SpinKitSquareCircle(
-                                  color: FlutterFlowTheme.primaryColor,
-                                  size: 40,
-                                ),
-                              ),
-                            );
-                          }
-                          List<UsersRecord> buttonUsersRecordList =
-                              snapshot.data;
-                          // Return an empty Container when the document does not exist.
-                          if (snapshot.data.isEmpty) {
-                            return Container();
-                          }
-                          final buttonUsersRecord =
-                              buttonUsersRecordList.isNotEmpty
-                                  ? buttonUsersRecordList.first
-                                  : null;
-                          return FFButtonWidget(
-                            onPressed: () async {
-                              if (!formKey.currentState.validate()) {
-                                return;
-                              }
-                              final usersUpdateData = createUsersRecordData(
-                                address: fullAddressController.text,
-                                userLandmark: popularLandmarkController.text,
-                                busStop: busStopController.text,
-                              );
-                              await buttonUsersRecord.reference
-                                  .update(usersUpdateData);
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      NavBarPage(initialPage: 'mainDashboard'),
-                                ),
-                              );
-                            },
-                            text: 'Set PickupLocation',
-                            options: FFButtonOptions(
-                              width: 300,
-                              height: 70,
-                              color: Color(0xFFFFCD3C),
-                              textStyle: FlutterFlowTheme.title1.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Color(0xFF111417),
-                              ),
-                              elevation: 0,
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 1,
-                              ),
-                              borderRadius: 12,
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Text(
-              'Tap above to complete request',
-              style: FlutterFlowTheme.bodyText1.override(
-                fontFamily: 'Lexend Deca',
-                color: Color(0x43000000),
               ),
             ),
           ],

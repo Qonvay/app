@@ -8,7 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PurchaseMileageCardWidget extends StatefulWidget {
-  const PurchaseMileageCardWidget({Key key}) : super(key: key);
+  const PurchaseMileageCardWidget({Key? key}) : super(key: key);
 
   @override
   _PurchaseMileageCardWidgetState createState() =>
@@ -22,7 +22,7 @@ class _PurchaseMileageCardWidgetState extends State<PurchaseMileageCardWidget> {
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-        color: FlutterFlowTheme.darkBackground,
+        color: FlutterFlowTheme.of(context).background,
       ),
       child: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(24, 24, 24, 24),
@@ -34,7 +34,7 @@ class _PurchaseMileageCardWidgetState extends State<PurchaseMileageCardWidget> {
               children: [
                 Text(
                   'Purchase Delivery Mileage',
-                  style: FlutterFlowTheme.title1,
+                  style: FlutterFlowTheme.of(context).title1,
                 ),
               ],
             ),
@@ -46,7 +46,10 @@ class _PurchaseMileageCardWidgetState extends State<PurchaseMileageCardWidget> {
                   Expanded(
                     child: Text(
                       'Top up mileage units or Subscribe To save even more in delivery fees.',
-                      style: FlutterFlowTheme.bodyText1,
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Lexend Deca',
+                            color: FlutterFlowTheme.of(context).textColor,
+                          ),
                     ),
                   ),
                 ],
@@ -60,10 +63,16 @@ class _PurchaseMileageCardWidgetState extends State<PurchaseMileageCardWidget> {
                 children: [
                   FFButtonWidget(
                     onPressed: () async {
+                      logFirebaseEvent(
+                          'PURCHASE_MILEAGE_CARD_TOP_UP_MILEAGE_BTN');
+                      logFirebaseEvent('Button_Navigate-To');
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => TopupMileageWidget(),
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 300),
+                          reverseDuration: Duration(milliseconds: 300),
+                          child: TopupMileageWidget(),
                         ),
                       );
                     },
@@ -71,21 +80,27 @@ class _PurchaseMileageCardWidgetState extends State<PurchaseMileageCardWidget> {
                     options: FFButtonOptions(
                       width: 150,
                       height: 50,
-                      color: FlutterFlowTheme.background,
-                      textStyle: FlutterFlowTheme.bodyText2,
+                      color: FlutterFlowTheme.of(context).darkBackground,
+                      textStyle: FlutterFlowTheme.of(context).bodyText2,
                       borderSide: BorderSide(
                         color: Colors.transparent,
                         width: 1,
                       ),
-                      borderRadius: 8,
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   FFButtonWidget(
                     onPressed: () async {
+                      logFirebaseEvent(
+                          'PURCHASE_MILEAGE_CARD_SUBSCRIBE_BTN_ON_T');
+                      logFirebaseEvent('Button_Navigate-To');
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => SubscribeMileageWidget(),
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 300),
+                          reverseDuration: Duration(milliseconds: 300),
+                          child: SubscribeMileageWidget(),
                         ),
                       );
                     },
@@ -93,16 +108,17 @@ class _PurchaseMileageCardWidgetState extends State<PurchaseMileageCardWidget> {
                     options: FFButtonOptions(
                       width: 150,
                       height: 50,
-                      color: FlutterFlowTheme.primaryColor,
-                      textStyle: FlutterFlowTheme.subtitle2.override(
-                        fontFamily: 'Lexend Deca',
-                        color: FlutterFlowTheme.background,
-                      ),
+                      color: FlutterFlowTheme.of(context).primaryColor,
+                      textStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).background,
+                              ),
                       borderSide: BorderSide(
                         color: Colors.transparent,
                         width: 1,
                       ),
-                      borderRadius: 12,
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ],

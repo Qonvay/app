@@ -1,4 +1,4 @@
-# Qonvay 2
+# Qonvay
 
 A new Flutter project.
 

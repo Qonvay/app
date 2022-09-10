@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 
 export 'package:flutter_credit_card/flutter_credit_card.dart'
@@ -11,9 +10,9 @@ CreditCardModel emptyCreditCard() => CreditCardModel('', '', '', '', false);
 
 class FlutterFlowCreditCardForm extends StatefulWidget {
   const FlutterFlowCreditCardForm({
-    Key key,
-    @required this.formKey,
-    @required this.creditCardModel,
+    Key? key,
+    required this.formKey,
+    required this.creditCardModel,
     this.obscureNumber = false,
     this.obscureCvv = false,
     this.textStyle,
@@ -27,7 +26,7 @@ class FlutterFlowCreditCardForm extends StatefulWidget {
   final CreditCardModel creditCardModel;
   final bool obscureNumber;
   final bool obscureCvv;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
   final double spacing;
   final InputDecoration inputDecoration;
 
@@ -105,7 +104,7 @@ class _FlutterFlowCreditCardFormState extends State<FlutterFlowCreditCardForm> {
                 textInputAction: TextInputAction.next,
                 validator: (value) {
                   // Validate less that 13 digits +3 white spaces
-                  if (value.isEmpty || value.length < 16) {
+                  if (value == null || value.isEmpty || value.length < 16) {
                     return 'Please input a valid number';
                   }
                   return null;
@@ -135,7 +134,7 @@ class _FlutterFlowCreditCardFormState extends State<FlutterFlowCreditCardForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return 'Please input a valid date';
                         }
 
@@ -173,7 +172,9 @@ class _FlutterFlowCreditCardFormState extends State<FlutterFlowCreditCardForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
-                        if (value.isEmpty || value.length < 3) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length < 3) {
                           return 'Please input a valid CVV';
                         }
                         return null;
@@ -262,59 +263,6 @@ class _FlutterFlowCreditCardFormState extends State<FlutterFlowCreditCardForm> {
     );
 
     return cardType;
-  }
-
-  /// This method returns the icon for the visa card type if found
-  /// else will return the empty container
-  Widget getCardTypeIcon(String cardNumber) {
-    Widget icon;
-    if (cardNumber.length < 4) {
-      return null;
-    }
-    switch (detectCCType(cardNumber)) {
-      case CardType.visa:
-        icon = Image.asset(
-          'icons/visa.png',
-          height: 24,
-          width: 48,
-          package: 'flutter_credit_card',
-          fit: BoxFit.fitWidth,
-        );
-        break;
-      case CardType.americanExpress:
-        icon = Image.asset(
-          'icons/amex.png',
-          height: 24,
-          width: 48,
-          package: 'flutter_credit_card',
-          fit: BoxFit.fitWidth,
-        );
-        break;
-      case CardType.mastercard:
-        icon = Image.asset(
-          'icons/mastercard.png',
-          height: 24,
-          width: 48,
-          package: 'flutter_credit_card',
-          fit: BoxFit.fitWidth,
-        );
-        break;
-      case CardType.discover:
-        icon = Image.asset(
-          'icons/discover.png',
-          height: 24,
-          width: 48,
-          package: 'flutter_credit_card',
-          fit: BoxFit.fitWidth,
-        );
-        break;
-      default:
-        return icon;
-    }
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-      child: icon,
-    );
   }
 }
 

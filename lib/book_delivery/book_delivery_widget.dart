@@ -1,294 +1,1178 @@
+import '../auth/auth_util.dart';
+import '../backend/backend.dart';
 import '../booking_complete/booking_complete_widget.dart';
-import '../flutter_flow/flutter_flow_animations.dart';
+import '../flutter_flow/flutter_flow_place_picker.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../set_pickup_location/set_pickup_location_widget.dart';
-import '../set_receiver_location/set_receiver_location_widget.dart';
+import '../flutter_flow/place.dart';
+import 'dart:io';
+import '../flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BookDeliveryWidget extends StatefulWidget {
-  const BookDeliveryWidget({Key key}) : super(key: key);
+  const BookDeliveryWidget({
+    Key? key,
+    this.mileageParam,
+  }) : super(key: key);
+
+  final double? mileageParam;
 
   @override
   _BookDeliveryWidgetState createState() => _BookDeliveryWidgetState();
 }
 
-class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
-    with TickerProviderStateMixin {
-  final animationsMap = {
-    'containerOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 200,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 49),
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        opacity: 1,
-      ),
-    ),
-    'containerOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 200,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 49),
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        opacity: 1,
-      ),
-    ),
-  };
+class _BookDeliveryWidgetState extends State<BookDeliveryWidget> {
+  TextEditingController? receiverFullAddressController;
+
+  var receiverLocationValue = FFPlace();
+
+  TextEditingController? receiverNameController;
+
+  TextEditingController? receiverPhoneNumberController;
+
+  TextEditingController? senderFullAddressController;
+
+  var senderLocationValue = FFPlace();
+
+  TextEditingController? senderNameController;
+
+  TextEditingController? senderPhoneNumberController;
+
+  bool? foodCategoryValue;
+  bool? clothingCategoryValue;
+  bool? shoesCategoryValue;
+  bool? electronicsCategoryValue;
+  bool? jewaccessCategoryValue;
+  bool? docsCategoryValue;
+  bool? otherCategoryValue;
+  BookOrderRecord? bookOrderRef;
+  final formKey1 = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('BOOK_DELIVERY_bookDelivery_ON_LOAD');
+      logFirebaseEvent('bookDelivery_Update-Local-State');
+      setState(() => FFAppState().mileageCost = 0.0);
+    });
+
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'bookDelivery'});
+    receiverFullAddressController = TextEditingController();
+    receiverNameController = TextEditingController();
+    receiverPhoneNumberController = TextEditingController();
+    senderFullAddressController = TextEditingController();
+    senderNameController = TextEditingController();
+    senderPhoneNumberController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.background,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Book Delivery',
-          style: FlutterFlowTheme.title1,
-        ),
-        actions: [],
-        centerTitle: false,
-        elevation: 0,
-      ),
-      backgroundColor: FlutterFlowTheme.background,
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                scrollDirection: Axis.vertical,
+    return StreamBuilder<UsersRecord>(
+      stream: UsersRecord.getDocument(currentUserReference!),
+      builder: (context, snapshot) {
+        // Customize what your widget looks like when it's loading.
+        if (!snapshot.hasData) {
+          return Center(
+            child: SizedBox(
+              width: 50,
+              height: 50,
+              child: SpinKitFadingGrid(
+                color: FlutterFlowTheme.of(context).primaryColor,
+                size: 50,
+              ),
+            ),
+          );
+        }
+        final bookDeliveryUsersRecord = snapshot.data!;
+        return Scaffold(
+          key: scaffoldKey,
+          appBar: AppBar(
+            backgroundColor: FlutterFlowTheme.of(context).background,
+            automaticallyImplyLeading: false,
+            title: Text(
+              'Book Delivery',
+              style: FlutterFlowTheme.of(context).title1,
+            ),
+            actions: [],
+            centerTitle: false,
+            elevation: 0,
+          ),
+          backgroundColor: FlutterFlowTheme.of(context).background,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 15, 0, 0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.915,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.darkBackground,
-                            borderRadius: BorderRadius.circular(8),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                          child: Text(
+                            'Pickup Info',
+                            textAlign: TextAlign.center,
+                            style: FlutterFlowTheme.of(context).title3,
                           ),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.leftToRight,
-                                  duration: Duration(milliseconds: 250),
-                                  reverseDuration: Duration(milliseconds: 250),
-                                  child: SetPickupLocationWidget(),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      10, 0, 0, 0),
-                                  child: Text(
-                                    'Set Pickup Location ',
-                                    style: FlutterFlowTheme.title2,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.library_add_check,
-                                  color: FlutterFlowTheme.primaryColor,
-                                  size: 24,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ).animated(
-                            [animationsMap['containerOnPageLoadAnimation1']]),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.915,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.darkBackground,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.leftToRight,
-                                  duration: Duration(milliseconds: 250),
-                                  reverseDuration: Duration(milliseconds: 250),
-                                  child: SetReceiverLocationWidget(),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      10, 0, 0, 0),
-                                  child: Text(
-                                    'Set Destination ',
-                                    style: FlutterFlowTheme.title2,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.library_add_check,
-                                  color: FlutterFlowTheme.primaryColor,
-                                  size: 24,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ).animated(
-                            [animationsMap['containerOnPageLoadAnimation2']]),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.background,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 6,
-                            color: Color(0x4B1A1F24),
-                            offset: Offset(0, 2),
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: FlutterFlowTheme.primaryColor,
                         ),
-                      ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: Form(
+                      key: formKey2,
+                      autovalidateMode: AutovalidateMode.disabled,
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(20, 12, 20, 0),
+                                EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Text(
-                                  'Mileage Cost',
-                                  style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: FlutterFlowTheme.textColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(20, 4, 20, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 0, 20),
-                                  child: Text(
-                                    '5km',
-                                    style: FlutterFlowTheme.title1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      fontSize: 32,
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 10, 0, 0),
+                                    child: FlutterFlowPlacePicker(
+                                      iOSGoogleMapsApiKey:
+                                          'AIzaSyBYGH1CPSqgNNIHlczkSOH6OZvBIIJUwNg',
+                                      androidGoogleMapsApiKey:
+                                          'AIzaSyB2v-1CKYKI5Jdwq2HNk7tnTYt_iyzGHx4',
+                                      webGoogleMapsApiKey:
+                                          'AIzaSyDLtpQGSQ36MHLuGujSuUfNdIoO7McxH6k',
+                                      onSelect: (place) async {
+                                        setState(
+                                            () => senderLocationValue = place);
+                                      },
+                                      defaultText: 'Search Pickup Location',
+                                      icon: Icon(
+                                        Icons.search,
+                                        color: FlutterFlowTheme.of(context)
+                                            .grayLight,
+                                        size: 16,
+                                      ),
+                                      buttonOptions: FFButtonOptions(
+                                        height: 60,
+                                        color: FlutterFlowTheme.of(context)
+                                            .darkBackground,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .subtitle2
+                                            .override(
+                                              fontFamily: 'Lexend Deca',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .grayLight,
+                                            ),
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .background,
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                            child: TextFormField(
+                              controller: senderFullAddressController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelStyle:
+                                    FlutterFlowTheme.of(context).bodyText1,
+                                hintText: 'Pickup Full Address',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context)
+                                          .grayLight,
+                                      fontSize: 16,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    FlutterFlowTheme.of(context).darkBackground,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    24, 24, 24, 24),
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Lexend Deca',
+                                    fontSize: 14,
+                                  ),
+                              textAlign: TextAlign.start,
+                              maxLines: 3,
+                              keyboardType: TextInputType.multiline,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Field is required';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                            child: TextFormField(
+                              controller: senderNameController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelStyle:
+                                    FlutterFlowTheme.of(context).bodyText1,
+                                hintText: 'Sender Name',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context)
+                                          .grayLight,
+                                      fontSize: 16,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    FlutterFlowTheme.of(context).darkBackground,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    24, 24, 24, 24),
+                              ),
+                              style: FlutterFlowTheme.of(context).bodyText1,
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.name,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Field is required';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(15, 10, 15, 10),
+                            child: TextFormField(
+                              controller: senderPhoneNumberController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelStyle:
+                                    FlutterFlowTheme.of(context).bodyText1,
+                                hintText: 'Sender Phone Number',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context)
+                                          .grayLight,
+                                      fontSize: 16,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    FlutterFlowTheme.of(context).darkBackground,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    24, 24, 24, 24),
+                              ),
+                              style: FlutterFlowTheme.of(context).bodyText1,
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.phone,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Field is required';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.background,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            await Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                duration: Duration(milliseconds: 250),
-                                reverseDuration: Duration(milliseconds: 250),
-                                child: BookingCompleteWidget(),
-                              ),
-                            );
-                          },
-                          text: 'Place Booking',
-                          options: FFButtonOptions(
-                            width: 130,
-                            height: 40,
-                            color: FlutterFlowTheme.primaryColor,
-                            textStyle: FlutterFlowTheme.subtitle2.override(
-                              fontFamily: 'Lexend Deca',
-                              color: FlutterFlowTheme.darkBackground,
-                            ),
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1,
-                            ),
-                            borderRadius: 12,
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                          child: Text(
+                            'Destination Info',
+                            style: FlutterFlowTheme.of(context).title3,
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: Form(
+                      key: formKey1,
+                      autovalidateMode: AutovalidateMode.disabled,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 10, 0, 0),
+                                    child: FlutterFlowPlacePicker(
+                                      iOSGoogleMapsApiKey:
+                                          'AIzaSyBYGH1CPSqgNNIHlczkSOH6OZvBIIJUwNg',
+                                      androidGoogleMapsApiKey:
+                                          'AIzaSyB2v-1CKYKI5Jdwq2HNk7tnTYt_iyzGHx4',
+                                      webGoogleMapsApiKey:
+                                          'AIzaSyDLtpQGSQ36MHLuGujSuUfNdIoO7McxH6k',
+                                      onSelect: (place) async {
+                                        setState(() =>
+                                            receiverLocationValue = place);
+                                      },
+                                      defaultText:
+                                          'Search Destination Location',
+                                      icon: Icon(
+                                        Icons.search,
+                                        color: FlutterFlowTheme.of(context)
+                                            .grayLight,
+                                        size: 16,
+                                      ),
+                                      buttonOptions: FFButtonOptions(
+                                        height: 60,
+                                        color: FlutterFlowTheme.of(context)
+                                            .darkBackground,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .subtitle2
+                                            .override(
+                                              fontFamily: 'Lexend Deca',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .grayLight,
+                                            ),
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .background,
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                            child: TextFormField(
+                              controller: receiverFullAddressController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelStyle:
+                                    FlutterFlowTheme.of(context).bodyText1,
+                                hintText: 'Destination Full Address',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context)
+                                          .grayLight,
+                                      fontSize: 16,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    FlutterFlowTheme.of(context).darkBackground,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    24, 24, 24, 24),
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Lexend Deca',
+                                    fontSize: 14,
+                                  ),
+                              textAlign: TextAlign.start,
+                              maxLines: 3,
+                              keyboardType: TextInputType.multiline,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Field is required';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                            child: TextFormField(
+                              controller: receiverNameController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelStyle:
+                                    FlutterFlowTheme.of(context).bodyText1,
+                                hintText: 'Receiver Name',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context)
+                                          .grayLight,
+                                      fontSize: 16,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    FlutterFlowTheme.of(context).darkBackground,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    24, 24, 24, 24),
+                              ),
+                              style: FlutterFlowTheme.of(context).bodyText1,
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.name,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Field is required';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(15, 10, 15, 10),
+                            child: TextFormField(
+                              controller: receiverPhoneNumberController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelStyle:
+                                    FlutterFlowTheme.of(context).bodyText1,
+                                hintText: 'Receiver Phone Number',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context)
+                                          .grayLight,
+                                      fontSize: 16,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    FlutterFlowTheme.of(context).darkBackground,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    24, 24, 24, 24),
+                              ),
+                              style: FlutterFlowTheme.of(context).bodyText1,
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.phone,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Field is required';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
+                          child: Text(
+                            'Item Category',
+                            style: FlutterFlowTheme.of(context).title3.override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context).textColor,
+                                  fontSize: 20,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                    child: Theme(
+                      data: ThemeData(
+                        checkboxTheme: CheckboxThemeData(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        unselectedWidgetColor:
+                            FlutterFlowTheme.of(context).grayDark,
+                      ),
+                      child: CheckboxListTile(
+                        value: foodCategoryValue ??= false,
+                        onChanged: (newValue) =>
+                            setState(() => foodCategoryValue = newValue!),
+                        title: Text(
+                          'Food',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                                fontSize: 16,
+                              ),
+                        ),
+                        activeColor: FlutterFlowTheme.of(context).primaryColor,
+                        checkColor: FlutterFlowTheme.of(context).grayDark,
+                        dense: true,
+                        controlAffinity: ListTileControlAffinity.trailing,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                    child: Theme(
+                      data: ThemeData(
+                        checkboxTheme: CheckboxThemeData(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        unselectedWidgetColor:
+                            FlutterFlowTheme.of(context).grayDark,
+                      ),
+                      child: CheckboxListTile(
+                        value: clothingCategoryValue ??= false,
+                        onChanged: (newValue) =>
+                            setState(() => clothingCategoryValue = newValue!),
+                        title: Text(
+                          'Clothing',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                                fontSize: 16,
+                              ),
+                        ),
+                        activeColor: FlutterFlowTheme.of(context).primaryColor,
+                        checkColor: FlutterFlowTheme.of(context).grayDark,
+                        dense: true,
+                        controlAffinity: ListTileControlAffinity.trailing,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                    child: Theme(
+                      data: ThemeData(
+                        checkboxTheme: CheckboxThemeData(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        unselectedWidgetColor:
+                            FlutterFlowTheme.of(context).grayDark,
+                      ),
+                      child: CheckboxListTile(
+                        value: shoesCategoryValue ??= false,
+                        onChanged: (newValue) =>
+                            setState(() => shoesCategoryValue = newValue!),
+                        title: Text(
+                          'Shoes',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                                fontSize: 16,
+                              ),
+                        ),
+                        activeColor: FlutterFlowTheme.of(context).primaryColor,
+                        checkColor: FlutterFlowTheme.of(context).grayDark,
+                        dense: true,
+                        controlAffinity: ListTileControlAffinity.trailing,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                    child: Theme(
+                      data: ThemeData(
+                        checkboxTheme: CheckboxThemeData(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        unselectedWidgetColor:
+                            FlutterFlowTheme.of(context).grayDark,
+                      ),
+                      child: CheckboxListTile(
+                        value: electronicsCategoryValue ??= false,
+                        onChanged: (newValue) => setState(
+                            () => electronicsCategoryValue = newValue!),
+                        title: Text(
+                          'Electronics',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                                fontSize: 16,
+                              ),
+                        ),
+                        activeColor: FlutterFlowTheme.of(context).primaryColor,
+                        checkColor: FlutterFlowTheme.of(context).grayDark,
+                        dense: true,
+                        controlAffinity: ListTileControlAffinity.trailing,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                    child: Theme(
+                      data: ThemeData(
+                        checkboxTheme: CheckboxThemeData(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        unselectedWidgetColor:
+                            FlutterFlowTheme.of(context).grayDark,
+                      ),
+                      child: CheckboxListTile(
+                        value: jewaccessCategoryValue ??= false,
+                        onChanged: (newValue) =>
+                            setState(() => jewaccessCategoryValue = newValue!),
+                        title: Text(
+                          'Jewlery/Accessories',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                                fontSize: 16,
+                              ),
+                        ),
+                        activeColor: FlutterFlowTheme.of(context).primaryColor,
+                        checkColor: FlutterFlowTheme.of(context).grayDark,
+                        dense: true,
+                        controlAffinity: ListTileControlAffinity.trailing,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                    child: Theme(
+                      data: ThemeData(
+                        checkboxTheme: CheckboxThemeData(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        unselectedWidgetColor:
+                            FlutterFlowTheme.of(context).grayDark,
+                      ),
+                      child: CheckboxListTile(
+                        value: docsCategoryValue ??= false,
+                        onChanged: (newValue) =>
+                            setState(() => docsCategoryValue = newValue!),
+                        title: Text(
+                          'Documents',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                                fontSize: 16,
+                              ),
+                        ),
+                        activeColor: FlutterFlowTheme.of(context).primaryColor,
+                        checkColor: FlutterFlowTheme.of(context).grayDark,
+                        dense: true,
+                        controlAffinity: ListTileControlAffinity.trailing,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 0),
+                    child: Theme(
+                      data: ThemeData(
+                        checkboxTheme: CheckboxThemeData(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        unselectedWidgetColor:
+                            FlutterFlowTheme.of(context).grayDark,
+                      ),
+                      child: CheckboxListTile(
+                        value: otherCategoryValue ??= false,
+                        onChanged: (newValue) =>
+                            setState(() => otherCategoryValue = newValue!),
+                        title: Text(
+                          'Other',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                                fontSize: 16,
+                              ),
+                        ),
+                        activeColor: FlutterFlowTheme.of(context).primaryColor,
+                        checkColor: FlutterFlowTheme.of(context).grayDark,
+                        dense: true,
+                        controlAffinity: ListTileControlAffinity.trailing,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 0),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'BOOK_DELIVERY_Container_se1yqcb3_ON_TAP');
+                        logFirebaseEvent('Container_Backend-Call');
+
+                        final usersUpdateData = createUsersRecordData(
+                          mileageCost: functions.calculateDistance(
+                              senderLocationValue.latLng,
+                              receiverLocationValue.latLng),
+                        );
+                        await currentUserReference!.update(usersUpdateData);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).background,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 6,
+                              color: Color(0x4B1A1F24),
+                              offset: Offset(0, 2),
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: FlutterFlowTheme.of(context).primaryColor,
+                          ),
+                        ),
+                        child: InkWell(
+                          onTap: () async {
+                            logFirebaseEvent(
+                                'BOOK_DELIVERY_Column_a81jeig9_ON_TAP');
+                            logFirebaseEvent('Column_Update-Local-State');
+                            setState(() => FFAppState().mileageCost =
+                                functions.calculateDistance(
+                                    senderLocationValue.latLng,
+                                    receiverLocationValue.latLng));
+                          },
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 12, 20, 0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      'Tap Here To See Mileage Cost',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Lexend Deca',
+                                            color: FlutterFlowTheme.of(context)
+                                                .textColor,
+                                            fontSize: 16,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 4, 20, 0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 0, 20),
+                                      child: Text(
+                                        FFAppState().mileageCost.toString(),
+                                        style: FlutterFlowTheme.of(context)
+                                            .title1
+                                            .override(
+                                              fontFamily: 'Lexend Deca',
+                                              fontSize: 32,
+                                            ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          5, 0, 0, 20),
+                                      child: Text(
+                                        'km',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Lexend Deca',
+                                              fontSize: 18,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        logFirebaseEvent(
+                            'BOOK_DELIVERY_PlaceBookingButton_ON_TAP');
+                        var _shouldSetState = false;
+                        if (valueOrDefault(
+                                currentUserDocument?.mileageBalance, 0.0) >=
+                            FFAppState().mileageCost) {
+                          logFirebaseEvent('PlaceBookingButton_Validate-Form');
+                          if (formKey2.currentState == null ||
+                              !formKey2.currentState!.validate()) {
+                            return;
+                          }
+
+                          logFirebaseEvent('PlaceBookingButton_Validate-Form');
+                          if (formKey1.currentState == null ||
+                              !formKey1.currentState!.validate()) {
+                            return;
+                          }
+
+                          if (FFAppState().mileageCost == 0.0) {
+                            logFirebaseEvent('PlaceBookingButton_Alert-Dialog');
+                            await showDialog(
+                              context: context,
+                              builder: (alertDialogContext) {
+                                return AlertDialog(
+                                  title: Text(
+                                      'Tap Mileage Cost Before Proceeding'),
+                                  content: Text(
+                                      'Tap / Click on the \"Mileage Cost\" field to get the distance before proceeding.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(alertDialogContext),
+                                      child: Text('Okay'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            if (_shouldSetState) setState(() {});
+                            return;
+                          } else {
+                            logFirebaseEvent('PlaceBookingButton_Backend-Call');
+
+                            final usersUpdateData = {
+                              'mileage_balance': FieldValue.increment(
+                                  functions.mileageBalance(
+                                      0.0, 0.0, FFAppState().mileageCost)),
+                            };
+                            await currentUserReference!.update(usersUpdateData);
+                          }
+
+                          logFirebaseEvent('PlaceBookingButton_Backend-Call');
+
+                          final bookOrderCreateData = createBookOrderRecordData(
+                            senderName: senderNameController!.text,
+                            senderPhone:
+                                int.parse(senderPhoneNumberController!.text),
+                            senderAddress: senderFullAddressController!.text,
+                            senderLocation: senderLocationValue.latLng,
+                            receiverName: receiverNameController!.text,
+                            receiverPhone:
+                                int.parse(receiverPhoneNumberController!.text),
+                            receiverAddress:
+                                receiverFullAddressController!.text,
+                            receiverLocation: receiverLocationValue.latLng,
+                            foodCategory: foodCategoryValue,
+                            clothingCategory: clothingCategoryValue,
+                            shoesCategory: shoesCategoryValue,
+                            electronicsCategory: electronicsCategoryValue,
+                            jewaccessCategory: jewaccessCategoryValue,
+                            documentsCategory: docsCategoryValue,
+                            otherCategory: otherCategoryValue,
+                            orderTimestamp: getCurrentTimestamp,
+                            senderEmail: '',
+                            senderLandmark: '',
+                            receiverEmail: '',
+                            receiverLandmark: '',
+                            orderId: '',
+                            orderMileageCost: FFAppState().mileageCost,
+                            bookerId: currentUserUid,
+                            orderStatus: 'Pending',
+                            reportOrderActive: false,
+                          );
+                          var bookOrderRecordReference =
+                              BookOrderRecord.collection.doc();
+                          await bookOrderRecordReference
+                              .set(bookOrderCreateData);
+                          bookOrderRef = BookOrderRecord.getDocumentFromData(
+                              bookOrderCreateData, bookOrderRecordReference);
+                          _shouldSetState = true;
+                          logFirebaseEvent(
+                              'PlaceBookingButton_Update-Local-State');
+                          setState(() => FFAppState().mileageCost = 0.0);
+                          logFirebaseEvent('PlaceBookingButton_Navigate-To');
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              duration: Duration(milliseconds: 250),
+                              reverseDuration: Duration(milliseconds: 250),
+                              child: BookingCompleteWidget(),
+                            ),
+                          );
+                        } else {
+                          logFirebaseEvent('PlaceBookingButton_Alert-Dialog');
+                          await showDialog(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: Text('Insufficient Mileage'),
+                                content: Text(
+                                    'Sorry you do not have enough mileage to place booking. Top up or subscribe to a plan to place your order. Thanks'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext),
+                                    child: Text('Okay'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          if (_shouldSetState) setState(() {});
+                          return;
+                        }
+
+                        if (_shouldSetState) setState(() {});
+                      },
+                      text: 'Place Booking',
+                      icon: Icon(
+                        Icons.send_sharp,
+                        size: 15,
+                      ),
+                      options: FFButtonOptions(
+                        width: 300,
+                        height: 80,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        textStyle: FlutterFlowTheme.of(context).title1.override(
+                              fontFamily: 'Lexend Deca',
+                              color:
+                                  FlutterFlowTheme.of(context).darkBackground,
+                            ),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

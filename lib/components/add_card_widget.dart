@@ -11,11 +11,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AddCardWidget extends StatefulWidget {
   const AddCardWidget({
-    Key key,
+    Key? key,
     this.addCardsheet,
   }) : super(key: key);
 
-  final TransactionsRecord addCardsheet;
+  final TransactionsRecord? addCardsheet;
 
   @override
   _AddCardWidgetState createState() => _AddCardWidgetState();
@@ -28,6 +28,7 @@ class _AddCardWidgetState extends State<AddCardWidget>
       curve: Curves.linear,
       trigger: AnimationTrigger.onPageLoad,
       duration: 1010,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 0),
@@ -60,7 +61,7 @@ class _AddCardWidgetState extends State<AddCardWidget>
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 1,
       decoration: BoxDecoration(
-        color: FlutterFlowTheme.darkBackground,
+        color: FlutterFlowTheme.of(context).darkBackground,
       ),
       child: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
@@ -80,7 +81,7 @@ class _AddCardWidgetState extends State<AddCardWidget>
                 padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                 child: Text(
                   'Add Debit Card',
-                  style: FlutterFlowTheme.title3,
+                  style: FlutterFlowTheme.of(context).title3,
                 ),
               ),
               Padding(
@@ -93,21 +94,21 @@ class _AddCardWidgetState extends State<AddCardWidget>
                   spacing: 10,
                   textStyle: GoogleFonts.getFont(
                     'Roboto',
-                    color: FlutterFlowTheme.grayLight,
+                    color: FlutterFlowTheme.of(context).grayLight,
                     fontWeight: FontWeight.normal,
                     fontSize: 14,
                   ),
                   inputDecoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: FlutterFlowTheme.grayDark,
+                        color: FlutterFlowTheme.of(context).grayDark,
                         width: 3,
                       ),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: FlutterFlowTheme.grayDark,
+                        color: FlutterFlowTheme.of(context).grayDark,
                         width: 3,
                       ),
                       borderRadius: BorderRadius.circular(4),
@@ -143,16 +144,16 @@ class _AddCardWidgetState extends State<AddCardWidget>
                   options: FFButtonOptions(
                     width: double.infinity,
                     height: 40,
-                    color: FlutterFlowTheme.primaryColor,
-                    textStyle: FlutterFlowTheme.subtitle2.override(
-                      fontFamily: 'Lexend Deca',
-                      color: FlutterFlowTheme.background,
-                    ),
+                    color: FlutterFlowTheme.of(context).primaryColor,
+                    textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).background,
+                        ),
                     borderSide: BorderSide(
                       color: Colors.transparent,
                       width: 1,
                     ),
-                    borderRadius: 12,
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
               ),
@@ -160,6 +161,6 @@ class _AddCardWidgetState extends State<AddCardWidget>
           ),
         ),
       ),
-    ).animated([animationsMap['containerOnPageLoadAnimation']]);
+    ).animated([animationsMap['containerOnPageLoadAnimation']!]);
   }
 }

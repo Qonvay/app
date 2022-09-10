@@ -1,28 +1,28 @@
 import '../auth/auth_util.dart';
-import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../forgot_password/forgot_password_widget.dart';
 import '../main.dart';
 import '../register_account/register_account_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPageWidget extends StatefulWidget {
-  const LoginPageWidget({Key key}) : super(key: key);
+  const LoginPageWidget({Key? key}) : super(key: key);
 
   @override
   _LoginPageWidgetState createState() => _LoginPageWidgetState();
 }
 
 class _LoginPageWidgetState extends State<LoginPageWidget> {
-  TextEditingController emailAddressLoginController;
-  TextEditingController passwordLoginController;
-  bool passwordLoginVisibility;
+  TextEditingController? emailAddressLoginController;
+
+  TextEditingController? passwordLoginController;
+
+  late bool passwordLoginVisibility;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -31,13 +31,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     emailAddressLoginController = TextEditingController();
     passwordLoginController = TextEditingController();
     passwordLoginVisibility = false;
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.background,
+      backgroundColor: FlutterFlowTheme.of(context).background,
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -48,7 +49,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 1,
                 decoration: BoxDecoration(
-                  color: FlutterFlowTheme.background,
+                  color: FlutterFlowTheme.of(context).background,
                 ),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
@@ -56,13 +57,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(24, 24, 0, 20),
+                        padding: EdgeInsetsDirectional.fromSTEB(24, 20, 0, 0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SvgPicture.asset(
-                              'assets/images/Color_logo_white_-_no_background.svg',
+                            Image.asset(
+                              'assets/images/Color_logo_white_-_no_background.png',
                               width: 170,
                               height: 60,
                               fit: BoxFit.fitWidth,
@@ -71,7 +72,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(24, 10, 24, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
@@ -80,8 +81,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Text(
-                                    'Welcome Back!',
-                                    style: FlutterFlowTheme.title1,
+                                    'Welcome Back',
+                                    style: FlutterFlowTheme.of(context).title1,
                                   ),
                                 ],
                               ),
@@ -93,7 +94,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                   children: [
                                     Text(
                                       'Login to send stuff.',
-                                      style: FlutterFlowTheme.subtitle1,
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle1,
                                     ),
                                   ],
                                 ),
@@ -105,18 +107,20 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                   controller: emailAddressLoginController,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Email Address',
-                                    labelStyle:
-                                        FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0x98FFFFFF),
-                                    ),
+                                    labelStyle: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Color(0x98FFFFFF),
+                                        ),
                                     hintText: 'Enter your email...',
-                                    hintStyle:
-                                        FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0x98FFFFFF),
-                                    ),
+                                    hintStyle: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Color(0x98FFFFFF),
+                                          fontSize: 16,
+                                        ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Color(0x00000000),
@@ -131,16 +135,35 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                     filled: true,
-                                    fillColor: FlutterFlowTheme.darkBackground,
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .darkBackground,
                                     contentPadding:
                                         EdgeInsetsDirectional.fromSTEB(
                                             20, 24, 20, 24),
                                   ),
-                                  style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: FlutterFlowTheme.textColor,
-                                  ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Lexend Deca',
+                                        color: FlutterFlowTheme.of(context)
+                                            .textColor,
+                                        fontSize: 16,
+                                      ),
                                 ),
                               ),
                               Padding(
@@ -150,18 +173,20 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                   controller: passwordLoginController,
                                   obscureText: !passwordLoginVisibility,
                                   decoration: InputDecoration(
-                                    labelText: 'Password',
-                                    labelStyle:
-                                        FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0x98FFFFFF),
-                                    ),
+                                    labelStyle: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Color(0x98FFFFFF),
+                                        ),
                                     hintText: 'Enter your password...',
-                                    hintStyle:
-                                        FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0x98FFFFFF),
-                                    ),
+                                    hintStyle: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Color(0x98FFFFFF),
+                                          fontSize: 16,
+                                        ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Color(0x00000000),
@@ -176,8 +201,23 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                     filled: true,
-                                    fillColor: FlutterFlowTheme.darkBackground,
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .darkBackground,
                                     contentPadding:
                                         EdgeInsetsDirectional.fromSTEB(
                                             20, 24, 20, 24),
@@ -186,6 +226,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         () => passwordLoginVisibility =
                                             !passwordLoginVisibility,
                                       ),
+                                      focusNode: FocusNode(skipTraversal: true),
                                       child: Icon(
                                         passwordLoginVisibility
                                             ? Icons.visibility_outlined
@@ -195,10 +236,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                       ),
                                     ),
                                   ),
-                                  style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: FlutterFlowTheme.textColor,
-                                  ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Lexend Deca',
+                                        color: FlutterFlowTheme.of(context)
+                                            .textColor,
+                                        fontSize: 16,
+                                      ),
                                 ),
                               ),
                               Row(
@@ -211,11 +256,19 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         0, 24, 0, 24),
                                     child: FFButtonWidget(
                                       onPressed: () async {
+                                        logFirebaseEvent(
+                                            'LOGIN_Button-ForgotPassword_ON_TAP');
+                                        logFirebaseEvent(
+                                            'Button-ForgotPassword_Navigate-To');
                                         await Navigator.push(
                                           context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ForgotPasswordWidget(),
+                                          PageTransition(
+                                            type: PageTransitionType.fade,
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            reverseDuration:
+                                                Duration(milliseconds: 300),
+                                            child: ForgotPasswordWidget(),
                                           ),
                                         );
                                       },
@@ -224,26 +277,31 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         width: 170,
                                         height: 40,
                                         color: Color(0x001A1F24),
-                                        textStyle:
-                                            FlutterFlowTheme.subtitle2.override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: Colors.white,
-                                        ),
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .subtitle2
+                                            .override(
+                                              fontFamily: 'Lexend Deca',
+                                              color: Colors.white,
+                                            ),
                                         elevation: 0,
                                         borderSide: BorderSide(
                                           color: Colors.transparent,
                                           width: 1,
                                         ),
-                                        borderRadius: 8,
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
                                   ),
                                   FFButtonWidget(
                                     onPressed: () async {
+                                      logFirebaseEvent(
+                                          'LOGIN_PAGE_PAGE_Button-Login_ON_TAP');
+                                      logFirebaseEvent('Button-Login_Auth');
+
                                       final user = await signInWithEmail(
                                         context,
-                                        emailAddressLoginController.text,
-                                        passwordLoginController.text,
+                                        emailAddressLoginController!.text,
+                                        passwordLoginController!.text,
                                       );
                                       if (user == null) {
                                         return;
@@ -251,8 +309,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
                                       await Navigator.pushAndRemoveUntil(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) => NavBarPage(
+                                        PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration: Duration(milliseconds: 300),
+                                          reverseDuration:
+                                              Duration(milliseconds: 300),
+                                          child: NavBarPage(
                                               initialPage: 'mainDashboard'),
                                         ),
                                         (r) => false,
@@ -263,17 +325,19 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                       width: 120,
                                       height: 50,
                                       color: Color(0xFFFFCD3C),
-                                      textStyle:
-                                          FlutterFlowTheme.subtitle2.override(
-                                        fontFamily: 'Lexend Deca',
-                                        color: FlutterFlowTheme.textColor,
-                                      ),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Lexend Deca',
+                                            color: FlutterFlowTheme.of(context)
+                                                .background,
+                                          ),
                                       elevation: 3,
                                       borderSide: BorderSide(
                                         color: Colors.transparent,
                                         width: 1,
                                       ),
-                                      borderRadius: 30,
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
                                 ],
@@ -282,102 +346,122 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    height: 44,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.background,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Don\'t have an account?',
-                                          style: FlutterFlowTheme.bodyText1,
+                                  InkWell(
+                                    onTap: () async {
+                                      logFirebaseEvent(
+                                          'LOGIN_Container_8uds9x9y_ON_TAP');
+                                      logFirebaseEvent('Container_Navigate-To');
+                                      await Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration: Duration(milliseconds: 300),
+                                          reverseDuration:
+                                              Duration(milliseconds: 300),
+                                          child: RegisterAccountWidget(),
                                         ),
-                                        FFButtonWidget(
-                                          onPressed: () async {
-                                            await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RegisterAccountWidget(),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      height: 44,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: FlutterFlowTheme.of(context)
+                                              .grayDark,
+                                          width: 2,
+                                        ),
+                                      ),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          logFirebaseEvent(
+                                              'LOGIN_PAGE_PAGE_Row_uz83a0aa_ON_TAP');
+                                          logFirebaseEvent('Row_Navigate-To');
+                                          await Navigator.push(
+                                            context,
+                                            PageTransition(
+                                              type: PageTransitionType.fade,
+                                              duration:
+                                                  Duration(milliseconds: 300),
+                                              reverseDuration:
+                                                  Duration(milliseconds: 300),
+                                              child: RegisterAccountWidget(),
+                                            ),
+                                          );
+                                        },
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 0, 20, 0),
+                                              child: Text(
+                                                'Don\'t have an account?',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily:
+                                                              'Lexend Deca',
+                                                          fontSize: 16,
+                                                        ),
                                               ),
-                                            );
-                                          },
-                                          text: 'Create',
-                                          options: FFButtonOptions(
-                                            width: 70,
-                                            height: 40,
-                                            color: FlutterFlowTheme.background,
-                                            textStyle: FlutterFlowTheme
-                                                .bodyText2
-                                                .override(
-                                              fontFamily: 'Lexend Deca',
-                                              color: Color(0xFFFFCD3C),
                                             ),
-                                            borderSide: BorderSide(
-                                              color: Colors.transparent,
-                                              width: 1,
+                                            FFButtonWidget(
+                                              onPressed: () async {
+                                                logFirebaseEvent(
+                                                    'LOGIN_PAGE_PAGE_REGISTER_BTN_ON_TAP');
+                                                logFirebaseEvent(
+                                                    'Button_Navigate-To');
+                                                await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type:
+                                                        PageTransitionType.fade,
+                                                    duration: Duration(
+                                                        milliseconds: 300),
+                                                    reverseDuration: Duration(
+                                                        milliseconds: 300),
+                                                    child:
+                                                        RegisterAccountWidget(),
+                                                  ),
+                                                );
+                                              },
+                                              text: 'Register',
+                                              options: FFButtonOptions(
+                                                width: 90,
+                                                height: 40,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .background,
+                                                textStyle: FlutterFlowTheme.of(
+                                                        context)
+                                                    .bodyText2
+                                                    .override(
+                                                      fontFamily: 'Lexend Deca',
+                                                      color: Color(0xFFFFCD3C),
+                                                      fontSize: 16,
+                                                    ),
+                                                borderSide: BorderSide(
+                                                  color: Colors.transparent,
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
                                             ),
-                                            borderRadius: 12,
-                                          ),
+                                          ],
                                         ),
-                                        Icon(
-                                          Icons.arrow_forward_rounded,
-                                          color: Color(0xFFFFCD3C),
-                                          size: 24,
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            final user = await signInAnonymously(context);
-                            if (user == null) {
-                              return;
-                            }
-                            final userListCreateData =
-                                createUserListRecordData();
-                            await UserListRecord.collection
-                                .doc()
-                                .set(userListCreateData);
-                            await Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    NavBarPage(initialPage: 'mainDashboard'),
-                              ),
-                              (r) => false,
-                            );
-                          },
-                          text: 'Continue as Guest',
-                          options: FFButtonOptions(
-                            width: 230,
-                            height: 50,
-                            color: FlutterFlowTheme.background,
-                            textStyle: FlutterFlowTheme.subtitle2.override(
-                              fontFamily: 'Lexend Deca',
-                              color: FlutterFlowTheme.textColor,
-                            ),
-                            elevation: 3,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1,
-                            ),
-                            borderRadius: 30,
                           ),
                         ),
                       ),

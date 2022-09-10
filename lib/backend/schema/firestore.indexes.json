@@ -1,11 +1,29 @@
 {
   "indexes": [
     {
-      "collectionGroup": "orderTracking",
+      "collectionGroup": "bookOrder",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "order_id",
+          "fieldPath": "booker_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "order_timestamp",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "bookOrder",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "booker_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "order_status",
           "order": "ASCENDING"
         },
         {

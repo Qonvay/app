@@ -1,16 +1,15 @@
-import '../create_default_pickup/create_default_pickup_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingWidget extends StatefulWidget {
-  const OnboardingWidget({Key key}) : super(key: key);
+  const OnboardingWidget({Key? key}) : super(key: key);
 
   @override
   _OnboardingWidgetState createState() => _OnboardingWidgetState();
@@ -18,12 +17,13 @@ class OnboardingWidget extends StatefulWidget {
 
 class _OnboardingWidgetState extends State<OnboardingWidget>
     with TickerProviderStateMixin {
-  PageController pageViewController;
+  PageController? pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'imageOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         scale: 0.6,
@@ -44,6 +44,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
       this,
     );
+
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'onboarding'});
   }
 
   @override
@@ -62,12 +64,12 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'assets/images/Color_logo_white_-_no_background.svg',
+                  Image.asset(
+                    'assets/images/Color_logo_white_-_no_background.png',
                     width: 220,
                     height: 70,
                     fit: BoxFit.fitWidth,
-                  ).animated([animationsMap['imageOnPageLoadAnimation']]),
+                  ).animated([animationsMap['imageOnPageLoadAnimation']!]),
                 ],
               ),
             ),
@@ -122,7 +124,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                           child: Text(
                                             'Super Fast Delivery',
                                             textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.title1,
+                                            style: FlutterFlowTheme.of(context)
+                                                .title1,
                                           ),
                                         ),
                                       ],
@@ -138,13 +141,14 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                           child: Text(
                                             'Need to deliver anything? Just book a rider without having to worry about the cost of delivery.',
                                             textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.subtitle2
+                                            style: FlutterFlowTheme.of(context)
+                                                .subtitle2
                                                 .override(
-                                              fontFamily: 'Lexend Deca',
-                                              color: Color(0x99FFFFFF),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                                  fontFamily: 'Lexend Deca',
+                                                  color: Color(0x99FFFFFF),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
                                           ),
                                         ),
                                       ],
@@ -187,7 +191,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                           child: Text(
                                             'Pay by miles, save money',
                                             textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.title1,
+                                            style: FlutterFlowTheme.of(context)
+                                                .title1,
                                           ),
                                         ),
                                       ],
@@ -203,13 +208,14 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                           child: Text(
                                             'Save a lot on delivery costs when you pay by mileage, monthly.',
                                             textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.subtitle2
+                                            style: FlutterFlowTheme.of(context)
+                                                .subtitle2
                                                 .override(
-                                              fontFamily: 'Lexend Deca',
-                                              color: Color(0x99FFFFFF),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                                  fontFamily: 'Lexend Deca',
+                                                  color: Color(0x99FFFFFF),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
                                           ),
                                         ),
                                       ],
@@ -252,7 +258,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                           child: Text(
                                             'You run your business, We convey.',
                                             textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.title1,
+                                            style: FlutterFlowTheme.of(context)
+                                                .title1,
                                           ),
                                         ),
                                       ],
@@ -268,13 +275,14 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                           child: Text(
                                             'Focus on getting your items to where they should be and not the cost of getting them there.',
                                             textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.subtitle2
+                                            style: FlutterFlowTheme.of(context)
+                                                .subtitle2
                                                 .override(
-                                              fontFamily: 'Lexend Deca',
-                                              color: Color(0xFF82878C),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                                  fontFamily: 'Lexend Deca',
+                                                  color: Color(0xFF82878C),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
                                           ),
                                         ),
                                       ],
@@ -296,7 +304,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                               count: 3,
                               axisDirection: Axis.horizontal,
                               onDotClicked: (i) {
-                                pageViewController.animateToPage(
+                                pageViewController!.animateToPage(
                                   i,
                                   duration: Duration(milliseconds: 500),
                                   curve: Curves.ease,
@@ -331,31 +339,37 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                     padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
+                        logFirebaseEvent(
+                            'ONBOARDING_GO_TO_DASHBOARD_BTN_ON_TAP');
+                        logFirebaseEvent('Button_Navigate-To');
                         await Navigator.push(
                           context,
                           PageTransition(
                             type: PageTransitionType.bottomToTop,
                             duration: Duration(milliseconds: 220),
                             reverseDuration: Duration(milliseconds: 220),
-                            child: CreateDefaultPickupWidget(),
+                            child: NavBarPage(initialPage: 'mainDashboard'),
                           ),
                         );
                       },
-                      text: 'Set default pickup location',
+                      text: 'Go To Dashboard',
                       options: FFButtonOptions(
                         width: 250,
                         height: 50,
-                        color: FlutterFlowTheme.background,
-                        textStyle: FlutterFlowTheme.subtitle2.override(
-                          fontFamily: 'Lexend Deca',
-                          color: Color(0xFFFFCD3C),
-                        ),
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        textStyle: FlutterFlowTheme.of(context)
+                            .subtitle2
+                            .override(
+                              fontFamily: 'Lexend Deca',
+                              color:
+                                  FlutterFlowTheme.of(context).darkBackground,
+                            ),
                         elevation: 2,
                         borderSide: BorderSide(
                           color: Colors.transparent,
                           width: 1,
                         ),
-                        borderRadius: 30,
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),

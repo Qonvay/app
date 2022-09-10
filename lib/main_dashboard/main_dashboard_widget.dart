@@ -1,16 +1,28 @@
 import '../auth/auth_util.dart';
+import '../backend/backend.dart';
 import '../components/purchase_mileage_card_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
+import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../main.dart';
-import '../topup_mileage/topup_mileage_widget.dart';
+import '../custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MainDashboardWidget extends StatefulWidget {
-  const MainDashboardWidget({Key key}) : super(key: key);
+  const MainDashboardWidget({
+    Key? key,
+    this.buyMileageParam,
+    this.subscribeParam,
+    this.mileageCostParam,
+  }) : super(key: key);
+
+  final double? buyMileageParam;
+  final double? subscribeParam;
+  final double? mileageCostParam;
 
   @override
   _MainDashboardWidgetState createState() => _MainDashboardWidgetState();
@@ -18,87 +30,13 @@ class MainDashboardWidget extends StatefulWidget {
 
 class _MainDashboardWidgetState extends State<MainDashboardWidget>
     with TickerProviderStateMixin {
-  double sliderValue;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
-    'rowOnPageLoadAnimation': AnimationInfo(
+    'columnOnPageLoadAnimation': AnimationInfo(
+      curve: Curves.easeIn,
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
+      hideBeforeAnimating: true,
       fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 30),
-        scale: 0.4,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      delay: 80,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 69),
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        opacity: 1,
-      ),
-    ),
-    'columnOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-    'columnOnActionTriggerAnimation1': AnimationInfo(
-      curve: Curves.bounceOut,
-      trigger: AnimationTrigger.onActionTrigger,
-      duration: 600,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-    'columnOnPageLoadAnimation2': AnimationInfo(
-      curve: Curves.bounceOut,
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-    'columnOnActionTriggerAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      duration: 600,
       initialState: AnimationState(
         offset: Offset(0, 0),
         scale: 1,
@@ -111,6 +49,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
       ),
     ),
   };
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -120,125 +59,170 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
       this,
     );
-    setupTriggerAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onActionTrigger),
-      this,
-    );
+
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'mainDashboard'});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.background,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Dashboard',
-          style: FlutterFlowTheme.title1,
-        ),
-        actions: [],
-        centerTitle: false,
-        elevation: 0,
+    return StreamBuilder<List<UsersRecord>>(
+      stream: queryUsersRecord(
+        singleRecord: true,
       ),
-      backgroundColor: FlutterFlowTheme.background,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            PageTransition(
-              type: PageTransitionType.bottomToTop,
-              duration: Duration(milliseconds: 220),
-              reverseDuration: Duration(milliseconds: 220),
-              child: TopupMileageWidget(),
+      builder: (context, snapshot) {
+        // Customize what your widget looks like when it's loading.
+        if (!snapshot.hasData) {
+          return Center(
+            child: SizedBox(
+              width: 50,
+              height: 50,
+              child: SpinKitFadingGrid(
+                color: FlutterFlowTheme.of(context).primaryColor,
+                size: 50,
+              ),
             ),
           );
-        },
-        backgroundColor: Color(0xFFFFCD3C),
-        elevation: 8,
-        child: Icon(
-          Icons.add_rounded,
-          color: FlutterFlowTheme.textColor,
-          size: 36,
-        ),
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 15),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.darkBackground,
-                  borderRadius: BorderRadius.circular(16),
+        }
+        List<UsersRecord> mainDashboardUsersRecordList = snapshot.data!;
+        // Return an empty Container when the document does not exist.
+        if (snapshot.data!.isEmpty) {
+          return Container();
+        }
+        final mainDashboardUsersRecord = mainDashboardUsersRecordList.isNotEmpty
+            ? mainDashboardUsersRecordList.first
+            : null;
+        return Scaffold(
+          key: scaffoldKey,
+          appBar: AppBar(
+            backgroundColor: FlutterFlowTheme.of(context).background,
+            automaticallyImplyLeading: false,
+            title: Text(
+              'Dashboard',
+              style: FlutterFlowTheme.of(context).title1,
+            ),
+            actions: [
+              FlutterFlowIconButton(
+                borderColor: Colors.transparent,
+                borderRadius: 30,
+                borderWidth: 1,
+                buttonSize: 60,
+                icon: FaIcon(
+                  FontAwesomeIcons.solidQuestionCircle,
+                  color: FlutterFlowTheme.of(context).grayDark,
+                  size: 30,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(16, 40, 16, 40),
-                      child: Row(
+                onPressed: () {
+                  print('IconButton pressed ...');
+                },
+              ),
+            ],
+            centerTitle: false,
+            elevation: 0,
+          ),
+          backgroundColor: FlutterFlowTheme.of(context).background,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 15),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).darkBackground,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Card(
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            color: FlutterFlowTheme.primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
-                              child: Container(
-                                width: 50,
-                                height: 50,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Image.asset(
-                                  'assets/images/avatar.png',
-                                ),
-                              ),
-                            ),
-                          ),
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                            child: Column(
+                                EdgeInsetsDirectional.fromSTEB(10, 40, 10, 40),
+                            child: Row(
                               mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Text(
-                                      'Welcome,',
-                                      style: FlutterFlowTheme.title3,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          4, 0, 0, 0),
-                                      child: AuthUserStreamWidget(
-                                        child: Text(
-                                          currentUserDisplayName,
-                                          style:
-                                              FlutterFlowTheme.title3.override(
-                                            fontFamily: 'Lexend Deca',
-                                            color:
-                                                FlutterFlowTheme.primaryColor,
+                                Card(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        2, 2, 2, 2),
+                                    child: AuthUserStreamWidget(
+                                      child: Container(
+                                        width: 50,
+                                        height: 50,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Image.network(
+                                          valueOrDefault<String>(
+                                            currentUserPhoto,
+                                            'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/finance-app-sample-kugwu4/assets/ijvuhvqbvns6/uiAvatar@2x.png',
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                                Text(
-                                  'Your account Details are below.',
-                                  style: FlutterFlowTheme.bodyText1,
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 0, 0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Text(
+                                            'Welcome,',
+                                            style: FlutterFlowTheme.of(context)
+                                                .title3
+                                                .override(
+                                                  fontFamily: 'Lexend Deca',
+                                                  fontSize: 18,
+                                                ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4, 0, 0, 0),
+                                            child: AuthUserStreamWidget(
+                                              child: Text(
+                                                valueOrDefault(
+                                                        currentUserDocument
+                                                            ?.firstName,
+                                                        '')
+                                                    .maybeHandleOverflow(
+                                                  maxChars: 10,
+                                                  replacement: '…',
+                                                ),
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .title3
+                                                    .override(
+                                                      fontFamily: 'Lexend Deca',
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryColor,
+                                                      fontSize: 18,
+                                                    ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -246,262 +230,335 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                    child: Row(
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.92,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 6,
-                                color: Color(0x4B1A1F24),
-                                offset: Offset(0, 2),
-                              )
-                            ],
-                            gradient: LinearGradient(
-                              colors: [Color(0xFF1A1F24), Color(0xFFFFCD3C)],
-                              stops: [0, 1],
-                              begin: AlignmentDirectional(0.94, -1),
-                              end: AlignmentDirectional(-0.94, 1),
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                          child: Row(
                             mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 20, 20, 0),
-                                child: Row(
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.92,
+                                decoration: BoxDecoration(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 6,
+                                      color: Color(0x4B1A1F24),
+                                      offset: Offset(0, 2),
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Text(
-                                      'Your Delivery Mileage',
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Lexend Deca',
-                                        color: Colors.white,
-                                        fontSize: 20,
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          20, 20, 20, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Text(
+                                            'Your Delivery Mileage',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily: 'Lexend Deca',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .background,
+                                                  fontSize: 20,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          20, 24, 20, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Text(
+                                            'Balance',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily: 'Lexend Deca',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .background,
+                                                  fontSize: 16,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          20, 8, 20, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          AuthUserStreamWidget(
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                valueOrDefault(
+                                                        currentUserDocument
+                                                            ?.mileageBalance,
+                                                        0.0)
+                                                    .toString(),
+                                                '10',
+                                              ).maybeHandleOverflow(
+                                                  maxChars: 4),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .title1
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .background,
+                                                    fontSize: 32,
+                                                  ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    5, 0, 0, 0),
+                                            child: Text(
+                                              'km',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyText1
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .darkBackground,
+                                                    fontSize: 18,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    AuthUserStreamWidget(
+                                      child: Container(
+                                        width: 440,
+                                        height: 50,
+                                        child: custom_widgets.CustomSlider(
+                                          width: 440,
+                                          height: 50,
+                                          sliderValue: valueOrDefault(
+                                              currentUserDocument
+                                                  ?.mileageBalance,
+                                              0.0),
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 24, 20, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Text(
-                                      'Balance',
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Lexend Deca',
-                                        color: FlutterFlowTheme.textColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 8, 20, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Text(
-                                      '120km',
-                                      style: FlutterFlowTheme.title1.override(
-                                        fontFamily: 'Lexend Deca',
-                                        fontSize: 32,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Slider(
-                                activeColor: Color(0xFF1A1F24),
-                                inactiveColor: Color(0xFF9E9E9E),
-                                min: 0,
-                                max: 10,
-                                value: sliderValue ??= 10,
-                                onChanged: (newValue) {
-                                  setState(() => sliderValue = newValue);
-                                },
                               ),
                             ],
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(10, 20, 10, 20),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 180,
+                            decoration: BoxDecoration(
+                              color:
+                                  FlutterFlowTheme.of(context).darkBackground,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        20, 16, 20, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Text(
+                                          'Quick Service',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Lexend Deca',
+                                                fontSize: 16,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16, 12, 16, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.38,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .background,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              logFirebaseEvent(
+                                                  'MAIN_DASHBOARD_Column_c2q9ab45_ON_TAP');
+                                              logFirebaseEvent(
+                                                  'Column_Navigate-To');
+                                              await Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType.fade,
+                                                  duration: Duration(
+                                                      milliseconds: 250),
+                                                  reverseDuration: Duration(
+                                                      milliseconds: 250),
+                                                  child: NavBarPage(
+                                                      initialPage:
+                                                          'bookDelivery'),
+                                                ),
+                                              );
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.delivery_dining,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .textColor,
+                                                  size: 40,
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 8, 0, 0),
+                                                  child: Text(
+                                                    'Book Delivery',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily:
+                                                              'Lexend Deca',
+                                                          fontSize: 16,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.38,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .background,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              logFirebaseEvent(
+                                                  'MAIN_DASHBOARD_Column_fc5sips5_ON_TAP');
+                                              logFirebaseEvent(
+                                                  'Column_Bottom-Sheet');
+                                              await showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding:
+                                                        MediaQuery.of(context)
+                                                            .viewInsets,
+                                                    child: Container(
+                                                      height: 220,
+                                                      child:
+                                                          PurchaseMileageCardWidget(),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.payment,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .textColor,
+                                                  size: 40,
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 8, 0, 0),
+                                                  child: Text(
+                                                    'Purchase Mileage',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily:
+                                                              'Lexend Deca',
+                                                          fontSize: 16,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
-                    ).animated([animationsMap['rowOnPageLoadAnimation']]),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 180,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.darkBackground,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(20, 16, 20, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Text(
-                                    'Quick Service',
-                                    style: FlutterFlowTheme.bodyText1,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.38,
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.background,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        await Navigator.push(
-                                          context,
-                                          PageTransition(
-                                            type: PageTransitionType.fade,
-                                            duration:
-                                                Duration(milliseconds: 250),
-                                            reverseDuration:
-                                                Duration(milliseconds: 250),
-                                            child: NavBarPage(
-                                                initialPage: 'bookDelivery'),
-                                          ),
-                                        );
-                                      },
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.delivery_dining,
-                                            color: FlutterFlowTheme.textColor,
-                                            size: 40,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 8, 0, 0),
-                                            child: Text(
-                                              'Book Delivery',
-                                              style: FlutterFlowTheme.bodyText1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ).animated([
-                                      animationsMap[
-                                          'columnOnPageLoadAnimation1'],
-                                      animationsMap[
-                                          'columnOnActionTriggerAnimation1']
-                                    ]),
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.38,
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.background,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        await showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          context: context,
-                                          builder: (context) {
-                                            return Padding(
-                                              padding: MediaQuery.of(context)
-                                                  .viewInsets,
-                                              child: Container(
-                                                height: 220,
-                                                child:
-                                                    PurchaseMileageCardWidget(),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.payment,
-                                            color: FlutterFlowTheme.textColor,
-                                            size: 40,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 8, 0, 0),
-                                            child: Text(
-                                              'Purcahse Mileage',
-                                              style: FlutterFlowTheme.bodyText1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ).animated([
-                                      animationsMap[
-                                          'columnOnPageLoadAnimation2'],
-                                      animationsMap[
-                                          'columnOnActionTriggerAnimation2']
-                                    ]),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ).animated([animationsMap['containerOnPageLoadAnimation']]),
-                  ),
+                    ),
+                  ).animated([animationsMap['columnOnPageLoadAnimation']!]),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

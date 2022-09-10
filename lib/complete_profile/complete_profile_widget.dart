@@ -1,19 +1,20 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
+import '../create_default_pickup/create_default_pickup_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
+import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
-import '../onboarding/onboarding_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CompleteProfileWidget extends StatefulWidget {
-  const CompleteProfileWidget({Key key}) : super(key: key);
+  const CompleteProfileWidget({Key? key}) : super(key: key);
 
   @override
   _CompleteProfileWidgetState createState() => _CompleteProfileWidgetState();
@@ -21,16 +22,22 @@ class CompleteProfileWidget extends StatefulWidget {
 
 class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
     with TickerProviderStateMixin {
+  TextEditingController? yourAgeController;
+
+  TextEditingController? yourPhoneController;
+
   String uploadedFileUrl = '';
-  TextEditingController yourNameController;
-  TextEditingController yourAgeController;
-  TextEditingController yourTitleController;
+  String? yourGenderValue;
+
+  TextEditingController? yourTitleController;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'circleImageOnPageLoadAnimation': AnimationInfo(
       curve: Curves.bounceOut,
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 19),
@@ -45,6 +52,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 50,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 20),
@@ -58,10 +66,11 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
     'textFieldOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
-      delay: 100,
+      delay: 200,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
-        offset: Offset(0, 20),
+        offset: Offset(0, 60),
         opacity: 0,
       ),
       finalState: AnimationState(
@@ -73,6 +82,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 200,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 40),
@@ -87,6 +97,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 200,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 60),
@@ -97,26 +108,12 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
         opacity: 1,
       ),
     ),
-    'buttonOnPageLoadAnimation1': AnimationInfo(
+    'buttonOnPageLoadAnimation': AnimationInfo(
       curve: Curves.bounceOut,
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 400,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 40),
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        opacity: 1,
-      ),
-    ),
-    'buttonOnPageLoadAnimation2': AnimationInfo(
-      curve: Curves.bounceOut,
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      delay: 400,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 40),
@@ -138,8 +135,10 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       this,
     );
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'completeProfile'});
     yourAgeController = TextEditingController();
-    yourNameController = TextEditingController();
+    yourPhoneController = TextEditingController();
     yourTitleController = TextEditingController();
   }
 
@@ -152,13 +151,13 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
         automaticallyImplyLeading: false,
         title: Text(
           'Complete Profile',
-          style: FlutterFlowTheme.title3,
+          style: FlutterFlowTheme.of(context).title3,
         ),
         actions: [],
         centerTitle: false,
         elevation: 0,
       ),
-      backgroundColor: FlutterFlowTheme.background,
+      backgroundColor: FlutterFlowTheme.of(context).background,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 1,
@@ -171,27 +170,43 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                 padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
                 child: InkWell(
                   onTap: () async {
+                    logFirebaseEvent('COMPLETE_PROFILE_PAGE_userAvatar_ON_TAP');
+                    logFirebaseEvent('userAvatar_Upload-Photo-Video');
                     final selectedMedia =
                         await selectMediaWithSourceBottomSheet(
                       context: context,
                       allowPhoto: true,
-                      backgroundColor: FlutterFlowTheme.darkBackground,
-                      textColor: FlutterFlowTheme.textColor,
+                      backgroundColor:
+                          FlutterFlowTheme.of(context).darkBackground,
+                      textColor: FlutterFlowTheme.of(context).textColor,
                       pickerFontFamily: 'Lexend Deca',
                     );
                     if (selectedMedia != null &&
-                        validateFileFormat(
-                            selectedMedia.storagePath, context)) {
-                      showUploadMessage(context, 'Uploading file...',
-                          showLoading: true);
-                      final downloadUrl = await uploadData(
-                          selectedMedia.storagePath, selectedMedia.bytes);
+                        selectedMedia.every((m) =>
+                            validateFileFormat(m.storagePath, context))) {
+                      showUploadMessage(
+                        context,
+                        'Uploading file...',
+                        showLoading: true,
+                      );
+                      final downloadUrls = (await Future.wait(selectedMedia.map(
+                              (m) async =>
+                                  await uploadData(m.storagePath, m.bytes))))
+                          .where((u) => u != null)
+                          .map((u) => u!)
+                          .toList();
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      if (downloadUrl != null) {
-                        setState(() => uploadedFileUrl = downloadUrl);
-                        showUploadMessage(context, 'Success!');
+                      if (downloadUrls.length == selectedMedia.length) {
+                        setState(() => uploadedFileUrl = downloadUrls.first);
+                        showUploadMessage(
+                          context,
+                          'Success!',
+                        );
                       } else {
-                        showUploadMessage(context, 'Failed to upload media');
+                        showUploadMessage(
+                          context,
+                          'Failed to upload media',
+                        );
                         return;
                       }
                     }
@@ -210,23 +225,29 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                       ),
                     ),
                   ),
-                ).animated([animationsMap['circleImageOnPageLoadAnimation']]),
+                ).animated([animationsMap['circleImageOnPageLoadAnimation']!]),
               ),
               Text(
                 'Upload a photo for us to easily identify you.',
-                style: FlutterFlowTheme.bodyText1,
-              ).animated([animationsMap['textOnPageLoadAnimation']]),
+                style: FlutterFlowTheme.of(context).bodyText1,
+              ).animated([animationsMap['textOnPageLoadAnimation']!]),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
                 child: TextFormField(
-                  controller: yourNameController,
+                  controller: yourPhoneController,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Your Name',
-                    labelStyle: FlutterFlowTheme.bodyText1.override(
-                      fontFamily: 'Lexend Deca',
-                      color: FlutterFlowTheme.grayLight,
-                    ),
+                    labelText: 'Your Phone number',
+                    labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                        ),
+                    hintText: 'Your Phone number?',
+                    hintStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          fontSize: 16,
+                        ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0x00000000),
@@ -241,16 +262,32 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     filled: true,
-                    fillColor: FlutterFlowTheme.darkBackground,
+                    fillColor: FlutterFlowTheme.of(context).darkBackground,
                     contentPadding:
                         EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
                   ),
-                  style: FlutterFlowTheme.bodyText1.override(
-                    fontFamily: 'Lexend Deca',
-                    color: FlutterFlowTheme.textColor,
-                  ),
-                ).animated([animationsMap['textFieldOnPageLoadAnimation1']]),
+                  style: FlutterFlowTheme.of(context).bodyText1.override(
+                        fontFamily: 'Lexend Deca',
+                        color: FlutterFlowTheme.of(context).textColor,
+                        fontSize: 16,
+                      ),
+                  keyboardType: TextInputType.phone,
+                ).animated([animationsMap['textFieldOnPageLoadAnimation1']!]),
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
@@ -259,15 +296,16 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                   obscureText: false,
                   decoration: InputDecoration(
                     labelText: 'Your Age',
-                    labelStyle: FlutterFlowTheme.bodyText1.override(
-                      fontFamily: 'Lexend Deca',
-                      color: FlutterFlowTheme.grayLight,
-                    ),
+                    labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                        ),
                     hintText: 'i.e. 34',
-                    hintStyle: FlutterFlowTheme.bodyText1.override(
-                      fontFamily: 'Lexend Deca',
-                      color: Color(0x98FFFFFF),
-                    ),
+                    hintStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Lexend Deca',
+                          color: Color(0x98FFFFFF),
+                          fontSize: 16,
+                        ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0x00000000),
@@ -282,17 +320,54 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     filled: true,
-                    fillColor: FlutterFlowTheme.darkBackground,
+                    fillColor: FlutterFlowTheme.of(context).darkBackground,
                     contentPadding:
                         EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
                   ),
-                  style: FlutterFlowTheme.bodyText1.override(
-                    fontFamily: 'Lexend Deca',
-                    color: FlutterFlowTheme.textColor,
-                  ),
+                  style: FlutterFlowTheme.of(context).bodyText1.override(
+                        fontFamily: 'Lexend Deca',
+                        color: FlutterFlowTheme.of(context).textColor,
+                        fontSize: 16,
+                      ),
                   keyboardType: TextInputType.number,
-                ).animated([animationsMap['textFieldOnPageLoadAnimation2']]),
+                ).animated([animationsMap['textFieldOnPageLoadAnimation2']!]),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                child: FlutterFlowDropDown(
+                  options: ['Man', 'Woman', 'Prefer not to disclose'],
+                  onChanged: (val) => setState(() => yourGenderValue = val),
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: 50,
+                  textStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                        fontFamily: 'Lexend Deca',
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        fontSize: 16,
+                      ),
+                  hintText: 'Your Gender',
+                  fillColor: FlutterFlowTheme.of(context).darkBackground,
+                  elevation: 2,
+                  borderColor: Colors.transparent,
+                  borderWidth: 0,
+                  borderRadius: 8,
+                  margin: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
+                  hidesUnderline: true,
+                ),
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
@@ -300,16 +375,17 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                   controller: yourTitleController,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Your Title',
-                    labelStyle: FlutterFlowTheme.bodyText1.override(
-                      fontFamily: 'Lexend Deca',
-                      color: FlutterFlowTheme.grayLight,
-                    ),
+                    labelText: 'Your Position',
+                    labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                        ),
                     hintText: 'What is your position?',
-                    hintStyle: FlutterFlowTheme.bodyText1.override(
-                      fontFamily: 'Lexend Deca',
-                      color: Color(0x98FFFFFF),
-                    ),
+                    hintStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Lexend Deca',
+                          color: Color(0x98FFFFFF),
+                          fontSize: 16,
+                        ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0x00000000),
@@ -324,118 +400,97 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     filled: true,
-                    fillColor: FlutterFlowTheme.darkBackground,
+                    fillColor: FlutterFlowTheme.of(context).darkBackground,
                     contentPadding:
                         EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
                   ),
-                  style: FlutterFlowTheme.bodyText1.override(
-                    fontFamily: 'Lexend Deca',
-                    color: FlutterFlowTheme.textColor,
-                  ),
-                ).animated([animationsMap['textFieldOnPageLoadAnimation3']]),
+                  style: FlutterFlowTheme.of(context).bodyText1.override(
+                        fontFamily: 'Lexend Deca',
+                        color: FlutterFlowTheme.of(context).textColor,
+                        fontSize: 16,
+                      ),
+                ).animated([animationsMap['textFieldOnPageLoadAnimation3']!]),
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                 child: StreamBuilder<UsersRecord>(
-                  stream: UsersRecord.getDocument(currentUserReference),
+                  stream: UsersRecord.getDocument(currentUserReference!),
                   builder: (context, snapshot) {
                     // Customize what your widget looks like when it's loading.
                     if (!snapshot.hasData) {
                       return Center(
                         child: SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: SpinKitSquareCircle(
-                            color: FlutterFlowTheme.primaryColor,
-                            size: 40,
+                          width: 50,
+                          height: 50,
+                          child: SpinKitFadingGrid(
+                            color: FlutterFlowTheme.of(context).primaryColor,
+                            size: 50,
                           ),
                         ),
                       );
                     }
-                    final buttonLoginUsersRecord = snapshot.data;
+                    final buttonLoginUsersRecord = snapshot.data!;
                     return FFButtonWidget(
                       onPressed: () async {
+                        logFirebaseEvent(
+                            'COMPLETE_PROFILE_Button-Login_ON_TAP');
+                        logFirebaseEvent('Button-Login_Backend-Call');
+
                         final usersUpdateData = createUsersRecordData(
-                          displayName: yourNameController.text,
-                          age: int.parse(yourAgeController.text),
-                          userTitle: yourTitleController.text,
-                          photoUrl: '',
+                          age: int.parse(yourAgeController!.text),
+                          userTitle: yourTitleController!.text,
+                          photoUrl: uploadedFileUrl,
+                          phoneNumber: yourPhoneController!.text,
+                          createdTime: buttonLoginUsersRecord.createdTime,
+                          gender: yourGenderValue,
                         );
                         await buttonLoginUsersRecord.reference
                             .update(usersUpdateData);
+                        logFirebaseEvent('Button-Login_Navigate-To');
                         await Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => OnboardingWidget(),
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: CreateDefaultPickupWidget(),
                           ),
                         );
                       },
-                      text: 'Complete Profile',
+                      text: 'Continue',
                       options: FFButtonOptions(
                         width: 230,
                         height: 50,
                         color: Color(0xFFFFCD3C),
-                        textStyle: FlutterFlowTheme.subtitle2.override(
-                          fontFamily: 'Lexend Deca',
-                          color: FlutterFlowTheme.textColor,
-                        ),
+                        textStyle: FlutterFlowTheme.of(context)
+                            .subtitle2
+                            .override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).background,
+                            ),
                         elevation: 3,
                         borderSide: BorderSide(
                           color: Colors.transparent,
                           width: 1,
                         ),
-                        borderRadius: 30,
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ).animated([animationsMap['buttonOnPageLoadAnimation1']]);
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                child: StreamBuilder<UsersRecord>(
-                  stream: UsersRecord.getDocument(currentUserReference),
-                  builder: (context, snapshot) {
-                    // Customize what your widget looks like when it's loading.
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: SpinKitSquareCircle(
-                            color: FlutterFlowTheme.primaryColor,
-                            size: 40,
-                          ),
-                        ),
-                      );
-                    }
-                    final buttonLoginUsersRecord = snapshot.data;
-                    return FFButtonWidget(
-                      onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OnboardingWidget(),
-                          ),
-                        );
-                      },
-                      text: 'Skip for Now',
-                      options: FFButtonOptions(
-                        width: 140,
-                        height: 50,
-                        color: FlutterFlowTheme.background,
-                        textStyle: FlutterFlowTheme.subtitle2.override(
-                          fontFamily: 'Lexend Deca',
-                          color: FlutterFlowTheme.textColor,
-                        ),
-                        elevation: 0,
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                          width: 1,
-                        ),
-                        borderRadius: 30,
-                      ),
-                    ).animated([animationsMap['buttonOnPageLoadAnimation2']]);
+                    ).animated([animationsMap['buttonOnPageLoadAnimation']!]);
                   },
                 ),
               ),

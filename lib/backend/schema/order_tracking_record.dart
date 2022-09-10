@@ -11,41 +11,39 @@ abstract class OrderTrackingRecord
   static Serializer<OrderTrackingRecord> get serializer =>
       _$orderTrackingRecordSerializer;
 
-  @nullable
   @BuiltValueField(wireName: 'order_id')
-  String get orderId;
+  String? get orderId;
 
-  @nullable
   @BuiltValueField(wireName: 'order_intransit')
-  bool get orderIntransit;
+  bool? get orderIntransit;
 
-  @nullable
   @BuiltValueField(wireName: 'order_pickedup')
-  bool get orderPickedup;
+  bool? get orderPickedup;
 
-  @nullable
   @BuiltValueField(wireName: 'order_enroute')
-  bool get orderEnroute;
+  bool? get orderEnroute;
 
-  @nullable
   @BuiltValueField(wireName: 'order_delivered')
-  bool get orderDelivered;
+  bool? get orderDelivered;
 
-  @nullable
   @BuiltValueField(wireName: 'order_list')
-  BuiltList<String> get orderList;
+  BuiltList<String>? get orderList;
 
-  @nullable
   @BuiltValueField(wireName: 'order_mileage_cost')
-  int get orderMileageCost;
+  int? get orderMileageCost;
 
-  @nullable
   @BuiltValueField(wireName: 'order_timestamp')
-  DateTime get orderTimestamp;
+  DateTime? get orderTimestamp;
 
-  @nullable
+  @BuiltValueField(wireName: 'order_headingToPickup')
+  bool? get orderHeadingToPickup;
+
+  @BuiltValueField(wireName: 'order_pending')
+  bool? get orderPending;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
+  DocumentReference? get ffRef;
+  DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(OrderTrackingRecordBuilder builder) => builder
     ..orderId = ''
@@ -54,18 +52,20 @@ abstract class OrderTrackingRecord
     ..orderEnroute = false
     ..orderDelivered = false
     ..orderList = ListBuilder()
-    ..orderMileageCost = 0;
+    ..orderMileageCost = 0
+    ..orderHeadingToPickup = false
+    ..orderPending = false;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('orderTracking');
 
   static Stream<OrderTrackingRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   static Future<OrderTrackingRecord> getDocumentOnce(DocumentReference ref) =>
       ref.get().then(
-          (s) => serializers.deserializeWith(serializer, serializedData(s)));
+          (s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   OrderTrackingRecord._();
   factory OrderTrackingRecord(
@@ -75,26 +75,36 @@ abstract class OrderTrackingRecord
   static OrderTrackingRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
 Map<String, dynamic> createOrderTrackingRecordData({
-  String orderId,
-  bool orderIntransit,
-  bool orderPickedup,
-  bool orderEnroute,
-  bool orderDelivered,
-  int orderMileageCost,
-  DateTime orderTimestamp,
-}) =>
-    serializers.toFirestore(
-        OrderTrackingRecord.serializer,
-        OrderTrackingRecord((o) => o
-          ..orderId = orderId
-          ..orderIntransit = orderIntransit
-          ..orderPickedup = orderPickedup
-          ..orderEnroute = orderEnroute
-          ..orderDelivered = orderDelivered
-          ..orderList = null
-          ..orderMileageCost = orderMileageCost
-          ..orderTimestamp = orderTimestamp));
+  String? orderId,
+  bool? orderIntransit,
+  bool? orderPickedup,
+  bool? orderEnroute,
+  bool? orderDelivered,
+  int? orderMileageCost,
+  DateTime? orderTimestamp,
+  bool? orderHeadingToPickup,
+  bool? orderPending,
+}) {
+  final firestoreData = serializers.toFirestore(
+    OrderTrackingRecord.serializer,
+    OrderTrackingRecord(
+      (o) => o
+        ..orderId = orderId
+        ..orderIntransit = orderIntransit
+        ..orderPickedup = orderPickedup
+        ..orderEnroute = orderEnroute
+        ..orderDelivered = orderDelivered
+        ..orderList = null
+        ..orderMileageCost = orderMileageCost
+        ..orderTimestamp = orderTimestamp
+        ..orderHeadingToPickup = orderHeadingToPickup
+        ..orderPending = orderPending,
+    ),
+  );
+
+  return firestoreData;
+}

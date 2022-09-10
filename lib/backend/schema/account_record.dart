@@ -10,13 +10,12 @@ abstract class AccountRecord
     implements Built<AccountRecord, AccountRecordBuilder> {
   static Serializer<AccountRecord> get serializer => _$accountRecordSerializer;
 
-  @nullable
   @BuiltValueField(wireName: 'mileage_balance')
-  double get mileageBalance;
+  double? get mileageBalance;
 
-  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
+  DocumentReference? get ffRef;
+  DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(AccountRecordBuilder builder) =>
       builder..mileageBalance = 0.0;
@@ -26,11 +25,11 @@ abstract class AccountRecord
 
   static Stream<AccountRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   static Future<AccountRecord> getDocumentOnce(DocumentReference ref) => ref
       .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   AccountRecord._();
   factory AccountRecord([void Function(AccountRecordBuilder) updates]) =
@@ -39,11 +38,18 @@ abstract class AccountRecord
   static AccountRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
 Map<String, dynamic> createAccountRecordData({
-  double mileageBalance,
-}) =>
-    serializers.toFirestore(AccountRecord.serializer,
-        AccountRecord((a) => a..mileageBalance = mileageBalance));
+  double? mileageBalance,
+}) {
+  final firestoreData = serializers.toFirestore(
+    AccountRecord.serializer,
+    AccountRecord(
+      (a) => a..mileageBalance = mileageBalance,
+    ),
+  );
+
+  return firestoreData;
+}
