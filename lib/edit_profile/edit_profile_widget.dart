@@ -1,6 +1,7 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -23,7 +24,8 @@ class EditProfileWidget extends StatefulWidget {
   _EditProfileWidgetState createState() => _EditProfileWidgetState();
 }
 
-class _EditProfileWidgetState extends State<EditProfileWidget> {
+class _EditProfileWidgetState extends State<EditProfileWidget>
+    with TickerProviderStateMixin {
   TextEditingController? firstNameController;
 
   String uploadedFileUrl = '';
@@ -43,10 +45,34 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   TextEditingController? yourTitleController;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final animationsMap = {
+    'containerOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+  };
 
   @override
   void initState() {
     super.initState();
+    startPageLoadAnimations(
+      animationsMap.values
+          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      this,
+    );
+
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'editProfile'});
     yourEmailController = TextEditingController(text: currentUserEmail);
   }
@@ -77,19 +103,19 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             automaticallyImplyLeading: false,
             leading: InkWell(
               onTap: () async {
-                logFirebaseEvent('EDIT_PROFILE_PAGE_Icon_98ocr8gr_ON_TAP');
+                logFirebaseEvent('EDIT_PROFILE_PAGE_Icon_4ki29s8v_ON_TAP');
                 logFirebaseEvent('Icon_Navigate-Back');
                 Navigator.pop(context);
               },
               child: Icon(
-                Icons.chevron_left_rounded,
-                color: FlutterFlowTheme.of(context).grayLight,
-                size: 32,
+                Icons.chevron_left,
+                color: FlutterFlowTheme.of(context).primaryColor,
+                size: 30,
               ),
             ),
             title: Text(
               'Edit Profile',
-              style: FlutterFlowTheme.of(context).title3,
+              style: FlutterFlowTheme.of(context).title1,
             ),
             actions: [],
             centerTitle: false,
@@ -629,7 +655,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 40),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 50),
                     child: FFButtonWidget(
                       onPressed: () async {
                         logFirebaseEvent(
@@ -677,7 +703,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                 ],
               ),
             ),
-          ),
+          ).animated([animationsMap['containerOnPageLoadAnimation']!]),
         );
       },
     );

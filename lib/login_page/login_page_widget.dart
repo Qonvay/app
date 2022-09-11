@@ -1,9 +1,10 @@
 import '../auth/auth_util.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../forgot_password/forgot_password_widget.dart';
-import '../main.dart';
+import '../main_dashboard/main_dashboard_widget.dart';
 import '../register_account/register_account_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -16,7 +17,8 @@ class LoginPageWidget extends StatefulWidget {
   _LoginPageWidgetState createState() => _LoginPageWidgetState();
 }
 
-class _LoginPageWidgetState extends State<LoginPageWidget> {
+class _LoginPageWidgetState extends State<LoginPageWidget>
+    with TickerProviderStateMixin {
   TextEditingController? emailAddressLoginController;
 
   TextEditingController? passwordLoginController;
@@ -24,10 +26,34 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
   late bool passwordLoginVisibility;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final animationsMap = {
+    'columnOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+  };
 
   @override
   void initState() {
     super.initState();
+    startPageLoadAnimations(
+      animationsMap.values
+          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      this,
+    );
+
     emailAddressLoginController = TextEditingController();
     passwordLoginController = TextEditingController();
     passwordLoginVisibility = false;
@@ -265,9 +291,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                           PageTransition(
                                             type: PageTransitionType.fade,
                                             duration:
-                                                Duration(milliseconds: 300),
+                                                Duration(milliseconds: 800),
                                             reverseDuration:
-                                                Duration(milliseconds: 300),
+                                                Duration(milliseconds: 800),
                                             child: ForgotPasswordWidget(),
                                           ),
                                         );
@@ -311,11 +337,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 300),
+                                          duration: Duration(milliseconds: 800),
                                           reverseDuration:
-                                              Duration(milliseconds: 300),
-                                          child: NavBarPage(
-                                              initialPage: 'mainDashboard'),
+                                              Duration(milliseconds: 800),
+                                          child: MainDashboardWidget(),
                                         ),
                                         (r) => false,
                                       );
@@ -346,115 +371,123 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      logFirebaseEvent(
-                                          'LOGIN_Container_8uds9x9y_ON_TAP');
-                                      logFirebaseEvent('Container_Navigate-To');
-                                      await Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 300),
-                                          reverseDuration:
-                                              Duration(milliseconds: 300),
-                                          child: RegisterAccountWidget(),
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () async {
+                                        logFirebaseEvent(
+                                            'LOGIN_Container_8uds9x9y_ON_TAP');
+                                        logFirebaseEvent(
+                                            'Container_Navigate-To');
+                                        await Navigator.push(
+                                          context,
+                                          PageTransition(
+                                            type: PageTransitionType.fade,
+                                            duration:
+                                                Duration(milliseconds: 800),
+                                            reverseDuration:
+                                                Duration(milliseconds: 800),
+                                            child: RegisterAccountWidget(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        height: 44,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .grayDark,
+                                            width: 2,
+                                          ),
                                         ),
-                                      );
-                                    },
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      height: 44,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                          color: FlutterFlowTheme.of(context)
-                                              .grayDark,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: InkWell(
-                                        onTap: () async {
-                                          logFirebaseEvent(
-                                              'LOGIN_PAGE_PAGE_Row_uz83a0aa_ON_TAP');
-                                          logFirebaseEvent('Row_Navigate-To');
-                                          await Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType.fade,
-                                              duration:
-                                                  Duration(milliseconds: 300),
-                                              reverseDuration:
-                                                  Duration(milliseconds: 300),
-                                              child: RegisterAccountWidget(),
-                                            ),
-                                          );
-                                        },
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 0, 20, 0),
-                                              child: Text(
-                                                'Don\'t have an account?',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1
-                                                        .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          fontSize: 16,
-                                                        ),
+                                        child: InkWell(
+                                          onTap: () async {
+                                            logFirebaseEvent(
+                                                'LOGIN_PAGE_PAGE_Row_uz83a0aa_ON_TAP');
+                                            logFirebaseEvent('Row_Navigate-To');
+                                            await Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                type: PageTransitionType.fade,
+                                                duration:
+                                                    Duration(milliseconds: 800),
+                                                reverseDuration:
+                                                    Duration(milliseconds: 800),
+                                                child: RegisterAccountWidget(),
                                               ),
-                                            ),
-                                            FFButtonWidget(
-                                              onPressed: () async {
-                                                logFirebaseEvent(
-                                                    'LOGIN_PAGE_PAGE_REGISTER_BTN_ON_TAP');
-                                                logFirebaseEvent(
-                                                    'Button_Navigate-To');
-                                                await Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                    type:
-                                                        PageTransitionType.fade,
-                                                    duration: Duration(
-                                                        milliseconds: 300),
-                                                    reverseDuration: Duration(
-                                                        milliseconds: 300),
-                                                    child:
-                                                        RegisterAccountWidget(),
-                                                  ),
-                                                );
-                                              },
-                                              text: 'Register',
-                                              options: FFButtonOptions(
-                                                width: 90,
-                                                height: 40,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .background,
-                                                textStyle: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodyText2
-                                                    .override(
-                                                      fontFamily: 'Lexend Deca',
-                                                      color: Color(0xFFFFCD3C),
-                                                      fontSize: 16,
-                                                    ),
-                                                borderSide: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1,
+                                            );
+                                          },
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(15, 0, 0, 0),
+                                                child: Text(
+                                                  'Don\'t have an account?',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily:
+                                                            'Lexend Deca',
+                                                        fontSize: 16,
+                                                      ),
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
                                               ),
-                                            ),
-                                          ],
+                                              FFButtonWidget(
+                                                onPressed: () async {
+                                                  logFirebaseEvent(
+                                                      'LOGIN_PAGE_PAGE_REGISTER_BTN_ON_TAP');
+                                                  logFirebaseEvent(
+                                                      'Button_Navigate-To');
+                                                  await Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .fade,
+                                                      duration: Duration(
+                                                          milliseconds: 800),
+                                                      reverseDuration: Duration(
+                                                          milliseconds: 800),
+                                                      child:
+                                                          RegisterAccountWidget(),
+                                                    ),
+                                                  );
+                                                },
+                                                text: 'Register',
+                                                options: FFButtonOptions(
+                                                  width: 90,
+                                                  height: 40,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .background,
+                                                  textStyle: FlutterFlowTheme
+                                                          .of(context)
+                                                      .bodyText2
+                                                      .override(
+                                                        fontFamily:
+                                                            'Lexend Deca',
+                                                        color:
+                                                            Color(0xFFFFCD3C),
+                                                        fontSize: 16,
+                                                      ),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 1,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -463,7 +496,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                               ),
                             ],
                           ),
-                        ),
+                        ).animated(
+                            [animationsMap['columnOnPageLoadAnimation']!]),
                       ),
                     ],
                   ),

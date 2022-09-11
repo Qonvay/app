@@ -29,6 +29,22 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
+    'columnOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
     'buttonOnPageLoadAnimation': AnimationInfo(
       curve: Curves.bounceOut,
       trigger: AnimationTrigger.onPageLoad,
@@ -296,9 +312,9 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.fade,
-                                    duration: Duration(milliseconds: 300),
+                                    duration: Duration(milliseconds: 800),
                                     reverseDuration:
-                                        Duration(milliseconds: 300),
+                                        Duration(milliseconds: 800),
                                     child: OnboardingWidget(),
                                   ),
                                 );
@@ -328,7 +344,7 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                         ),
                       ),
                     ],
-                  ),
+                  ).animated([animationsMap['columnOnPageLoadAnimation']!]),
                 ),
               ),
             ),

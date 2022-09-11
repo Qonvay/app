@@ -1,5 +1,6 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -17,15 +18,39 @@ class NotificationsSettingsWidget extends StatefulWidget {
 }
 
 class _NotificationsSettingsWidgetState
-    extends State<NotificationsSettingsWidget> {
+    extends State<NotificationsSettingsWidget> with TickerProviderStateMixin {
   bool? emailSwitchListTileValue;
   bool? pushSwitchListTileValue;
   bool? locationSwitchListTileValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final animationsMap = {
+    'columnOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+  };
 
   @override
   void initState() {
     super.initState();
+    startPageLoadAnimations(
+      animationsMap.values
+          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      this,
+    );
+
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'notificationsSettings'});
   }
@@ -39,19 +64,19 @@ class _NotificationsSettingsWidgetState
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () async {
-            logFirebaseEvent('NOTIFICATIONS_SETTINGS_Icon_3cvyzw70_ON_');
+            logFirebaseEvent('NOTIFICATIONS_SETTINGS_Icon_0i4xqdm1_ON_');
             logFirebaseEvent('Icon_Navigate-Back');
             Navigator.pop(context);
           },
           child: Icon(
-            Icons.chevron_left_rounded,
-            color: FlutterFlowTheme.of(context).grayLight,
-            size: 32,
+            Icons.chevron_left,
+            color: FlutterFlowTheme.of(context).primaryColor,
+            size: 30,
           ),
         ),
         title: Text(
-          'Notifications',
-          style: FlutterFlowTheme.of(context).title3,
+          'Notification Settings',
+          style: FlutterFlowTheme.of(context).title1,
         ),
         actions: [],
         centerTitle: false,
@@ -224,7 +249,7 @@ class _NotificationsSettingsWidgetState
                   ),
                 ),
               ],
-            );
+            ).animated([animationsMap['columnOnPageLoadAnimation']!]);
           },
         ),
       ),

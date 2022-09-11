@@ -1,5 +1,6 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -22,16 +23,41 @@ class OrderReportWidget extends StatefulWidget {
   _OrderReportWidgetState createState() => _OrderReportWidgetState();
 }
 
-class _OrderReportWidgetState extends State<OrderReportWidget> {
+class _OrderReportWidgetState extends State<OrderReportWidget>
+    with TickerProviderStateMixin {
   TextEditingController? descriptionController;
 
   String? statusSelectValue;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final animationsMap = {
+    'columnOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+  };
 
   @override
   void initState() {
     super.initState();
+    startPageLoadAnimations(
+      animationsMap.values
+          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      this,
+    );
+
     descriptionController = TextEditingController();
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'orderReport'});
   }
@@ -99,7 +125,8 @@ class _OrderReportWidgetState extends State<OrderReportWidget> {
                                 buttonSize: 48,
                                 icon: Icon(
                                   Icons.close_rounded,
-                                  color: FlutterFlowTheme.of(context).textColor,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
                                   size: 30,
                                 ),
                                 onPressed: () async {
@@ -407,7 +434,7 @@ class _OrderReportWidgetState extends State<OrderReportWidget> {
                 ),
               ),
             ],
-          ),
+          ).animated([animationsMap['columnOnPageLoadAnimation']!]),
         );
       },
     );

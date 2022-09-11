@@ -1,18 +1,23 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../book_delivery/book_delivery_widget.dart';
 import '../change_password/change_password_widget.dart';
+import '../delivery_order_list/delivery_order_list_widget.dart';
 import '../edit_profile/edit_profile_widget.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../login_page/login_page_widget.dart';
-import '../main.dart';
+import '../main_dashboard/main_dashboard_widget.dart';
 import '../notifications_settings/notifications_settings_widget.dart';
+import '../payment_page/payment_page_widget.dart';
 import '../privacy_policy/privacy_policy_widget.dart';
 import '../termsand_conditions/termsand_conditions_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MYProfilePageWidget extends StatefulWidget {
@@ -27,12 +32,37 @@ class MYProfilePageWidget extends StatefulWidget {
   _MYProfilePageWidgetState createState() => _MYProfilePageWidgetState();
 }
 
-class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
+class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
+    with TickerProviderStateMixin {
+  final animationsMap = {
+    'columnOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+  };
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    startPageLoadAnimations(
+      animationsMap.values
+          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      this,
+    );
+
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'MY_profilePage'});
   }
@@ -58,7 +88,392 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
         final mYProfilePageUsersRecord = snapshot.data!;
         return Scaffold(
           key: scaffoldKey,
+          appBar: AppBar(
+            backgroundColor: FlutterFlowTheme.of(context).background,
+            automaticallyImplyLeading: false,
+            leading: InkWell(
+              onTap: () async {
+                logFirebaseEvent('M_Y_PROFILE_Icon_p4cofcom_ON_TAP');
+                logFirebaseEvent('Icon_Drawer');
+                scaffoldKey.currentState!.openDrawer();
+              },
+              child: Icon(
+                Icons.menu,
+                color: FlutterFlowTheme.of(context).primaryColor,
+                size: 30,
+              ),
+            ),
+            title: Text(
+              'Profile',
+              style: FlutterFlowTheme.of(context).title1,
+            ),
+            actions: [
+              FlutterFlowIconButton(
+                borderColor: Colors.transparent,
+                borderRadius: 30,
+                borderWidth: 1,
+                buttonSize: 60,
+                icon: FaIcon(
+                  FontAwesomeIcons.solidQuestionCircle,
+                  color: FlutterFlowTheme.of(context).textColor,
+                  size: 30,
+                ),
+                onPressed: () {
+                  print('IconButton pressed ...');
+                },
+              ),
+            ],
+            centerTitle: false,
+            elevation: 0,
+          ),
           backgroundColor: Color(0xFF1A1F24),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              logFirebaseEvent('M_Y_PROFILE_FloatingActionButton_fsjcl0f');
+              logFirebaseEvent('FloatingActionButton_Drawer');
+              scaffoldKey.currentState!.openDrawer();
+            },
+            backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+            elevation: 8,
+            child: Icon(
+              Icons.menu_open,
+              color: FlutterFlowTheme.of(context).darkBackground,
+              size: 30,
+            ),
+          ),
+          drawer: Drawer(
+            elevation: 16,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).background,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          FlutterFlowTheme.of(context).background,
+                          FlutterFlowTheme.of(context).darkBackground
+                        ],
+                        stops: [0, 1],
+                        begin: AlignmentDirectional(0, -1),
+                        end: AlignmentDirectional(0, 1),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(15, 100, 15, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Card(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      2, 2, 2, 2),
+                                  child: AuthUserStreamWidget(
+                                    child: Container(
+                                      width: 50,
+                                      height: 50,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Image.network(
+                                        currentUserPhoto,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              AuthUserStreamWidget(
+                                child: Text(
+                                  valueOrDefault(
+                                      currentUserDocument?.firstName, ''),
+                                  style: FlutterFlowTheme.of(context).title3,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                                child: AuthUserStreamWidget(
+                                  child: Text(
+                                    valueOrDefault(
+                                        currentUserDocument?.lastName, ''),
+                                    style: FlutterFlowTheme.of(context).title3,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'M_Y_PROFILE_ListTile_r5avbqo9_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: MainDashboardWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: FaIcon(
+                          FontAwesomeIcons.home,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        title: Text(
+                          'Dashboard',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'M_Y_PROFILE_ListTile_taou8ynh_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: BookDeliveryWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.delivery_dining,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 25,
+                        ),
+                        title: Text(
+                          'Book Delivery',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'M_Y_PROFILE_ListTile_mld65uo9_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: DeliveryOrderListWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: FaIcon(
+                          FontAwesomeIcons.listAlt,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        title: Text(
+                          'Deliveries',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'M_Y_PROFILE_ListTile_vwmst2ay_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: PaymentPageWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.payment,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 25,
+                        ),
+                        title: Text(
+                          'Payment',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'M_Y_PROFILE_ListTile_wydfkjf3_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: MYProfilePageWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.person_outlined,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 25,
+                        ),
+                        title: Text(
+                          'Profile',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent('M_Y_PROFILE_ListTile_va374vu1_ON_TAP');
+                      logFirebaseEvent('ListTile_Auth');
+                      await signOut();
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 800),
+                          reverseDuration: Duration(milliseconds: 800),
+                          child: LoginPageWidget(),
+                        ),
+                        (r) => false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.logout,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 25,
+                      ),
+                      title: Text(
+                        'Logout',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           body: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -115,63 +530,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                       shape: BoxShape.circle,
                                     ),
                                     child: Image.network(
-                                      valueOrDefault<String>(
-                                        mYProfilePageUsersRecord.photoUrl,
-                                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/finance-app-sample-kugwu4/assets/ijvuhvqbvns6/uiAvatar@2x.png',
-                                      ),
+                                      mYProfilePageUsersRecord.photoUrl!,
                                     ),
                                   ),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 0, 0),
-                                      child: Container(
-                                        width: 44,
-                                        height: 44,
-                                        decoration: BoxDecoration(
-                                          color: Color(0x40000000),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: FlutterFlowIconButton(
-                                          borderColor: Colors.transparent,
-                                          borderRadius: 30,
-                                          buttonSize: 46,
-                                          icon: Icon(
-                                            Icons.login_rounded,
-                                            color: FlutterFlowTheme.of(context)
-                                                .textColor,
-                                            size: 24,
-                                          ),
-                                          onPressed: () async {
-                                            logFirebaseEvent(
-                                                'M_Y_PROFILE_login_rounded_ICN_ON_TAP');
-                                            logFirebaseEvent('IconButton_Auth');
-                                            await signOut();
-                                            await Navigator.pushAndRemoveUntil(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType.fade,
-                                                duration:
-                                                    Duration(milliseconds: 300),
-                                                reverseDuration:
-                                                    Duration(milliseconds: 300),
-                                                child: LoginPageWidget(),
-                                              ),
-                                              (r) => false,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
                                 ),
                               ),
                             ],
@@ -197,23 +558,6 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                           children: [
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                              child: Text(
-                                valueOrDefault<String>(
-                                  mYProfilePageUsersRecord.userTitle,
-                                  'Badass Busybody',
-                                ),
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xB3FFFFFF),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
                                   EdgeInsetsDirectional.fromSTEB(4, 8, 0, 0),
                               child: Text(
                                 mYProfilePageUsersRecord.email!,
@@ -222,7 +566,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                     .override(
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
-                                          .textColor,
+                                          .grayLight,
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
@@ -267,9 +611,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 300),
-                            reverseDuration: Duration(milliseconds: 300),
-                            child: NavBarPage(initialPage: 'paymentPage'),
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: PaymentPageWidget(),
                           ),
                         );
                       },
@@ -326,11 +670,10 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                       context,
                                       PageTransition(
                                         type: PageTransitionType.fade,
-                                        duration: Duration(milliseconds: 300),
+                                        duration: Duration(milliseconds: 800),
                                         reverseDuration:
-                                            Duration(milliseconds: 300),
-                                        child: NavBarPage(
-                                            initialPage: 'paymentPage'),
+                                            Duration(milliseconds: 800),
+                                        child: PaymentPageWidget(),
                                       ),
                                     );
                                   },
@@ -360,8 +703,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                               type: PageTransitionType.fade,
                               duration: Duration(milliseconds: 300),
                               reverseDuration: Duration(milliseconds: 300),
-                              child:
-                                  NavBarPage(initialPage: 'deliveryOrderList'),
+                              child: DeliveryOrderListWidget(),
                             ),
                           );
                         },
@@ -422,8 +764,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                           duration: Duration(milliseconds: 300),
                                           reverseDuration:
                                               Duration(milliseconds: 300),
-                                          child: NavBarPage(
-                                              initialPage: 'deliveryOrderList'),
+                                          child: DeliveryOrderListWidget(),
                                         ),
                                       );
                                     },
@@ -523,8 +864,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
+                              duration: Duration(milliseconds: 800),
+                              reverseDuration: Duration(milliseconds: 800),
                               child: EditProfileWidget(
                                 userProfile: mYProfilePageUsersRecord.reference,
                               ),
@@ -586,9 +927,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 300),
+                                          duration: Duration(milliseconds: 800),
                                           reverseDuration:
-                                              Duration(milliseconds: 300),
+                                              Duration(milliseconds: 800),
                                           child: EditProfileWidget(
                                             userProfile:
                                                 mYProfilePageUsersRecord
@@ -622,8 +963,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
+                              duration: Duration(milliseconds: 800),
+                              reverseDuration: Duration(milliseconds: 800),
                               child: ChangePasswordWidget(),
                             ),
                           );
@@ -683,9 +1024,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 300),
+                                          duration: Duration(milliseconds: 800),
                                           reverseDuration:
-                                              Duration(milliseconds: 300),
+                                              Duration(milliseconds: 800),
                                           child: ChangePasswordWidget(),
                                         ),
                                       );
@@ -715,8 +1056,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
+                              duration: Duration(milliseconds: 800),
+                              reverseDuration: Duration(milliseconds: 800),
                               child: NotificationsSettingsWidget(),
                             ),
                           );
@@ -775,9 +1116,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 300),
+                                          duration: Duration(milliseconds: 800),
                                           reverseDuration:
-                                              Duration(milliseconds: 300),
+                                              Duration(milliseconds: 800),
                                           child: NotificationsSettingsWidget(),
                                         ),
                                       );
@@ -807,8 +1148,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
+                              duration: Duration(milliseconds: 800),
+                              reverseDuration: Duration(milliseconds: 800),
                               child: PrivacyPolicyWidget(),
                             ),
                           );
@@ -867,9 +1208,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 300),
+                                          duration: Duration(milliseconds: 800),
                                           reverseDuration:
-                                              Duration(milliseconds: 300),
+                                              Duration(milliseconds: 800),
                                           child: PrivacyPolicyWidget(),
                                         ),
                                       );
@@ -885,7 +1226,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 20),
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -899,8 +1240,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
+                              duration: Duration(milliseconds: 800),
+                              reverseDuration: Duration(milliseconds: 800),
                               child: TermsandConditionsWidget(),
                             ),
                           );
@@ -959,9 +1300,103 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 300),
+                                          duration: Duration(milliseconds: 800),
                                           reverseDuration:
-                                              Duration(milliseconds: 300),
+                                              Duration(milliseconds: 800),
+                                          child: TermsandConditionsWidget(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 90),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          logFirebaseEvent(
+                              'M_Y_PROFILE_Container_v5hcqpyl_ON_TAP');
+                          logFirebaseEvent('Container_Auth');
+                          await signOut();
+                          await Navigator.pushAndRemoveUntil(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 800),
+                              reverseDuration: Duration(milliseconds: 800),
+                              child: LoginPageWidget(),
+                            ),
+                            (r) => false,
+                          );
+                        },
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).background,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Color(0xFF090F13),
+                                width: 2,
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Log Out',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                  ),
+                                  FlutterFlowIconButton(
+                                    borderColor: Colors.transparent,
+                                    borderRadius: 30,
+                                    buttonSize: 46,
+                                    icon: Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: Color(0xFF95A1AC),
+                                      size: 20,
+                                    ),
+                                    onPressed: () async {
+                                      logFirebaseEvent(
+                                          'M_Y_PROFILE_chevron_right_rounded_ICN_ON');
+                                      logFirebaseEvent(
+                                          'IconButton_Navigate-To');
+                                      await Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration: Duration(milliseconds: 800),
+                                          reverseDuration:
+                                              Duration(milliseconds: 800),
                                           child: TermsandConditionsWidget(),
                                         ),
                                       );
@@ -978,7 +1413,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                 ),
               ],
             ),
-          ),
+          ).animated([animationsMap['columnOnPageLoadAnimation']!]),
         );
       },
     );

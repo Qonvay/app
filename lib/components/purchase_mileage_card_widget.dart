@@ -70,8 +70,8 @@ class _PurchaseMileageCardWidgetState extends State<PurchaseMileageCardWidget> {
                         context,
                         PageTransition(
                           type: PageTransitionType.fade,
-                          duration: Duration(milliseconds: 300),
-                          reverseDuration: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 800),
+                          reverseDuration: Duration(milliseconds: 800),
                           child: TopupMileageWidget(),
                         ),
                       );
@@ -98,8 +98,8 @@ class _PurchaseMileageCardWidgetState extends State<PurchaseMileageCardWidget> {
                         context,
                         PageTransition(
                           type: PageTransitionType.fade,
-                          duration: Duration(milliseconds: 300),
-                          reverseDuration: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 800),
+                          reverseDuration: Duration(milliseconds: 800),
                           child: SubscribeMileageWidget(),
                         ),
                       );

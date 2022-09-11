@@ -9,8 +9,6 @@ import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'index.dart';
 
 void main() async {
@@ -83,125 +81,17 @@ class _MyAppState extends State<MyApp> {
       themeMode: _themeMode,
       home: initialUser == null || displaySplashImage
           ? Container(
-              color: FlutterFlowTheme.of(context).darkBackground,
-              child: Center(
-                child: Builder(
-                  builder: (context) => Image.asset(
-                    'assets/images/qonvayappsplash.svg',
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.fitWidth,
-                  ),
+              color: Colors.transparent,
+              child: Builder(
+                builder: (context) => Image.asset(
+                  'assets/images/Copy_of_qonvayappsplash_(4).png',
+                  fit: BoxFit.cover,
                 ),
               ),
             )
           : currentUser!.loggedIn
-              ? NavBarPage()
+              ? MainDashboardWidget()
               : LoginPageWidget(),
-    );
-  }
-}
-
-class NavBarPage extends StatefulWidget {
-  NavBarPage({Key? key, this.initialPage, this.page}) : super(key: key);
-
-  final String? initialPage;
-  final Widget? page;
-
-  @override
-  _NavBarPageState createState() => _NavBarPageState();
-}
-
-/// This is the private State class that goes with NavBarPage.
-class _NavBarPageState extends State<NavBarPage> {
-  String _currentPageName = 'mainDashboard';
-  late Widget? _currentPage;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentPageName = widget.initialPage ?? _currentPageName;
-    _currentPage = widget.page;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final tabs = {
-      'mainDashboard': MainDashboardWidget(),
-      'bookDelivery': BookDeliveryWidget(),
-      'deliveryOrderList': DeliveryOrderListWidget(),
-      'paymentPage': PaymentPageWidget(),
-      'MY_profilePage': MYProfilePageWidget(),
-    };
-    final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
-    return Scaffold(
-      body: _currentPage ?? tabs[_currentPageName],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (i) => setState(() {
-          _currentPage = null;
-          _currentPageName = tabs.keys.toList()[i];
-        }),
-        backgroundColor: FlutterFlowTheme.of(context).darkBackground,
-        selectedItemColor: FlutterFlowTheme.of(context).primaryColor,
-        unselectedItemColor: FlutterFlowTheme.of(context).grayLight,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              size: 24,
-            ),
-            activeIcon: Icon(
-              Icons.home,
-              size: 20,
-            ),
-            label: 'Dashboard',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add_box,
-              size: 24,
-            ),
-            activeIcon: Icon(
-              Icons.add_box,
-              size: 24,
-            ),
-            label: 'Book Delivery',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(
-              FontAwesomeIcons.clipboardList,
-              size: 24,
-            ),
-            label: 'Your Bookings',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.payment,
-              size: 24,
-            ),
-            label: 'Payment',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.account_circle_outlined,
-              size: 24,
-            ),
-            activeIcon: Icon(
-              Icons.account_circle_rounded,
-              size: 24,
-            ),
-            label: 'Profile',
-            tooltip: '',
-          )
-        ],
-      ),
     );
   }
 }

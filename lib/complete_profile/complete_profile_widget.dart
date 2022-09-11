@@ -151,7 +151,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
         automaticallyImplyLeading: false,
         title: Text(
           'Complete Profile',
-          style: FlutterFlowTheme.of(context).title3,
+          style: FlutterFlowTheme.of(context).title1,
         ),
         actions: [],
         centerTitle: false,
@@ -466,8 +466,8 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 300),
-                            reverseDuration: Duration(milliseconds: 300),
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
                             child: CreateDefaultPickupWidget(),
                           ),
                         );

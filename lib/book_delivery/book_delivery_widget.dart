@@ -1,17 +1,25 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../booking_complete/booking_complete_widget.dart';
+import '../delivery_order_list/delivery_order_list_widget.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
+import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_place_picker.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/place.dart';
+import '../login_page/login_page_widget.dart';
+import '../m_y_profile_page/m_y_profile_page_widget.dart';
+import '../main_dashboard/main_dashboard_widget.dart';
+import '../payment_page/payment_page_widget.dart';
 import 'dart:io';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BookDeliveryWidget extends StatefulWidget {
@@ -26,7 +34,8 @@ class BookDeliveryWidget extends StatefulWidget {
   _BookDeliveryWidgetState createState() => _BookDeliveryWidgetState();
 }
 
-class _BookDeliveryWidgetState extends State<BookDeliveryWidget> {
+class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
+    with TickerProviderStateMixin {
   TextEditingController? receiverFullAddressController;
 
   var receiverLocationValue = FFPlace();
@@ -54,6 +63,24 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget> {
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final animationsMap = {
+    'columnOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+  };
 
   @override
   void initState() {
@@ -73,6 +100,11 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget> {
     senderFullAddressController = TextEditingController();
     senderNameController = TextEditingController();
     senderPhoneNumberController = TextEditingController();
+    startPageLoadAnimations(
+      animationsMap.values
+          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      this,
+    );
   }
 
   @override
@@ -99,15 +131,390 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget> {
           appBar: AppBar(
             backgroundColor: FlutterFlowTheme.of(context).background,
             automaticallyImplyLeading: false,
+            leading: InkWell(
+              onTap: () async {
+                logFirebaseEvent('BOOK_DELIVERY_PAGE_Icon_geergjjl_ON_TAP');
+                logFirebaseEvent('Icon_Drawer');
+                scaffoldKey.currentState!.openDrawer();
+              },
+              child: Icon(
+                Icons.menu,
+                color: FlutterFlowTheme.of(context).primaryColor,
+                size: 30,
+              ),
+            ),
             title: Text(
               'Book Delivery',
               style: FlutterFlowTheme.of(context).title1,
             ),
-            actions: [],
+            actions: [
+              FlutterFlowIconButton(
+                borderColor: Colors.transparent,
+                borderRadius: 30,
+                borderWidth: 1,
+                buttonSize: 60,
+                icon: FaIcon(
+                  FontAwesomeIcons.solidQuestionCircle,
+                  color: FlutterFlowTheme.of(context).textColor,
+                  size: 30,
+                ),
+                onPressed: () {
+                  print('IconButton pressed ...');
+                },
+              ),
+            ],
             centerTitle: false,
             elevation: 0,
           ),
           backgroundColor: FlutterFlowTheme.of(context).background,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              logFirebaseEvent('BOOK_DELIVERY_FloatingActionButton_k2q5b');
+              logFirebaseEvent('FloatingActionButton_Drawer');
+              scaffoldKey.currentState!.openDrawer();
+            },
+            backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+            elevation: 8,
+            child: Icon(
+              Icons.menu_open,
+              color: FlutterFlowTheme.of(context).darkBackground,
+              size: 30,
+            ),
+          ),
+          drawer: Drawer(
+            elevation: 16,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).background,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          FlutterFlowTheme.of(context).background,
+                          FlutterFlowTheme.of(context).darkBackground
+                        ],
+                        stops: [0, 1],
+                        begin: AlignmentDirectional(0, -1),
+                        end: AlignmentDirectional(0, 1),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(15, 100, 15, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Card(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      2, 2, 2, 2),
+                                  child: AuthUserStreamWidget(
+                                    child: Container(
+                                      width: 50,
+                                      height: 50,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Image.network(
+                                        currentUserPhoto,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              AuthUserStreamWidget(
+                                child: Text(
+                                  valueOrDefault(
+                                      currentUserDocument?.firstName, ''),
+                                  style: FlutterFlowTheme.of(context).title3,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                                child: AuthUserStreamWidget(
+                                  child: Text(
+                                    valueOrDefault(
+                                        currentUserDocument?.lastName, ''),
+                                    style: FlutterFlowTheme.of(context).title3,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'BOOK_DELIVERY_ListTile_oas886fv_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: MainDashboardWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: FaIcon(
+                          FontAwesomeIcons.home,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        title: Text(
+                          'Dashboard',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'BOOK_DELIVERY_ListTile_yg1r885s_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: BookDeliveryWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.delivery_dining,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 25,
+                        ),
+                        title: Text(
+                          'Book Delivery',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'BOOK_DELIVERY_ListTile_z9yviqxu_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: DeliveryOrderListWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: FaIcon(
+                          FontAwesomeIcons.listAlt,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        title: Text(
+                          'Deliveries',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'BOOK_DELIVERY_ListTile_1el9mia0_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: PaymentPageWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.payment,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 25,
+                        ),
+                        title: Text(
+                          'Payment',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: InkWell(
+                      onTap: () async {
+                        logFirebaseEvent(
+                            'BOOK_DELIVERY_ListTile_e2x64zyg_ON_TAP');
+                        logFirebaseEvent('ListTile_Navigate-To');
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 800),
+                            reverseDuration: Duration(milliseconds: 800),
+                            child: MYProfilePageWidget(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.person_outlined,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 25,
+                        ),
+                        title: Text(
+                          'Profile',
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                              ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: FlutterFlowTheme.of(context).grayLight,
+                          size: 20,
+                        ),
+                        tileColor: FlutterFlowTheme.of(context).grayLight,
+                        dense: false,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent(
+                          'BOOK_DELIVERY_ListTile_3se4fz3q_ON_TAP');
+                      logFirebaseEvent('ListTile_Auth');
+                      await signOut();
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 800),
+                          reverseDuration: Duration(milliseconds: 800),
+                          child: LoginPageWidget(),
+                        ),
+                        (r) => false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.logout,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 25,
+                      ),
+                      title: Text(
+                        'Logout',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -120,7 +527,7 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 5),
                           child: Text(
                             'Pickup Info',
                             textAlign: TextAlign.center,
@@ -399,7 +806,7 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 5),
                           child: Text(
                             'Destination Info',
                             style: FlutterFlowTheme.of(context).title3,
@@ -1014,7 +1421,7 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 50),
                     child: FFButtonWidget(
                       onPressed: () async {
                         logFirebaseEvent(
@@ -1169,7 +1576,7 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget> {
                   ),
                 ],
               ),
-            ),
+            ).animated([animationsMap['columnOnPageLoadAnimation']!]),
           ),
         );
       },

@@ -1,10 +1,11 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_credit_card_form.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../main.dart';
+import '../main_dashboard/main_dashboard_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -17,7 +18,26 @@ class SubscribeMileageWidget extends StatefulWidget {
   _SubscribeMileageWidgetState createState() => _SubscribeMileageWidgetState();
 }
 
-class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget> {
+class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget>
+    with TickerProviderStateMixin {
+  final animationsMap = {
+    'columnOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+  };
   final creditCardFormKey = GlobalKey<FormState>();
   CreditCardModel creditCardInfo = emptyCreditCard();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -25,6 +45,12 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget> {
   @override
   void initState() {
     super.initState();
+    startPageLoadAnimations(
+      animationsMap.values
+          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      this,
+    );
+
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'subscribeMileage'});
   }
@@ -108,8 +134,8 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget> {
                                   buttonSize: 48,
                                   icon: Icon(
                                     Icons.close_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).textColor,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
                                     size: 30,
                                   ),
                                   onPressed: () async {
@@ -205,11 +231,10 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget> {
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 300),
+                                      duration: Duration(milliseconds: 800),
                                       reverseDuration:
-                                          Duration(milliseconds: 300),
-                                      child: NavBarPage(
-                                          initialPage: 'mainDashboard'),
+                                          Duration(milliseconds: 800),
+                                      child: MainDashboardWidget(),
                                     ),
                                   );
                                 },
@@ -301,11 +326,10 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget> {
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 300),
+                                      duration: Duration(milliseconds: 800),
                                       reverseDuration:
-                                          Duration(milliseconds: 300),
-                                      child: NavBarPage(
-                                          initialPage: 'mainDashboard'),
+                                          Duration(milliseconds: 800),
+                                      child: MainDashboardWidget(),
                                     ),
                                   );
                                 },
@@ -395,11 +419,10 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget> {
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 300),
+                                      duration: Duration(milliseconds: 800),
                                       reverseDuration:
-                                          Duration(milliseconds: 300),
-                                      child: NavBarPage(
-                                          initialPage: 'mainDashboard'),
+                                          Duration(milliseconds: 800),
+                                      child: MainDashboardWidget(),
                                     ),
                                   );
                                 },
@@ -489,11 +512,10 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget> {
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 300),
+                                      duration: Duration(milliseconds: 800),
                                       reverseDuration:
-                                          Duration(milliseconds: 300),
-                                      child: NavBarPage(
-                                          initialPage: 'mainDashboard'),
+                                          Duration(milliseconds: 800),
+                                      child: MainDashboardWidget(),
                                     ),
                                   );
                                 },
@@ -553,7 +575,7 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget> {
                 ),
               ),
             ],
-          ),
+          ).animated([animationsMap['columnOnPageLoadAnimation']!]),
         );
       },
     );

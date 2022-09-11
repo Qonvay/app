@@ -35,19 +35,19 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () async {
-            logFirebaseEvent('CHANGE_PASSWORD_Icon_lm7gu7u1_ON_TAP');
+            logFirebaseEvent('CHANGE_PASSWORD_Icon_0grgs0g4_ON_TAP');
             logFirebaseEvent('Icon_Navigate-Back');
             Navigator.pop(context);
           },
           child: Icon(
-            Icons.chevron_left_rounded,
-            color: FlutterFlowTheme.of(context).grayLight,
-            size: 32,
+            Icons.chevron_left,
+            color: FlutterFlowTheme.of(context).primaryColor,
+            size: 30,
           ),
         ),
         title: Text(
           'Change Password',
-          style: FlutterFlowTheme.of(context).title3,
+          style: FlutterFlowTheme.of(context).title1,
         ),
         actions: [],
         centerTitle: false,

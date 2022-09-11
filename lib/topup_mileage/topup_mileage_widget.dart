@@ -6,7 +6,7 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
+import '../main_dashboard/main_dashboard_widget.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -30,6 +30,22 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
+    'columnOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
     'textFieldOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
@@ -135,8 +151,8 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
                                   buttonSize: 48,
                                   icon: Icon(
                                     Icons.close_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).textColor,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
                                     size: 30,
                                   ),
                                   onPressed: () async {
@@ -335,11 +351,10 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.fade,
-                                    duration: Duration(milliseconds: 300),
+                                    duration: Duration(milliseconds: 800),
                                     reverseDuration:
-                                        Duration(milliseconds: 300),
-                                    child: NavBarPage(
-                                        initialPage: 'mainDashboard'),
+                                        Duration(milliseconds: 800),
+                                    child: MainDashboardWidget(),
                                   ),
                                 );
                               },
@@ -376,7 +391,7 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
                   ),
                 ),
               ],
-            ),
+            ).animated([animationsMap['columnOnPageLoadAnimation']!]),
           ),
         );
       },

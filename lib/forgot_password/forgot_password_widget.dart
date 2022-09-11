@@ -31,23 +31,23 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Color(0xFF1A1F24),
+        backgroundColor: FlutterFlowTheme.of(context).background,
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () async {
-            logFirebaseEvent('FORGOT_PASSWORD_Icon_ydd5jcke_ON_TAP');
+            logFirebaseEvent('FORGOT_PASSWORD_Icon_uk7kpr01_ON_TAP');
             logFirebaseEvent('Icon_Navigate-Back');
             Navigator.pop(context);
           },
           child: Icon(
-            Icons.chevron_left_rounded,
-            color: FlutterFlowTheme.of(context).grayLight,
-            size: 32,
+            Icons.chevron_left,
+            color: FlutterFlowTheme.of(context).primaryColor,
+            size: 30,
           ),
         ),
         title: Text(
           'Forgot Password',
-          style: FlutterFlowTheme.of(context).title3,
+          style: FlutterFlowTheme.of(context).title1,
         ),
         actions: [],
         centerTitle: false,
