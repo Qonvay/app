@@ -36,14 +36,11 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
 
   TextEditingController? yourPhoneController;
 
+  TextEditingController? yourAddressController;
+
   TextEditingController? yourAgeController;
 
   String? yourGenderValue;
-
-  TextEditingController? yourAddressController;
-
-  TextEditingController? yourTitleController;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'containerOnPageLoadAnimation': AnimationInfo(
@@ -453,6 +450,68 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
                     child: TextFormField(
+                      controller: yourAddressController ??=
+                          TextEditingController(
+                        text: editProfileUsersRecord.address,
+                      ),
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        labelText: 'Your Address',
+                        labelStyle:
+                            FlutterFlowTheme.of(context).bodyText1.override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context).grayLight,
+                                ),
+                        hintText: 'Eg. 1, abc street, Surulere, Lagos',
+                        hintStyle:
+                            FlutterFlowTheme.of(context).bodyText1.override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0x98FFFFFF),
+                                ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        filled: true,
+                        fillColor: FlutterFlowTheme.of(context).darkBackground,
+                        contentPadding:
+                            EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
+                      ),
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Lexend Deca',
+                            color: FlutterFlowTheme.of(context).textColor,
+                            fontSize: 16,
+                          ),
+                      keyboardType: TextInputType.streetAddress,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                    child: TextFormField(
                       controller: yourAgeController ??= TextEditingController(
                         text: editProfileUsersRecord.age?.toString(),
                       ),
@@ -534,127 +593,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                    child: TextFormField(
-                      controller: yourAddressController ??=
-                          TextEditingController(
-                        text: editProfileUsersRecord.address,
-                      ),
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        labelText: 'Your Address',
-                        labelStyle:
-                            FlutterFlowTheme.of(context).bodyText1.override(
-                                  fontFamily: 'Lexend Deca',
-                                  color: FlutterFlowTheme.of(context).grayLight,
-                                ),
-                        hintText: 'Eg. 1, abc street, Surulere, Lagos',
-                        hintStyle:
-                            FlutterFlowTheme.of(context).bodyText1.override(
-                                  fontFamily: 'Lexend Deca',
-                                  color: Color(0x98FFFFFF),
-                                ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        filled: true,
-                        fillColor: FlutterFlowTheme.of(context).darkBackground,
-                        contentPadding:
-                            EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                      ),
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.of(context).textColor,
-                            fontSize: 16,
-                          ),
-                      keyboardType: TextInputType.streetAddress,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                    child: TextFormField(
-                      controller: yourTitleController ??= TextEditingController(
-                        text: editProfileUsersRecord.userTitle,
-                      ),
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        labelText: 'Your Title',
-                        labelStyle:
-                            FlutterFlowTheme.of(context).bodyText1.override(
-                                  fontFamily: 'Lexend Deca',
-                                  color: FlutterFlowTheme.of(context).grayLight,
-                                ),
-                        hintStyle:
-                            FlutterFlowTheme.of(context).bodyText1.override(
-                                  fontFamily: 'Lexend Deca',
-                                  color: Color(0x98FFFFFF),
-                                ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        filled: true,
-                        fillColor: FlutterFlowTheme.of(context).darkBackground,
-                        contentPadding:
-                            EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                      ),
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.of(context).textColor,
-                            fontSize: 16,
-                          ),
-                    ),
-                  ),
-                  Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 50),
                     child: FFButtonWidget(
                       onPressed: () async {
@@ -665,10 +603,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                         final usersUpdateData = createUsersRecordData(
                           email: yourEmailController!.text,
                           age: int.parse(yourAgeController?.text ?? ''),
-                          userTitle: valueOrDefault<String>(
-                            yourTitleController?.text ?? '',
-                            'Badass Geek',
-                          ),
                           photoUrl: uploadedFileUrl,
                           address: yourAddressController?.text ?? '',
                           phoneNumber: yourPhoneController?.text ?? '',

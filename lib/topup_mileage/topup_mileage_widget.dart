@@ -351,9 +351,9 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.fade,
-                                    duration: Duration(milliseconds: 800),
+                                    duration: Duration(milliseconds: 500),
                                     reverseDuration:
-                                        Duration(milliseconds: 800),
+                                        Duration(milliseconds: 500),
                                     child: MainDashboardWidget(),
                                   ),
                                 );

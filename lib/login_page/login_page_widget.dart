@@ -144,7 +144,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                         .bodyText1
                                         .override(
                                           fontFamily: 'Lexend Deca',
-                                          color: Color(0x98FFFFFF),
+                                          color: FlutterFlowTheme.of(context)
+                                              .grayLight,
                                           fontSize: 16,
                                         ),
                                     enabledBorder: OutlineInputBorder(
@@ -210,7 +211,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                         .bodyText1
                                         .override(
                                           fontFamily: 'Lexend Deca',
-                                          color: Color(0x98FFFFFF),
+                                          color: FlutterFlowTheme.of(context)
+                                              .grayLight,
                                           fontSize: 16,
                                         ),
                                     enabledBorder: OutlineInputBorder(
@@ -291,9 +293,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                           PageTransition(
                                             type: PageTransitionType.fade,
                                             duration:
-                                                Duration(milliseconds: 800),
+                                                Duration(milliseconds: 500),
                                             reverseDuration:
-                                                Duration(milliseconds: 800),
+                                                Duration(milliseconds: 500),
                                             child: ForgotPasswordWidget(),
                                           ),
                                         );
@@ -337,9 +339,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 800),
+                                          duration: Duration(milliseconds: 500),
                                           reverseDuration:
-                                              Duration(milliseconds: 800),
+                                              Duration(milliseconds: 500),
                                           child: MainDashboardWidget(),
                                         ),
                                         (r) => false,
@@ -383,9 +385,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                           PageTransition(
                                             type: PageTransitionType.fade,
                                             duration:
-                                                Duration(milliseconds: 800),
+                                                Duration(milliseconds: 500),
                                             reverseDuration:
-                                                Duration(milliseconds: 800),
+                                                Duration(milliseconds: 500),
                                             child: RegisterAccountWidget(),
                                           ),
                                         );
@@ -394,13 +396,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.9,
-                                        height: 44,
+                                        height: 60,
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(8),
                                           border: Border.all(
                                             color: FlutterFlowTheme.of(context)
-                                                .grayDark,
+                                                .darkBackground,
                                             width: 2,
                                           ),
                                         ),
@@ -414,9 +416,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                               PageTransition(
                                                 type: PageTransitionType.fade,
                                                 duration:
-                                                    Duration(milliseconds: 800),
+                                                    Duration(milliseconds: 500),
                                                 reverseDuration:
-                                                    Duration(milliseconds: 800),
+                                                    Duration(milliseconds: 500),
                                                 child: RegisterAccountWidget(),
                                               ),
                                             );
@@ -453,9 +455,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                       type: PageTransitionType
                                                           .fade,
                                                       duration: Duration(
-                                                          milliseconds: 800),
+                                                          milliseconds: 500),
                                                       reverseDuration: Duration(
-                                                          milliseconds: 800),
+                                                          milliseconds: 500),
                                                       child:
                                                           RegisterAccountWidget(),
                                                     ),

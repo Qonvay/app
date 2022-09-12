@@ -226,7 +226,7 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 10),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
                 child: InkWell(
                   onTap: () async {
                     logFirebaseEvent(
@@ -236,8 +236,8 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                       context,
                       PageTransition(
                         type: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 800),
-                        reverseDuration: Duration(milliseconds: 800),
+                        duration: Duration(milliseconds: 500),
+                        reverseDuration: Duration(milliseconds: 500),
                         child: MainDashboardWidget(),
                       ),
                     );
@@ -245,7 +245,7 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                   child: ListTile(
                     leading: FaIcon(
                       FontAwesomeIcons.home,
-                      color: FlutterFlowTheme.of(context).grayLight,
+                      color: FlutterFlowTheme.of(context).primaryColor,
                       size: 20,
                     ),
                     title: Text(
@@ -265,165 +265,188 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                child: InkWell(
-                  onTap: () async {
-                    logFirebaseEvent(
-                        'DELIVERY_ORDER_LIST_ListTile_a9lma957_ON');
-                    logFirebaseEvent('ListTile_Navigate-To');
-                    await Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 800),
-                        reverseDuration: Duration(milliseconds: 800),
-                        child: BookDeliveryWidget(),
-                      ),
-                    );
-                  },
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.delivery_dining,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 25,
+              Divider(
+                color: FlutterFlowTheme.of(context).darkBackground,
+              ),
+              InkWell(
+                onTap: () async {
+                  logFirebaseEvent('DELIVERY_ORDER_LIST_ListTile_a9lma957_ON');
+                  logFirebaseEvent('ListTile_Navigate-To');
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.fade,
+                      duration: Duration(milliseconds: 500),
+                      reverseDuration: Duration(milliseconds: 500),
+                      child: BookDeliveryWidget(),
                     ),
-                    title: Text(
-                      'Book Delivery',
-                      style: FlutterFlowTheme.of(context).title3.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.of(context).grayLight,
-                          ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 20,
-                    ),
-                    tileColor: FlutterFlowTheme.of(context).grayLight,
-                    dense: false,
+                  );
+                },
+                child: ListTile(
+                  leading: Icon(
+                    Icons.delivery_dining,
+                    color: FlutterFlowTheme.of(context).primaryColor,
+                    size: 25,
                   ),
+                  title: Text(
+                    'Book Delivery',
+                    style: FlutterFlowTheme.of(context).title3.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: FlutterFlowTheme.of(context).grayLight,
+                    size: 20,
+                  ),
+                  tileColor: FlutterFlowTheme.of(context).grayLight,
+                  dense: false,
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                child: InkWell(
-                  onTap: () async {
-                    logFirebaseEvent(
-                        'DELIVERY_ORDER_LIST_ListTile_50ip5onw_ON');
-                    logFirebaseEvent('ListTile_Navigate-To');
-                    await Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 800),
-                        reverseDuration: Duration(milliseconds: 800),
-                        child: DeliveryOrderListWidget(),
-                      ),
-                    );
-                  },
-                  child: ListTile(
-                    leading: FaIcon(
-                      FontAwesomeIcons.listAlt,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 20,
+              Divider(
+                color: FlutterFlowTheme.of(context).darkBackground,
+              ),
+              InkWell(
+                onTap: () async {
+                  logFirebaseEvent('DELIVERY_ORDER_LIST_ListTile_50ip5onw_ON');
+                  logFirebaseEvent('ListTile_Navigate-To');
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.fade,
+                      duration: Duration(milliseconds: 500),
+                      reverseDuration: Duration(milliseconds: 500),
+                      child: DeliveryOrderListWidget(),
                     ),
-                    title: Text(
-                      'Deliveries',
-                      style: FlutterFlowTheme.of(context).title3.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.of(context).grayLight,
-                          ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 20,
-                    ),
-                    tileColor: FlutterFlowTheme.of(context).grayLight,
-                    dense: false,
+                  );
+                },
+                child: ListTile(
+                  leading: FaIcon(
+                    FontAwesomeIcons.listAlt,
+                    color: FlutterFlowTheme.of(context).primaryColor,
+                    size: 20,
                   ),
+                  title: Text(
+                    'Deliveries',
+                    style: FlutterFlowTheme.of(context).title3.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: FlutterFlowTheme.of(context).grayLight,
+                    size: 20,
+                  ),
+                  tileColor: FlutterFlowTheme.of(context).grayLight,
+                  dense: false,
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                child: InkWell(
-                  onTap: () async {
-                    logFirebaseEvent(
-                        'DELIVERY_ORDER_LIST_ListTile_p3wq6h9g_ON');
-                    logFirebaseEvent('ListTile_Navigate-To');
-                    await Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 800),
-                        reverseDuration: Duration(milliseconds: 800),
-                        child: PaymentPageWidget(),
-                      ),
-                    );
-                  },
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.payment,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 25,
+              Divider(
+                color: FlutterFlowTheme.of(context).darkBackground,
+              ),
+              InkWell(
+                onTap: () async {
+                  logFirebaseEvent('DELIVERY_ORDER_LIST_ListTile_p3wq6h9g_ON');
+                  logFirebaseEvent('ListTile_Navigate-To');
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.fade,
+                      duration: Duration(milliseconds: 500),
+                      reverseDuration: Duration(milliseconds: 500),
+                      child: PaymentPageWidget(),
                     ),
-                    title: Text(
-                      'Payment',
-                      style: FlutterFlowTheme.of(context).title3.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.of(context).grayLight,
-                          ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 20,
-                    ),
-                    tileColor: FlutterFlowTheme.of(context).grayLight,
-                    dense: false,
+                  );
+                },
+                child: ListTile(
+                  leading: Icon(
+                    Icons.payment,
+                    color: FlutterFlowTheme.of(context).primaryColor,
+                    size: 25,
                   ),
+                  title: Text(
+                    'Payment',
+                    style: FlutterFlowTheme.of(context).title3.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: FlutterFlowTheme.of(context).grayLight,
+                    size: 20,
+                  ),
+                  tileColor: FlutterFlowTheme.of(context).grayLight,
+                  dense: false,
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                child: InkWell(
-                  onTap: () async {
-                    logFirebaseEvent(
-                        'DELIVERY_ORDER_LIST_ListTile_j4ygwetp_ON');
-                    logFirebaseEvent('ListTile_Navigate-To');
-                    await Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 800),
-                        reverseDuration: Duration(milliseconds: 800),
-                        child: MYProfilePageWidget(),
-                      ),
-                    );
-                  },
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.person_outlined,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 25,
+              Divider(
+                color: FlutterFlowTheme.of(context).darkBackground,
+              ),
+              InkWell(
+                onTap: () async {
+                  logFirebaseEvent('DELIVERY_ORDER_LIST_ListTile_j4ygwetp_ON');
+                  logFirebaseEvent('ListTile_Navigate-To');
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.fade,
+                      duration: Duration(milliseconds: 500),
+                      reverseDuration: Duration(milliseconds: 500),
+                      child: MYProfilePageWidget(),
                     ),
-                    title: Text(
-                      'Profile',
-                      style: FlutterFlowTheme.of(context).title3.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.of(context).grayLight,
-                          ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 20,
-                    ),
-                    tileColor: FlutterFlowTheme.of(context).grayLight,
-                    dense: false,
+                  );
+                },
+                child: ListTile(
+                  leading: Icon(
+                    Icons.person_outlined,
+                    color: FlutterFlowTheme.of(context).primaryColor,
+                    size: 25,
                   ),
+                  title: Text(
+                    'Profile',
+                    style: FlutterFlowTheme.of(context).title3.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: FlutterFlowTheme.of(context).grayLight,
+                    size: 20,
+                  ),
+                  tileColor: FlutterFlowTheme.of(context).grayLight,
+                  dense: false,
                 ),
+              ),
+              Divider(
+                color: FlutterFlowTheme.of(context).darkBackground,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.support_agent,
+                  color: FlutterFlowTheme.of(context).primaryColor,
+                  size: 25,
+                ),
+                title: Text(
+                  'Help / Support',
+                  style: FlutterFlowTheme.of(context).title3.override(
+                        fontFamily: 'Lexend Deca',
+                        color: FlutterFlowTheme.of(context).grayLight,
+                      ),
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                  color: FlutterFlowTheme.of(context).grayLight,
+                  size: 20,
+                ),
+                tileColor: FlutterFlowTheme.of(context).grayLight,
+                dense: false,
+              ),
+              Divider(
+                color: FlutterFlowTheme.of(context).darkBackground,
               ),
               InkWell(
                 onTap: () async {
@@ -434,8 +457,8 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                     context,
                     PageTransition(
                       type: PageTransitionType.fade,
-                      duration: Duration(milliseconds: 800),
-                      reverseDuration: Duration(milliseconds: 800),
+                      duration: Duration(milliseconds: 500),
+                      reverseDuration: Duration(milliseconds: 500),
                       child: LoginPageWidget(),
                     ),
                     (r) => false,
@@ -444,7 +467,7 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                 child: ListTile(
                   leading: Icon(
                     Icons.logout,
-                    color: FlutterFlowTheme.of(context).grayLight,
+                    color: FlutterFlowTheme.of(context).primaryColor,
                     size: 25,
                   ),
                   title: Text(
@@ -569,9 +592,9 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                                               PageTransition(
                                                 type: PageTransitionType.fade,
                                                 duration:
-                                                    Duration(milliseconds: 800),
+                                                    Duration(milliseconds: 500),
                                                 reverseDuration:
-                                                    Duration(milliseconds: 800),
+                                                    Duration(milliseconds: 500),
                                                 child: OrderTrackingWidget(
                                                   orderRefParam:
                                                       listViewBookOrderRecord
@@ -664,7 +687,7 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                                                     thickness: 1,
                                                     color: FlutterFlowTheme.of(
                                                             context)
-                                                        .grayDark,
+                                                        .background,
                                                   ),
                                                   Padding(
                                                     padding:
@@ -847,9 +870,9 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                                                 PageTransition(
                                                   type: PageTransitionType.fade,
                                                   duration: Duration(
-                                                      milliseconds: 800),
+                                                      milliseconds: 500),
                                                   reverseDuration: Duration(
-                                                      milliseconds: 800),
+                                                      milliseconds: 500),
                                                   child: OrderTrackingWidget(
                                                     orderRefParam:
                                                         listViewBookOrderRecord

@@ -233,7 +233,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 10),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
                     child: InkWell(
                       onTap: () async {
                         logFirebaseEvent(
@@ -243,8 +243,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
+                            duration: Duration(milliseconds: 500),
+                            reverseDuration: Duration(milliseconds: 500),
                             child: MainDashboardWidget(),
                           ),
                         );
@@ -252,7 +252,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                       child: ListTile(
                         leading: FaIcon(
                           FontAwesomeIcons.home,
-                          color: FlutterFlowTheme.of(context).grayLight,
+                          color: FlutterFlowTheme.of(context).primaryColor,
                           size: 20,
                         ),
                         title: Text(
@@ -272,165 +272,188 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                    child: InkWell(
-                      onTap: () async {
-                        logFirebaseEvent(
-                            'M_Y_PROFILE_ListTile_taou8ynh_ON_TAP');
-                        logFirebaseEvent('ListTile_Navigate-To');
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
-                            child: BookDeliveryWidget(),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.delivery_dining,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 25,
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent('M_Y_PROFILE_ListTile_taou8ynh_ON_TAP');
+                      logFirebaseEvent('ListTile_Navigate-To');
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
+                          child: BookDeliveryWidget(),
                         ),
-                        title: Text(
-                          'Book Delivery',
-                          style: FlutterFlowTheme.of(context).title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: FlutterFlowTheme.of(context).grayLight,
-                              ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
-                        ),
-                        tileColor: FlutterFlowTheme.of(context).grayLight,
-                        dense: false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.delivery_dining,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 25,
                       ),
+                      title: Text(
+                        'Book Delivery',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                    child: InkWell(
-                      onTap: () async {
-                        logFirebaseEvent(
-                            'M_Y_PROFILE_ListTile_mld65uo9_ON_TAP');
-                        logFirebaseEvent('ListTile_Navigate-To');
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
-                            child: DeliveryOrderListWidget(),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: FaIcon(
-                          FontAwesomeIcons.listAlt,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent('M_Y_PROFILE_ListTile_mld65uo9_ON_TAP');
+                      logFirebaseEvent('ListTile_Navigate-To');
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
+                          child: DeliveryOrderListWidget(),
                         ),
-                        title: Text(
-                          'Deliveries',
-                          style: FlutterFlowTheme.of(context).title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: FlutterFlowTheme.of(context).grayLight,
-                              ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
-                        ),
-                        tileColor: FlutterFlowTheme.of(context).grayLight,
-                        dense: false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: FaIcon(
+                        FontAwesomeIcons.listAlt,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 20,
                       ),
+                      title: Text(
+                        'Deliveries',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                    child: InkWell(
-                      onTap: () async {
-                        logFirebaseEvent(
-                            'M_Y_PROFILE_ListTile_vwmst2ay_ON_TAP');
-                        logFirebaseEvent('ListTile_Navigate-To');
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
-                            child: PaymentPageWidget(),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.payment,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 25,
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent('M_Y_PROFILE_ListTile_vwmst2ay_ON_TAP');
+                      logFirebaseEvent('ListTile_Navigate-To');
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
+                          child: PaymentPageWidget(),
                         ),
-                        title: Text(
-                          'Payment',
-                          style: FlutterFlowTheme.of(context).title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: FlutterFlowTheme.of(context).grayLight,
-                              ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
-                        ),
-                        tileColor: FlutterFlowTheme.of(context).grayLight,
-                        dense: false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.payment,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 25,
                       ),
+                      title: Text(
+                        'Payment',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                    child: InkWell(
-                      onTap: () async {
-                        logFirebaseEvent(
-                            'M_Y_PROFILE_ListTile_wydfkjf3_ON_TAP');
-                        logFirebaseEvent('ListTile_Navigate-To');
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
-                            child: MYProfilePageWidget(),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.person_outlined,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 25,
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent('M_Y_PROFILE_ListTile_wydfkjf3_ON_TAP');
+                      logFirebaseEvent('ListTile_Navigate-To');
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
+                          child: MYProfilePageWidget(),
                         ),
-                        title: Text(
-                          'Profile',
-                          style: FlutterFlowTheme.of(context).title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: FlutterFlowTheme.of(context).grayLight,
-                              ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
-                        ),
-                        tileColor: FlutterFlowTheme.of(context).grayLight,
-                        dense: false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.person_outlined,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 25,
                       ),
+                      title: Text(
+                        'Profile',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
+                  ),
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.support_agent,
+                      color: FlutterFlowTheme.of(context).primaryColor,
+                      size: 25,
+                    ),
+                    title: Text(
+                      'Help / Support',
+                      style: FlutterFlowTheme.of(context).title3.override(
+                            fontFamily: 'Lexend Deca',
+                            color: FlutterFlowTheme.of(context).grayLight,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      color: FlutterFlowTheme.of(context).grayLight,
+                      size: 20,
+                    ),
+                    tileColor: FlutterFlowTheme.of(context).grayLight,
+                    dense: false,
+                  ),
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
                   ),
                   InkWell(
                     onTap: () async {
@@ -441,8 +464,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                         context,
                         PageTransition(
                           type: PageTransitionType.fade,
-                          duration: Duration(milliseconds: 800),
-                          reverseDuration: Duration(milliseconds: 800),
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
                           child: LoginPageWidget(),
                         ),
                         (r) => false,
@@ -451,7 +474,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                     child: ListTile(
                       leading: Icon(
                         Icons.logout,
-                        color: FlutterFlowTheme.of(context).grayLight,
+                        color: FlutterFlowTheme.of(context).primaryColor,
                         size: 25,
                       ),
                       title: Text(
@@ -605,15 +628,17 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                     InkWell(
                       onTap: () async {
                         logFirebaseEvent(
-                            'M_Y_PROFILE_Container_u9ewaamn_ON_TAP');
+                            'M_Y_PROFILE_Container_49rlkiz6_ON_TAP');
                         logFirebaseEvent('Container_Navigate-To');
                         await Navigator.push(
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
-                            child: PaymentPageWidget(),
+                            duration: Duration(milliseconds: 500),
+                            reverseDuration: Duration(milliseconds: 500),
+                            child: EditProfileWidget(
+                              userProfile: mYProfilePageUsersRecord.reference,
+                            ),
                           ),
                         );
                       },
@@ -643,7 +668,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Purchase Mileage',
+                                  'Edit Profile',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
@@ -670,10 +695,13 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                                       context,
                                       PageTransition(
                                         type: PageTransitionType.fade,
-                                        duration: Duration(milliseconds: 800),
+                                        duration: Duration(milliseconds: 500),
                                         reverseDuration:
-                                            Duration(milliseconds: 800),
-                                        child: PaymentPageWidget(),
+                                            Duration(milliseconds: 500),
+                                        child: EditProfileWidget(
+                                          userProfile: mYProfilePageUsersRecord
+                                              .reference,
+                                        ),
                                       ),
                                     );
                                   },
@@ -695,15 +723,108 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                       InkWell(
                         onTap: () async {
                           logFirebaseEvent(
-                              'M_Y_PROFILE_Container_s2it9of2_ON_TAP');
+                              'M_Y_PROFILE_Container_yqfzr8ca_ON_TAP');
                           logFirebaseEvent('Container_Navigate-To');
                           await Navigator.push(
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
-                              child: DeliveryOrderListWidget(),
+                              duration: Duration(milliseconds: 500),
+                              reverseDuration: Duration(milliseconds: 500),
+                              child: ChangePasswordWidget(),
+                            ),
+                          );
+                        },
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).background,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color:
+                                    FlutterFlowTheme.of(context).darkBackground,
+                                width: 2,
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Change Password',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                  ),
+                                  FlutterFlowIconButton(
+                                    borderColor: Colors.transparent,
+                                    borderRadius: 30,
+                                    buttonSize: 46,
+                                    icon: Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: Color(0xFF95A1AC),
+                                      size: 20,
+                                    ),
+                                    onPressed: () async {
+                                      logFirebaseEvent(
+                                          'M_Y_PROFILE_chevron_right_rounded_ICN_ON');
+                                      logFirebaseEvent(
+                                          'IconButton_Navigate-To');
+                                      await Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration: Duration(milliseconds: 500),
+                                          reverseDuration:
+                                              Duration(milliseconds: 500),
+                                          child: ChangePasswordWidget(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          logFirebaseEvent(
+                              'M_Y_PROFILE_Container_t8ndxplp_ON_TAP');
+                          logFirebaseEvent('Container_Navigate-To');
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 500),
+                              reverseDuration: Duration(milliseconds: 500),
+                              child: NotificationsSettingsWidget(),
                             ),
                           );
                         },
@@ -733,7 +854,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Orders',
+                                    'Notification Settings',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -761,10 +882,10 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 300),
+                                          duration: Duration(milliseconds: 500),
                                           reverseDuration:
-                                              Duration(milliseconds: 300),
-                                          child: DeliveryOrderListWidget(),
+                                              Duration(milliseconds: 500),
+                                          child: NotificationsSettingsWidget(),
                                         ),
                                       );
                                     },
@@ -858,207 +979,15 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                       InkWell(
                         onTap: () async {
                           logFirebaseEvent(
-                              'M_Y_PROFILE_Container_49rlkiz6_ON_TAP');
+                              'M_Y_PROFILE_Container_s2it9of2_ON_TAP');
                           logFirebaseEvent('Container_Navigate-To');
                           await Navigator.push(
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 800),
-                              reverseDuration: Duration(milliseconds: 800),
-                              child: EditProfileWidget(
-                                userProfile: mYProfilePageUsersRecord.reference,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Material(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).background,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color:
-                                    FlutterFlowTheme.of(context).darkBackground,
-                                width: 2,
-                              ),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Edit Profile',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                  ),
-                                  FlutterFlowIconButton(
-                                    borderColor: Colors.transparent,
-                                    borderRadius: 30,
-                                    buttonSize: 46,
-                                    icon: Icon(
-                                      Icons.chevron_right_rounded,
-                                      color: Color(0xFF95A1AC),
-                                      size: 20,
-                                    ),
-                                    onPressed: () async {
-                                      logFirebaseEvent(
-                                          'M_Y_PROFILE_chevron_right_rounded_ICN_ON');
-                                      logFirebaseEvent(
-                                          'IconButton_Navigate-To');
-                                      await Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 800),
-                                          reverseDuration:
-                                              Duration(milliseconds: 800),
-                                          child: EditProfileWidget(
-                                            userProfile:
-                                                mYProfilePageUsersRecord
-                                                    .reference,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          logFirebaseEvent(
-                              'M_Y_PROFILE_Container_yqfzr8ca_ON_TAP');
-                          logFirebaseEvent('Container_Navigate-To');
-                          await Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 800),
-                              reverseDuration: Duration(milliseconds: 800),
-                              child: ChangePasswordWidget(),
-                            ),
-                          );
-                        },
-                        child: Material(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).background,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color:
-                                    FlutterFlowTheme.of(context).darkBackground,
-                                width: 2,
-                              ),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Change Password',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                  ),
-                                  FlutterFlowIconButton(
-                                    borderColor: Colors.transparent,
-                                    borderRadius: 30,
-                                    buttonSize: 46,
-                                    icon: Icon(
-                                      Icons.chevron_right_rounded,
-                                      color: Color(0xFF95A1AC),
-                                      size: 20,
-                                    ),
-                                    onPressed: () async {
-                                      logFirebaseEvent(
-                                          'M_Y_PROFILE_chevron_right_rounded_ICN_ON');
-                                      logFirebaseEvent(
-                                          'IconButton_Navigate-To');
-                                      await Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 800),
-                                          reverseDuration:
-                                              Duration(milliseconds: 800),
-                                          child: ChangePasswordWidget(),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          logFirebaseEvent(
-                              'M_Y_PROFILE_Container_t8ndxplp_ON_TAP');
-                          logFirebaseEvent('Container_Navigate-To');
-                          await Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 800),
-                              reverseDuration: Duration(milliseconds: 800),
-                              child: NotificationsSettingsWidget(),
+                              duration: Duration(milliseconds: 300),
+                              reverseDuration: Duration(milliseconds: 300),
+                              child: DeliveryOrderListWidget(),
                             ),
                           );
                         },
@@ -1088,7 +1017,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Notification Settings',
+                                    'Deliveries',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -1116,10 +1045,103 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 800),
+                                          duration: Duration(milliseconds: 300),
                                           reverseDuration:
-                                              Duration(milliseconds: 800),
-                                          child: NotificationsSettingsWidget(),
+                                              Duration(milliseconds: 300),
+                                          child: DeliveryOrderListWidget(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          logFirebaseEvent(
+                              'M_Y_PROFILE_Container_u9ewaamn_ON_TAP');
+                          logFirebaseEvent('Container_Navigate-To');
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 500),
+                              reverseDuration: Duration(milliseconds: 500),
+                              child: PaymentPageWidget(),
+                            ),
+                          );
+                        },
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).background,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color:
+                                    FlutterFlowTheme.of(context).darkBackground,
+                                width: 2,
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Payment',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                  ),
+                                  FlutterFlowIconButton(
+                                    borderColor: Colors.transparent,
+                                    borderRadius: 30,
+                                    buttonSize: 46,
+                                    icon: Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: Color(0xFF95A1AC),
+                                      size: 20,
+                                    ),
+                                    onPressed: () async {
+                                      logFirebaseEvent(
+                                          'M_Y_PROFILE_chevron_right_rounded_ICN_ON');
+                                      logFirebaseEvent(
+                                          'IconButton_Navigate-To');
+                                      await Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration: Duration(milliseconds: 500),
+                                          reverseDuration:
+                                              Duration(milliseconds: 500),
+                                          child: PaymentPageWidget(),
                                         ),
                                       );
                                     },
@@ -1148,8 +1170,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 800),
-                              reverseDuration: Duration(milliseconds: 800),
+                              duration: Duration(milliseconds: 500),
+                              reverseDuration: Duration(milliseconds: 500),
                               child: PrivacyPolicyWidget(),
                             ),
                           );
@@ -1208,9 +1230,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 800),
+                                          duration: Duration(milliseconds: 500),
                                           reverseDuration:
-                                              Duration(milliseconds: 800),
+                                              Duration(milliseconds: 500),
                                           child: PrivacyPolicyWidget(),
                                         ),
                                       );
@@ -1240,8 +1262,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 800),
-                              reverseDuration: Duration(milliseconds: 800),
+                              duration: Duration(milliseconds: 500),
+                              reverseDuration: Duration(milliseconds: 500),
                               child: TermsandConditionsWidget(),
                             ),
                           );
@@ -1300,9 +1322,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 800),
+                                          duration: Duration(milliseconds: 500),
                                           reverseDuration:
-                                              Duration(milliseconds: 800),
+                                              Duration(milliseconds: 500),
                                           child: TermsandConditionsWidget(),
                                         ),
                                       );
@@ -1333,8 +1355,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                             context,
                             PageTransition(
                               type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 800),
-                              reverseDuration: Duration(milliseconds: 800),
+                              duration: Duration(milliseconds: 500),
+                              reverseDuration: Duration(milliseconds: 500),
                               child: LoginPageWidget(),
                             ),
                             (r) => false,
@@ -1394,9 +1416,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 800),
+                                          duration: Duration(milliseconds: 500),
                                           reverseDuration:
-                                              Duration(milliseconds: 800),
+                                              Duration(milliseconds: 500),
                                           child: TermsandConditionsWidget(),
                                         ),
                                       );

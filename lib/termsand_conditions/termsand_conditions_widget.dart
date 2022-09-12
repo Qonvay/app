@@ -79,7 +79,7 @@ class _TermsandConditionsWidgetState extends State<TermsandConditionsWidget>
       ),
       backgroundColor: FlutterFlowTheme.of(context).background,
       body: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
         child: StreamBuilder<UsersRecord>(
           stream: UsersRecord.getDocument(currentUserReference!),
           builder: (context, snapshot) {

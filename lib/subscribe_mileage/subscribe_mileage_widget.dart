@@ -231,9 +231,9 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget>
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 800),
+                                      duration: Duration(milliseconds: 500),
                                       reverseDuration:
-                                          Duration(milliseconds: 800),
+                                          Duration(milliseconds: 500),
                                       child: MainDashboardWidget(),
                                     ),
                                   );
@@ -326,9 +326,9 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget>
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 800),
+                                      duration: Duration(milliseconds: 500),
                                       reverseDuration:
-                                          Duration(milliseconds: 800),
+                                          Duration(milliseconds: 500),
                                       child: MainDashboardWidget(),
                                     ),
                                   );
@@ -419,9 +419,9 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget>
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 800),
+                                      duration: Duration(milliseconds: 500),
                                       reverseDuration:
-                                          Duration(milliseconds: 800),
+                                          Duration(milliseconds: 500),
                                       child: MainDashboardWidget(),
                                     ),
                                   );
@@ -512,9 +512,9 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget>
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 800),
+                                      duration: Duration(milliseconds: 500),
                                       reverseDuration:
-                                          Duration(milliseconds: 800),
+                                          Duration(milliseconds: 500),
                                       child: MainDashboardWidget(),
                                     ),
                                   );

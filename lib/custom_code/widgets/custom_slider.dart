@@ -28,8 +28,8 @@ class _CustomSliderState extends State<CustomSlider> {
   Widget build(BuildContext context) {
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
-        activeTrackColor: Colors.white,
-        inactiveTickMarkColor: Color(0xFF8D8E98),
+        activeTrackColor: Color(0xFF111417),
+        inactiveTickMarkColor: Color(0xFF57636C),
         thumbColor: Colors.grey,
         thumbShape: SliderComponentShape.noThumb,
         overlayColor: Colors.transparent,

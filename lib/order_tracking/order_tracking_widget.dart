@@ -153,8 +153,8 @@ class _OrderTrackingWidgetState extends State<OrderTrackingWidget>
                                       .darkBackground,
                                   borderRadius: BorderRadius.circular(15),
                                   border: Border.all(
-                                    color:
-                                        FlutterFlowTheme.of(context).grayDark,
+                                    color: FlutterFlowTheme.of(context)
+                                        .darkBackground,
                                   ),
                                 ),
                                 child: Column(
@@ -231,8 +231,8 @@ class _OrderTrackingWidgetState extends State<OrderTrackingWidget>
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                   border: Border.all(
-                                    color:
-                                        FlutterFlowTheme.of(context).grayDark,
+                                    color: FlutterFlowTheme.of(context)
+                                        .darkBackground,
                                   ),
                                 ),
                                 child: Column(
@@ -287,8 +287,8 @@ class _OrderTrackingWidgetState extends State<OrderTrackingWidget>
                                     ),
                                     Divider(
                                       thickness: 1,
-                                      color:
-                                          FlutterFlowTheme.of(context).grayDark,
+                                      color: FlutterFlowTheme.of(context)
+                                          .darkBackground,
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
@@ -330,8 +330,8 @@ class _OrderTrackingWidgetState extends State<OrderTrackingWidget>
                                     ),
                                     Divider(
                                       thickness: 1,
-                                      color:
-                                          FlutterFlowTheme.of(context).grayDark,
+                                      color: FlutterFlowTheme.of(context)
+                                          .darkBackground,
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
@@ -374,8 +374,8 @@ class _OrderTrackingWidgetState extends State<OrderTrackingWidget>
                                     ),
                                     Divider(
                                       thickness: 1,
-                                      color:
-                                          FlutterFlowTheme.of(context).grayDark,
+                                      color: FlutterFlowTheme.of(context)
+                                          .darkBackground,
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
@@ -417,8 +417,8 @@ class _OrderTrackingWidgetState extends State<OrderTrackingWidget>
                                     ),
                                     Divider(
                                       thickness: 1,
-                                      color:
-                                          FlutterFlowTheme.of(context).grayDark,
+                                      color: FlutterFlowTheme.of(context)
+                                          .darkBackground,
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
@@ -460,8 +460,8 @@ class _OrderTrackingWidgetState extends State<OrderTrackingWidget>
                                     ),
                                     Divider(
                                       thickness: 1,
-                                      color:
-                                          FlutterFlowTheme.of(context).grayDark,
+                                      color: FlutterFlowTheme.of(context)
+                                          .darkBackground,
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
@@ -504,8 +504,8 @@ class _OrderTrackingWidgetState extends State<OrderTrackingWidget>
                                     ),
                                     Divider(
                                       thickness: 1,
-                                      color:
-                                          FlutterFlowTheme.of(context).grayDark,
+                                      color: FlutterFlowTheme.of(context)
+                                          .darkBackground,
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
@@ -559,9 +559,9 @@ class _OrderTrackingWidgetState extends State<OrderTrackingWidget>
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.fade,
-                                    duration: Duration(milliseconds: 800),
+                                    duration: Duration(milliseconds: 500),
                                     reverseDuration:
-                                        Duration(milliseconds: 800),
+                                        Duration(milliseconds: 500),
                                     child: OrderReportWidget(
                                       orderRefParam:
                                           orderTrackingBookOrderRecord

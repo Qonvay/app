@@ -135,7 +135,11 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: 'Full Address',
-                            labelStyle: FlutterFlowTheme.of(context).subtitle1,
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 16,
+                                    ),
                             hintStyle: FlutterFlowTheme.of(context).bodyText1,
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -169,11 +173,7 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                             fillColor:
                                 FlutterFlowTheme.of(context).darkBackground,
                             contentPadding:
-                                EdgeInsetsDirectional.fromSTEB(20, 32, 24, 32),
-                            prefixIcon: Icon(
-                              Icons.add_location,
-                              color: FlutterFlowTheme.of(context).grayLight,
-                            ),
+                                EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
                           ),
                           style: FlutterFlowTheme.of(context).bodyText1,
                           textAlign: TextAlign.start,
@@ -186,7 +186,11 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: 'Bus stop (Optional)',
-                            labelStyle: FlutterFlowTheme.of(context).subtitle1,
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 16,
+                                    ),
                             hintStyle: FlutterFlowTheme.of(context).bodyText1,
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -220,7 +224,7 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                             fillColor:
                                 FlutterFlowTheme.of(context).darkBackground,
                             contentPadding:
-                                EdgeInsetsDirectional.fromSTEB(20, 32, 24, 32),
+                                EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
                           ),
                           style: FlutterFlowTheme.of(context).bodyText1,
                           textAlign: TextAlign.start,
@@ -233,7 +237,11 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: 'Popular Landmark (Optional)',
-                            labelStyle: FlutterFlowTheme.of(context).subtitle1,
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 16,
+                                    ),
                             hintStyle: FlutterFlowTheme.of(context).bodyText1,
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -267,7 +275,7 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                             fillColor:
                                 FlutterFlowTheme.of(context).darkBackground,
                             contentPadding:
-                                EdgeInsetsDirectional.fromSTEB(20, 32, 24, 32),
+                                EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
                           ),
                           style: FlutterFlowTheme.of(context).bodyText1,
                           textAlign: TextAlign.start,
@@ -312,9 +320,9 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                                   context,
                                   PageTransition(
                                     type: PageTransitionType.fade,
-                                    duration: Duration(milliseconds: 800),
+                                    duration: Duration(milliseconds: 500),
                                     reverseDuration:
-                                        Duration(milliseconds: 800),
+                                        Duration(milliseconds: 500),
                                     child: OnboardingWidget(),
                                   ),
                                 );

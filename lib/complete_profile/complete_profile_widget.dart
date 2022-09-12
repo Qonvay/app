@@ -28,9 +28,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
 
   String uploadedFileUrl = '';
   String? yourGenderValue;
-
-  TextEditingController? yourTitleController;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'circleImageOnPageLoadAnimation': AnimationInfo(
@@ -41,21 +38,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 19),
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        opacity: 1,
-      ),
-    ),
-    'textOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      delay: 50,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 20),
         opacity: 0,
       ),
       finalState: AnimationState(
@@ -86,21 +68,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 40),
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        opacity: 1,
-      ),
-    ),
-    'textFieldOnPageLoadAnimation3': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      delay: 200,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 60),
         opacity: 0,
       ),
       finalState: AnimationState(
@@ -139,7 +106,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
         parameters: {'screen_name': 'completeProfile'});
     yourAgeController = TextEditingController();
     yourPhoneController = TextEditingController();
-    yourTitleController = TextEditingController();
   }
 
   @override
@@ -227,17 +193,12 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                   ),
                 ).animated([animationsMap['circleImageOnPageLoadAnimation']!]),
               ),
-              Text(
-                'Upload a photo for us to easily identify you.',
-                style: FlutterFlowTheme.of(context).bodyText1,
-              ).animated([animationsMap['textOnPageLoadAnimation']!]),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
                 child: TextFormField(
                   controller: yourPhoneController,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Your Phone number',
                     labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Lexend Deca',
                           color: FlutterFlowTheme.of(context).grayLight,
@@ -295,15 +256,15 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                   controller: yourAgeController,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Your Age',
                     labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Lexend Deca',
                           color: FlutterFlowTheme.of(context).grayLight,
+                          fontSize: 14,
                         ),
-                    hintText: 'i.e. 34',
+                    hintText: 'Your Age?',
                     hintStyle: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Lexend Deca',
-                          color: Color(0x98FFFFFF),
+                          color: FlutterFlowTheme.of(context).grayLight,
                           fontSize: 16,
                         ),
                     enabledBorder: OutlineInputBorder(
@@ -359,7 +320,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                         color: FlutterFlowTheme.of(context).grayLight,
                         fontSize: 16,
                       ),
-                  hintText: 'Your Gender',
+                  hintText: 'Your Gender?',
                   fillColor: FlutterFlowTheme.of(context).darkBackground,
                   elevation: 2,
                   borderColor: Colors.transparent,
@@ -368,63 +329,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                   margin: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
                   hidesUnderline: true,
                 ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                child: TextFormField(
-                  controller: yourTitleController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Your Position',
-                    labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Deca',
-                          color: FlutterFlowTheme.of(context).grayLight,
-                        ),
-                    hintText: 'What is your position?',
-                    hintStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Deca',
-                          color: Color(0x98FFFFFF),
-                          fontSize: 16,
-                        ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    filled: true,
-                    fillColor: FlutterFlowTheme.of(context).darkBackground,
-                    contentPadding:
-                        EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Lexend Deca',
-                        color: FlutterFlowTheme.of(context).textColor,
-                        fontSize: 16,
-                      ),
-                ).animated([animationsMap['textFieldOnPageLoadAnimation3']!]),
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
@@ -453,7 +357,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
 
                         final usersUpdateData = createUsersRecordData(
                           age: int.parse(yourAgeController!.text),
-                          userTitle: yourTitleController!.text,
                           photoUrl: uploadedFileUrl,
                           phoneNumber: yourPhoneController!.text,
                           createdTime: buttonLoginUsersRecord.createdTime,
@@ -466,8 +369,8 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
+                            duration: Duration(milliseconds: 500),
+                            reverseDuration: Duration(milliseconds: 500),
                             child: CreateDefaultPickupWidget(),
                           ),
                         );

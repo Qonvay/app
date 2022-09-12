@@ -260,7 +260,7 @@ class _OrderReportWidgetState extends State<OrderReportWidget>
                                                   borderColor:
                                                       FlutterFlowTheme.of(
                                                               context)
-                                                          .grayDark,
+                                                          .darkBackground,
                                                   borderWidth: 2,
                                                   borderRadius: 8,
                                                   margin: EdgeInsetsDirectional
@@ -285,6 +285,9 @@ class _OrderReportWidgetState extends State<OrderReportWidget>
                                                             .override(
                                                               fontFamily:
                                                                   'Lexend Deca',
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .grayLight,
                                                               fontSize: 16,
                                                             ),
                                                     enabledBorder:
@@ -293,7 +296,7 @@ class _OrderReportWidgetState extends State<OrderReportWidget>
                                                         color:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .grayDark,
+                                                                .darkBackground,
                                                         width: 2,
                                                       ),
                                                       borderRadius:
@@ -306,7 +309,7 @@ class _OrderReportWidgetState extends State<OrderReportWidget>
                                                         color:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .grayDark,
+                                                                .darkBackground,
                                                         width: 2,
                                                       ),
                                                       borderRadius:
@@ -335,6 +338,11 @@ class _OrderReportWidgetState extends State<OrderReportWidget>
                                                           BorderRadius.circular(
                                                               8),
                                                     ),
+                                                    filled: true,
+                                                    fillColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .darkBackground,
                                                     contentPadding:
                                                         EdgeInsetsDirectional
                                                             .fromSTEB(

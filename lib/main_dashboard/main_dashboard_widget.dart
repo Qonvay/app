@@ -243,7 +243,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 10),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
                     child: InkWell(
                       onTap: () async {
                         logFirebaseEvent(
@@ -253,8 +253,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
+                            duration: Duration(milliseconds: 500),
+                            reverseDuration: Duration(milliseconds: 500),
                             child: MainDashboardWidget(),
                           ),
                         );
@@ -262,7 +262,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                       child: ListTile(
                         leading: FaIcon(
                           FontAwesomeIcons.home,
-                          color: FlutterFlowTheme.of(context).grayLight,
+                          color: FlutterFlowTheme.of(context).primaryColor,
                           size: 20,
                         ),
                         title: Text(
@@ -282,165 +282,192 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                    child: InkWell(
-                      onTap: () async {
-                        logFirebaseEvent(
-                            'MAIN_DASHBOARD_ListTile_lq1pr5qt_ON_TAP');
-                        logFirebaseEvent('ListTile_Navigate-To');
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
-                            child: BookDeliveryWidget(),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.delivery_dining,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 25,
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent(
+                          'MAIN_DASHBOARD_ListTile_lq1pr5qt_ON_TAP');
+                      logFirebaseEvent('ListTile_Navigate-To');
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
+                          child: BookDeliveryWidget(),
                         ),
-                        title: Text(
-                          'Book Delivery',
-                          style: FlutterFlowTheme.of(context).title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: FlutterFlowTheme.of(context).grayLight,
-                              ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
-                        ),
-                        tileColor: FlutterFlowTheme.of(context).grayLight,
-                        dense: false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.delivery_dining,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 25,
                       ),
+                      title: Text(
+                        'Book Delivery',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                    child: InkWell(
-                      onTap: () async {
-                        logFirebaseEvent(
-                            'MAIN_DASHBOARD_ListTile_u96j4z03_ON_TAP');
-                        logFirebaseEvent('ListTile_Navigate-To');
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
-                            child: DeliveryOrderListWidget(),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: FaIcon(
-                          FontAwesomeIcons.listAlt,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent(
+                          'MAIN_DASHBOARD_ListTile_u96j4z03_ON_TAP');
+                      logFirebaseEvent('ListTile_Navigate-To');
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
+                          child: DeliveryOrderListWidget(),
                         ),
-                        title: Text(
-                          'Deliveries',
-                          style: FlutterFlowTheme.of(context).title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: FlutterFlowTheme.of(context).grayLight,
-                              ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
-                        ),
-                        tileColor: FlutterFlowTheme.of(context).grayLight,
-                        dense: false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: FaIcon(
+                        FontAwesomeIcons.listAlt,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 20,
                       ),
+                      title: Text(
+                        'Deliveries',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                    child: InkWell(
-                      onTap: () async {
-                        logFirebaseEvent(
-                            'MAIN_DASHBOARD_ListTile_9eior8zh_ON_TAP');
-                        logFirebaseEvent('ListTile_Navigate-To');
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
-                            child: PaymentPageWidget(),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.payment,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 25,
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent(
+                          'MAIN_DASHBOARD_ListTile_9eior8zh_ON_TAP');
+                      logFirebaseEvent('ListTile_Navigate-To');
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
+                          child: PaymentPageWidget(),
                         ),
-                        title: Text(
-                          'Payment',
-                          style: FlutterFlowTheme.of(context).title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: FlutterFlowTheme.of(context).grayLight,
-                              ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
-                        ),
-                        tileColor: FlutterFlowTheme.of(context).grayLight,
-                        dense: false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.payment,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 25,
                       ),
+                      title: Text(
+                        'Payment',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                    child: InkWell(
-                      onTap: () async {
-                        logFirebaseEvent(
-                            'MAIN_DASHBOARD_ListTile_0b0t6eqv_ON_TAP');
-                        logFirebaseEvent('ListTile_Navigate-To');
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 800),
-                            reverseDuration: Duration(milliseconds: 800),
-                            child: MYProfilePageWidget(),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.person_outlined,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 25,
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent(
+                          'MAIN_DASHBOARD_ListTile_0b0t6eqv_ON_TAP');
+                      logFirebaseEvent('ListTile_Navigate-To');
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
+                          child: MYProfilePageWidget(),
                         ),
-                        title: Text(
-                          'Profile',
-                          style: FlutterFlowTheme.of(context).title3.override(
-                                fontFamily: 'Lexend Deca',
-                                color: FlutterFlowTheme.of(context).grayLight,
-                              ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          size: 20,
-                        ),
-                        tileColor: FlutterFlowTheme.of(context).grayLight,
-                        dense: false,
+                      );
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.person_outlined,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 25,
                       ),
+                      title: Text(
+                        'Profile',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
+                  ),
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.support_agent,
+                      color: FlutterFlowTheme.of(context).primaryColor,
+                      size: 25,
+                    ),
+                    title: Text(
+                      'Help / Support',
+                      style: FlutterFlowTheme.of(context).title3.override(
+                            fontFamily: 'Lexend Deca',
+                            color: FlutterFlowTheme.of(context).grayLight,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      color: FlutterFlowTheme.of(context).grayLight,
+                      size: 20,
+                    ),
+                    tileColor: FlutterFlowTheme.of(context).grayLight,
+                    dense: false,
+                  ),
+                  Divider(
+                    color: FlutterFlowTheme.of(context).darkBackground,
                   ),
                   InkWell(
                     onTap: () async {
@@ -452,8 +479,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                         context,
                         PageTransition(
                           type: PageTransitionType.fade,
-                          duration: Duration(milliseconds: 800),
-                          reverseDuration: Duration(milliseconds: 800),
+                          duration: Duration(milliseconds: 500),
+                          reverseDuration: Duration(milliseconds: 500),
                           child: LoginPageWidget(),
                         ),
                         (r) => false,
@@ -462,7 +489,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                     child: ListTile(
                       leading: Icon(
                         Icons.logout,
-                        color: FlutterFlowTheme.of(context).grayLight,
+                        color: FlutterFlowTheme.of(context).primaryColor,
                         size: 25,
                       ),
                       title: Text(
@@ -578,6 +605,23 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                                                       fontSize: 18,
                                                     ),
                                               ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    1, 0, 0, 0),
+                                            child: Text(
+                                              '!',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .title3
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryColor,
+                                                  ),
                                             ),
                                           ),
                                         ],
@@ -821,13 +865,14 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                                                       .fromSTEB(0, 8, 0, 0),
                                                   child: Text(
                                                     'Book Delivery',
+                                                    textAlign: TextAlign.center,
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .bodyText1
                                                         .override(
                                                           fontFamily:
                                                               'Lexend Deca',
-                                                          fontSize: 16,
+                                                          fontSize: 14,
                                                         ),
                                                   ),
                                                 ),
@@ -887,13 +932,14 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                                                       .fromSTEB(0, 8, 0, 0),
                                                   child: Text(
                                                     'Purchase Mileage',
+                                                    textAlign: TextAlign.center,
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .bodyText1
                                                         .override(
                                                           fontFamily:
                                                               'Lexend Deca',
-                                                          fontSize: 16,
+                                                          fontSize: 14,
                                                         ),
                                                   ),
                                                 ),
