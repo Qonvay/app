@@ -1,14 +1,11 @@
-import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../components/payment_pop_up_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
-import '../flutter_flow/flutter_flow_credit_card_form.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main_dashboard/main_dashboard_widget.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -24,8 +21,6 @@ class TopupMileageWidget extends StatefulWidget {
 class _TopupMileageWidgetState extends State<TopupMileageWidget>
     with TickerProviderStateMixin {
   TextEditingController? amountNGNmileageController;
-  final creditCardFormKey = GlobalKey<FormState>();
-  CreditCardModel creditCardInfo = emptyCreditCard();
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -305,63 +300,27 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
                           ),
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
-                            child: FlutterFlowCreditCardForm(
-                              formKey: creditCardFormKey,
-                              creditCardModel: creditCardInfo,
-                              obscureNumber: true,
-                              obscureCvv: true,
-                              spacing: 10,
-                              textStyle: FlutterFlowTheme.of(context).title3,
-                              inputDecoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color:
-                                        FlutterFlowTheme.of(context).grayDark,
-                                    width: 3,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color:
-                                        FlutterFlowTheme.of(context).grayDark,
-                                    width: 3,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
                                 EdgeInsetsDirectional.fromSTEB(20, 40, 20, 20),
                             child: FFButtonWidget(
                               onPressed: () async {
                                 logFirebaseEvent(
                                     'TOPUP_MILEAGE_PAGE_TOP_UP_BTN_ON_TAP');
-                                logFirebaseEvent('Button_Backend-Call');
-
-                                final usersUpdateData = {
-                                  'mileage_balance': FieldValue.increment(
-                                      functions.ngnToKm(double.parse(
-                                          amountNGNmileageController!.text))),
-                                };
-                                await currentUserReference!
-                                    .update(usersUpdateData);
-                                logFirebaseEvent('Button_Update-Local-State');
-                                setState(() => FFAppState().ngnToKmCheck = 0.0);
-                                logFirebaseEvent('Button_Navigate-To');
-                                await Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.fade,
-                                    duration: Duration(milliseconds: 500),
-                                    reverseDuration:
-                                        Duration(milliseconds: 500),
-                                    child: MainDashboardWidget(),
-                                  ),
-                                );
+                                logFirebaseEvent('Button_Bottom-Sheet');
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding:
+                                          MediaQuery.of(context).viewInsets,
+                                      child: Container(
+                                        height: 180,
+                                        child: PaymentPopUpWidget(),
+                                      ),
+                                    );
+                                  },
+                                ).then((value) => setState(() {}));
                               },
                               text: 'Top Up',
                               icon: Icon(
