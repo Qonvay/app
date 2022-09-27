@@ -43,6 +43,13 @@ class _$TransactionsRecordSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
+    value = object.purchaserId;
+    if (value != null) {
+      result
+        ..add('purchaser_id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -78,6 +85,10 @@ class _$TransactionsRecordSerializer
           result.transactionTimestamp = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
           break;
+        case 'purchaser_id':
+          result.purchaserId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -99,6 +110,8 @@ class _$TransactionsRecord extends TransactionsRecord {
   @override
   final DateTime? transactionTimestamp;
   @override
+  final String? purchaserId;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$TransactionsRecord(
@@ -109,6 +122,7 @@ class _$TransactionsRecord extends TransactionsRecord {
       {this.amount,
       this.mileagePurchased,
       this.transactionTimestamp,
+      this.purchaserId,
       this.ffRef})
       : super._();
 
@@ -128,14 +142,17 @@ class _$TransactionsRecord extends TransactionsRecord {
         amount == other.amount &&
         mileagePurchased == other.mileagePurchased &&
         transactionTimestamp == other.transactionTimestamp &&
+        purchaserId == other.purchaserId &&
         ffRef == other.ffRef;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, amount.hashCode), mileagePurchased.hashCode),
-            transactionTimestamp.hashCode),
+        $jc(
+            $jc($jc($jc(0, amount.hashCode), mileagePurchased.hashCode),
+                transactionTimestamp.hashCode),
+            purchaserId.hashCode),
         ffRef.hashCode));
   }
 
@@ -145,6 +162,7 @@ class _$TransactionsRecord extends TransactionsRecord {
           ..add('amount', amount)
           ..add('mileagePurchased', mileagePurchased)
           ..add('transactionTimestamp', transactionTimestamp)
+          ..add('purchaserId', purchaserId)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -168,6 +186,10 @@ class TransactionsRecordBuilder
   set transactionTimestamp(DateTime? transactionTimestamp) =>
       _$this._transactionTimestamp = transactionTimestamp;
 
+  String? _purchaserId;
+  String? get purchaserId => _$this._purchaserId;
+  set purchaserId(String? purchaserId) => _$this._purchaserId = purchaserId;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -182,6 +204,7 @@ class TransactionsRecordBuilder
       _amount = $v.amount;
       _mileagePurchased = $v.mileagePurchased;
       _transactionTimestamp = $v.transactionTimestamp;
+      _purchaserId = $v.purchaserId;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -208,6 +231,7 @@ class TransactionsRecordBuilder
             amount: amount,
             mileagePurchased: mileagePurchased,
             transactionTimestamp: transactionTimestamp,
+            purchaserId: purchaserId,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

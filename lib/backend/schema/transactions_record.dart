@@ -19,13 +19,17 @@ abstract class TransactionsRecord
   @BuiltValueField(wireName: 'transaction_timestamp')
   DateTime? get transactionTimestamp;
 
+  @BuiltValueField(wireName: 'purchaser_id')
+  String? get purchaserId;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(TransactionsRecordBuilder builder) => builder
     ..amount = 0.0
-    ..mileagePurchased = 0.0;
+    ..mileagePurchased = 0.0
+    ..purchaserId = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('transactions');
@@ -53,6 +57,7 @@ Map<String, dynamic> createTransactionsRecordData({
   double? amount,
   double? mileagePurchased,
   DateTime? transactionTimestamp,
+  String? purchaserId,
 }) {
   final firestoreData = serializers.toFirestore(
     TransactionsRecord.serializer,
@@ -60,7 +65,8 @@ Map<String, dynamic> createTransactionsRecordData({
       (t) => t
         ..amount = amount
         ..mileagePurchased = mileagePurchased
-        ..transactionTimestamp = transactionTimestamp,
+        ..transactionTimestamp = transactionTimestamp
+        ..purchaserId = purchaserId,
     ),
   );
 

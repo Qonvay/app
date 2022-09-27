@@ -3,7 +3,6 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../order_tracking/order_tracking_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -105,64 +104,44 @@ class _TransactionHistoryWidgetState extends State<TransactionHistoryWidget>
           body: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              StreamBuilder<List<BookOrderRecord>>(
-                stream: queryBookOrderRecord(
-                  queryBuilder: (bookOrderRecord) => bookOrderRecord
-                      .where('booker_id', isEqualTo: currentUserUid)
-                      .orderBy('order_timestamp', descending: true),
-                ),
-                builder: (context, snapshot) {
-                  // Customize what your widget looks like when it's loading.
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: SpinKitFadingGrid(
-                          color: FlutterFlowTheme.of(context).primaryColor,
-                          size: 50,
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                child: StreamBuilder<List<TransactionsRecord>>(
+                  stream: queryTransactionsRecord(),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: SpinKitFadingGrid(
+                            color: FlutterFlowTheme.of(context).primaryColor,
+                            size: 50,
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                  List<BookOrderRecord> listViewBookOrderRecordList =
-                      snapshot.data!;
-                  if (listViewBookOrderRecordList.isEmpty) {
-                    return Center(
-                      child: Image.asset(
-                        'assets/images/No_payment.png',
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    primary: false,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: listViewBookOrderRecordList.length,
-                    itemBuilder: (context, listViewIndex) {
-                      final listViewBookOrderRecord =
-                          listViewBookOrderRecordList[listViewIndex];
-                      return Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(16, 4, 16, 8),
-                        child: InkWell(
-                          onTap: () async {
-                            logFirebaseEvent(
-                                'TRANSACTION_HISTORY_Container_pz7dseu2_O');
-                            logFirebaseEvent('Container_Navigate-To');
-                            await Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 500),
-                                reverseDuration: Duration(milliseconds: 500),
-                                child: OrderTrackingWidget(
-                                  orderRefParam:
-                                      listViewBookOrderRecord.reference,
-                                ),
-                              ),
-                            );
-                          },
+                      );
+                    }
+                    List<TransactionsRecord> listViewTransactionsRecordList =
+                        snapshot.data!;
+                    if (listViewTransactionsRecordList.isEmpty) {
+                      return Center(
+                        child: Image.asset(
+                          'assets/images/No_payment.png',
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      padding: EdgeInsets.zero,
+                      primary: false,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: listViewTransactionsRecordList.length,
+                      itemBuilder: (context, listViewIndex) {
+                        final listViewTransactionsRecord =
+                            listViewTransactionsRecordList[listViewIndex];
+                        return Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(16, 4, 16, 8),
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
@@ -182,18 +161,27 @@ class _TransactionHistoryWidgetState extends State<TransactionHistoryWidget>
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            1, 0, 0, 0),
+                                        child: Text(
+                                          'NGN ',
+                                          style: FlutterFlowTheme.of(context)
+                                              .title3,
+                                        ),
+                                      ),
                                       Expanded(
                                         child: Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 0, 12, 0),
                                           child: Text(
-                                            listViewBookOrderRecord
-                                                .receiverName!
+                                            listViewTransactionsRecord.amount!
+                                                .toString()
                                                 .maybeHandleOverflow(
-                                              maxChars: 12,
-                                              replacement: '…',
-                                            ),
+                                                  maxChars: 12,
+                                                  replacement: '…',
+                                                ),
                                             style: FlutterFlowTheme.of(context)
                                                 .title3,
                                           ),
@@ -202,8 +190,7 @@ class _TransactionHistoryWidgetState extends State<TransactionHistoryWidget>
                                       Container(
                                         height: 20,
                                         decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
+                                          color: Color(0xFF2CAB50),
                                           borderRadius:
                                               BorderRadius.circular(5),
                                         ),
@@ -213,8 +200,7 @@ class _TransactionHistoryWidgetState extends State<TransactionHistoryWidget>
                                               EdgeInsetsDirectional.fromSTEB(
                                                   2, 0, 2, 0),
                                           child: Text(
-                                            listViewBookOrderRecord
-                                                .orderStatus!,
+                                            'Successful',
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyText1
                                                 .override(
@@ -242,8 +228,8 @@ class _TransactionHistoryWidgetState extends State<TransactionHistoryWidget>
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          listViewBookOrderRecord
-                                              .orderMileageCost!
+                                          listViewTransactionsRecord
+                                              .mileagePurchased!
                                               .toString(),
                                           style: FlutterFlowTheme.of(context)
                                               .bodyText1
@@ -269,45 +255,25 @@ class _TransactionHistoryWidgetState extends State<TransactionHistoryWidget>
                                           child: Text(
                                             dateTimeFormat(
                                                 'yMMMd',
-                                                listViewBookOrderRecord
-                                                    .orderTimestamp!),
+                                                listViewTransactionsRecord
+                                                    .transactionTimestamp!),
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyText2,
                                           ),
                                         ),
-                                        if (listViewBookOrderRecord
-                                                .reportOrderActive ??
-                                            true)
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    8, 0, 0, 0),
-                                            child: Text(
-                                              'Under Review',
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .bodyText1
-                                                  .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .errorRed,
-                                                  ),
-                                            ),
-                                          ),
                                       ],
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        ).animated(
-                            [animationsMap['containerOnPageLoadAnimation']!]),
-                      );
-                    },
-                  );
-                },
+                          ).animated(
+                              [animationsMap['containerOnPageLoadAnimation']!]),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ],
           ),
