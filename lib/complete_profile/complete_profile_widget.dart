@@ -22,11 +22,9 @@ class CompleteProfileWidget extends StatefulWidget {
 
 class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
     with TickerProviderStateMixin {
-  TextEditingController? yourAgeController;
-
-  TextEditingController? yourPhoneController;
-
   String uploadedFileUrl = '';
+  TextEditingController? yourPhoneController;
+  TextEditingController? yourAgeController;
   String? yourGenderValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -106,6 +104,13 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
         parameters: {'screen_name': 'completeProfile'});
     yourAgeController = TextEditingController();
     yourPhoneController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    yourAgeController?.dispose();
+    yourPhoneController?.dispose();
+    super.dispose();
   }
 
   @override

@@ -91,8 +91,10 @@ class _PaymentPageWidgetState extends State<PaymentPageWidget>
               color: FlutterFlowTheme.of(context).textColor,
               size: 30,
             ),
-            onPressed: () {
-              print('IconButton pressed ...');
+            onPressed: () async {
+              logFirebaseEvent('PAYMENT_solidQuestionCircle_ICN_ON_TAP');
+              logFirebaseEvent('IconButton_Launch-U-R-L');
+              await launchURL('qonvay.freshdesk.com');
             },
           ),
         ],

@@ -128,8 +128,10 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                   color: FlutterFlowTheme.of(context).textColor,
                   size: 30,
                 ),
-                onPressed: () {
-                  print('IconButton pressed ...');
+                onPressed: () async {
+                  logFirebaseEvent('MAIN_DASHBOARD_solidQuestionCircle_ICN_O');
+                  logFirebaseEvent('IconButton_Launch-U-R-L');
+                  await launchURL('qonvay.freshdesk.com');
                 },
               ),
             ],
@@ -913,7 +915,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                                                     ),
                                                   );
                                                 },
-                                              );
+                                              ).then(
+                                                  (value) => setState(() {}));
                                             },
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,

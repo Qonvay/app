@@ -20,11 +20,9 @@ class LoginPageWidget extends StatefulWidget {
 class _LoginPageWidgetState extends State<LoginPageWidget>
     with TickerProviderStateMixin {
   TextEditingController? emailAddressLoginController;
-
   TextEditingController? passwordLoginController;
 
   late bool passwordLoginVisibility;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
@@ -58,6 +56,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
     passwordLoginController = TextEditingController();
     passwordLoginVisibility = false;
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
+  }
+
+  @override
+  void dispose() {
+    emailAddressLoginController?.dispose();
+    passwordLoginController?.dispose();
+    super.dispose();
   }
 
   @override

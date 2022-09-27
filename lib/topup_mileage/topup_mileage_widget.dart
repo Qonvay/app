@@ -24,7 +24,6 @@ class TopupMileageWidget extends StatefulWidget {
 class _TopupMileageWidgetState extends State<TopupMileageWidget>
     with TickerProviderStateMixin {
   TextEditingController? amountNGNmileageController;
-
   final creditCardFormKey = GlobalKey<FormState>();
   CreditCardModel creditCardInfo = emptyCreditCard();
   final formKey = GlobalKey<FormState>();
@@ -74,6 +73,12 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
     amountNGNmileageController = TextEditingController();
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'topupMileage'});
+  }
+
+  @override
+  void dispose() {
+    amountNGNmileageController?.dispose();
+    super.dispose();
   }
 
   @override

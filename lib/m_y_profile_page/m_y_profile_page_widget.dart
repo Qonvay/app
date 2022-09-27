@@ -14,6 +14,7 @@ import '../notifications_settings/notifications_settings_widget.dart';
 import '../payment_page/payment_page_widget.dart';
 import '../privacy_policy/privacy_policy_widget.dart';
 import '../termsand_conditions/termsand_conditions_widget.dart';
+import '../transaction_history/transaction_history_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -118,8 +119,10 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                   color: FlutterFlowTheme.of(context).textColor,
                   size: 30,
                 ),
-                onPressed: () {
-                  print('IconButton pressed ...');
+                onPressed: () async {
+                  logFirebaseEvent('M_Y_PROFILE_solidQuestionCircle_ICN_ON_T');
+                  logFirebaseEvent('IconButton_Launch-U-R-L');
+                  await launchURL('qonvay.freshdesk.com');
                 },
               ),
             ],
@@ -763,6 +766,99 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                                 children: [
                                   Text(
                                     'Change Password',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                  ),
+                                  FlutterFlowIconButton(
+                                    borderColor: Colors.transparent,
+                                    borderRadius: 30,
+                                    buttonSize: 46,
+                                    icon: Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: Color(0xFF95A1AC),
+                                      size: 20,
+                                    ),
+                                    onPressed: () async {
+                                      logFirebaseEvent(
+                                          'M_Y_PROFILE_chevron_right_rounded_ICN_ON');
+                                      logFirebaseEvent(
+                                          'IconButton_Navigate-To');
+                                      await Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration: Duration(milliseconds: 500),
+                                          reverseDuration:
+                                              Duration(milliseconds: 500),
+                                          child: ChangePasswordWidget(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          logFirebaseEvent(
+                              'M_Y_PROFILE_Container_sqjcdyj4_ON_TAP');
+                          logFirebaseEvent('Container_Navigate-To');
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 500),
+                              reverseDuration: Duration(milliseconds: 500),
+                              child: TransactionHistoryWidget(),
+                            ),
+                          );
+                        },
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).background,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color:
+                                    FlutterFlowTheme.of(context).darkBackground,
+                                width: 2,
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Transaction History',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(

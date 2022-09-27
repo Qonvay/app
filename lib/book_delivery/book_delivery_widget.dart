@@ -36,22 +36,15 @@ class BookDeliveryWidget extends StatefulWidget {
 
 class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
     with TickerProviderStateMixin {
+  BookOrderRecord? bookOrderRef;
   TextEditingController? receiverFullAddressController;
-
   var receiverLocationValue = FFPlace();
-
   TextEditingController? receiverNameController;
-
   TextEditingController? receiverPhoneNumberController;
-
   TextEditingController? senderFullAddressController;
-
   var senderLocationValue = FFPlace();
-
   TextEditingController? senderNameController;
-
   TextEditingController? senderPhoneNumberController;
-
   bool? foodCategoryValue;
   bool? clothingCategoryValue;
   bool? shoesCategoryValue;
@@ -59,7 +52,6 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
   bool? jewaccessCategoryValue;
   bool? docsCategoryValue;
   bool? otherCategoryValue;
-  BookOrderRecord? bookOrderRef;
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -105,6 +97,17 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
       this,
     );
+  }
+
+  @override
+  void dispose() {
+    receiverFullAddressController?.dispose();
+    receiverNameController?.dispose();
+    receiverPhoneNumberController?.dispose();
+    senderFullAddressController?.dispose();
+    senderNameController?.dispose();
+    senderPhoneNumberController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -158,8 +161,10 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
                   color: FlutterFlowTheme.of(context).textColor,
                   size: 30,
                 ),
-                onPressed: () {
-                  print('IconButton pressed ...');
+                onPressed: () async {
+                  logFirebaseEvent('BOOK_DELIVERY_solidQuestionCircle_ICN_ON');
+                  logFirebaseEvent('IconButton_Launch-U-R-L');
+                  await launchURL('qonvay.freshdesk.com');
                 },
               ),
             ],

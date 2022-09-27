@@ -21,19 +21,14 @@ class RegisterAccountWidget extends StatefulWidget {
 class _RegisterAccountWidgetState extends State<RegisterAccountWidget>
     with TickerProviderStateMixin {
   TextEditingController? emailAddressController;
-
   TextEditingController? firstNameController;
-
   TextEditingController? lastNameController;
-
   TextEditingController? passwordCreateController;
 
   late bool passwordCreateVisibility;
-
   TextEditingController? passwordConfirmController;
 
   late bool passwordConfirmVisibility;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
@@ -72,6 +67,16 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget>
     passwordConfirmVisibility = false;
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'registerAccount'});
+  }
+
+  @override
+  void dispose() {
+    emailAddressController?.dispose();
+    firstNameController?.dispose();
+    lastNameController?.dispose();
+    passwordCreateController?.dispose();
+    passwordConfirmController?.dispose();
+    super.dispose();
   }
 
   @override

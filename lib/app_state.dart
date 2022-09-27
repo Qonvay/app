@@ -35,6 +35,8 @@ class FFAppState {
   double mileageCost = 0.0;
 
   double ngnToKmCheck = 0.0;
+
+  List<String> receiverLocations = [];
 }
 
 LatLng? _latLngFromString(String? val) {

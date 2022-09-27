@@ -21,11 +21,8 @@ class CreateDefaultPickupWidget extends StatefulWidget {
 class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
     with TickerProviderStateMixin {
   TextEditingController? addressController;
-
   TextEditingController? busStopController;
-
   TextEditingController? popularLandmarkController;
-
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -77,6 +74,14 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
     popularLandmarkController = TextEditingController();
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'createDefaultPickup'});
+  }
+
+  @override
+  void dispose() {
+    addressController?.dispose();
+    busStopController?.dispose();
+    popularLandmarkController?.dispose();
+    super.dispose();
   }
 
   @override

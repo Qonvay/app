@@ -26,20 +26,13 @@ class EditProfileWidget extends StatefulWidget {
 
 class _EditProfileWidgetState extends State<EditProfileWidget>
     with TickerProviderStateMixin {
-  TextEditingController? firstNameController;
-
   String uploadedFileUrl = '';
-
+  TextEditingController? firstNameController;
   TextEditingController? lastNameController;
-
   TextEditingController? yourEmailController;
-
   TextEditingController? yourPhoneController;
-
   TextEditingController? yourAddressController;
-
   TextEditingController? yourAgeController;
-
   String? yourGenderValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -72,6 +65,17 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'editProfile'});
     yourEmailController = TextEditingController(text: currentUserEmail);
+  }
+
+  @override
+  void dispose() {
+    firstNameController?.dispose();
+    lastNameController?.dispose();
+    yourEmailController?.dispose();
+    yourPhoneController?.dispose();
+    yourAddressController?.dispose();
+    yourAgeController?.dispose();
+    super.dispose();
   }
 
   @override

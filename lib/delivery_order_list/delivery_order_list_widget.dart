@@ -114,8 +114,10 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
               color: FlutterFlowTheme.of(context).textColor,
               size: 30,
             ),
-            onPressed: () {
-              print('IconButton pressed ...');
+            onPressed: () async {
+              logFirebaseEvent('DELIVERY_ORDER_LIST_solidQuestionCircle_');
+              logFirebaseEvent('IconButton_Launch-U-R-L');
+              await launchURL('qonvay.freshdesk.com');
             },
           ),
         ],

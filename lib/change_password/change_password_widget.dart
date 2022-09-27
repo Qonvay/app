@@ -16,7 +16,6 @@ class ChangePasswordWidget extends StatefulWidget {
 
 class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   TextEditingController? emailAddressController;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -24,6 +23,12 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
     super.initState();
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'changePassword'});
+  }
+
+  @override
+  void dispose() {
+    emailAddressController?.dispose();
+    super.dispose();
   }
 
   @override

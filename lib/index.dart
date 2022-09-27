@@ -28,3 +28,6 @@ export 'notifications_settings/notifications_settings_widget.dart'
 export 'privacy_policy/privacy_policy_widget.dart' show PrivacyPolicyWidget;
 export 'termsand_conditions/termsand_conditions_widget.dart'
     show TermsandConditionsWidget;
+export 'pay_wall/pay_wall_widget.dart' show PayWallWidget;
+export 'transaction_history/transaction_history_widget.dart'
+    show TransactionHistoryWidget;

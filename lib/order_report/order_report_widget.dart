@@ -25,9 +25,8 @@ class OrderReportWidget extends StatefulWidget {
 
 class _OrderReportWidgetState extends State<OrderReportWidget>
     with TickerProviderStateMixin {
-  TextEditingController? descriptionController;
-
   String? statusSelectValue;
+  TextEditingController? descriptionController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -60,6 +59,12 @@ class _OrderReportWidgetState extends State<OrderReportWidget>
 
     descriptionController = TextEditingController();
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'orderReport'});
+  }
+
+  @override
+  void dispose() {
+    descriptionController?.dispose();
+    super.dispose();
   }
 
   @override
