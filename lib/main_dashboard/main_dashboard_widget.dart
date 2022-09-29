@@ -128,10 +128,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                   color: FlutterFlowTheme.of(context).textColor,
                   size: 30,
                 ),
-                onPressed: () async {
-                  logFirebaseEvent('MAIN_DASHBOARD_solidQuestionCircle_ICN_O');
-                  logFirebaseEvent('IconButton_Launch-U-R-L');
-                  await launchURL('qonvay.freshdesk.com');
+                onPressed: () {
+                  print('IconButton pressed ...');
                 },
               ),
             ],
@@ -447,34 +445,26 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                   Divider(
                     color: FlutterFlowTheme.of(context).darkBackground,
                   ),
-                  InkWell(
-                    onTap: () async {
-                      logFirebaseEvent(
-                          'MAIN_DASHBOARD_ListTile_g2ylkjf4_ON_TAP');
-                      logFirebaseEvent('ListTile_Launch-U-R-L');
-                      await launchURL('qonvay.freshesk.com');
-                    },
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.support_agent,
-                        color: FlutterFlowTheme.of(context).primaryColor,
-                        size: 25,
-                      ),
-                      title: Text(
-                        'Help / Support',
-                        style: FlutterFlowTheme.of(context).title3.override(
-                              fontFamily: 'Lexend Deca',
-                              color: FlutterFlowTheme.of(context).grayLight,
-                            ),
-                      ),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        color: FlutterFlowTheme.of(context).grayLight,
-                        size: 20,
-                      ),
-                      tileColor: FlutterFlowTheme.of(context).grayLight,
-                      dense: false,
+                  ListTile(
+                    leading: Icon(
+                      Icons.support_agent,
+                      color: FlutterFlowTheme.of(context).primaryColor,
+                      size: 25,
                     ),
+                    title: Text(
+                      'Help / Support',
+                      style: FlutterFlowTheme.of(context).title3.override(
+                            fontFamily: 'Lexend Deca',
+                            color: FlutterFlowTheme.of(context).grayLight,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      color: FlutterFlowTheme.of(context).grayLight,
+                      size: 20,
+                    ),
+                    tileColor: FlutterFlowTheme.of(context).grayLight,
+                    dense: false,
                   ),
                   Divider(
                     color: FlutterFlowTheme.of(context).darkBackground,
