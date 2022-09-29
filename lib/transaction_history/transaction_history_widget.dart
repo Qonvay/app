@@ -107,7 +107,11 @@ class _TransactionHistoryWidgetState extends State<TransactionHistoryWidget>
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                 child: StreamBuilder<List<TransactionsRecord>>(
-                  stream: queryTransactionsRecord(),
+                  stream: queryTransactionsRecord(
+                    queryBuilder: (transactionsRecord) => transactionsRecord
+                        .where('purchaser_id', isEqualTo: currentUserUid)
+                        .orderBy('transaction_timestamp', descending: true),
+                  ),
                   builder: (context, snapshot) {
                     // Customize what your widget looks like when it's loading.
                     if (!snapshot.hasData) {

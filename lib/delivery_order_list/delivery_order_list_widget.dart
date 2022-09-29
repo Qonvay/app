@@ -426,26 +426,33 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
               Divider(
                 color: FlutterFlowTheme.of(context).darkBackground,
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.support_agent,
-                  color: FlutterFlowTheme.of(context).primaryColor,
-                  size: 25,
+              InkWell(
+                onTap: () async {
+                  logFirebaseEvent('DELIVERY_ORDER_LIST_ListTile_e6gy2n7f_ON');
+                  logFirebaseEvent('ListTile_Launch-U-R-L');
+                  await launchURL('qonvay.freshesk.com');
+                },
+                child: ListTile(
+                  leading: Icon(
+                    Icons.support_agent,
+                    color: FlutterFlowTheme.of(context).primaryColor,
+                    size: 25,
+                  ),
+                  title: Text(
+                    'Help / Support',
+                    style: FlutterFlowTheme.of(context).title3.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: FlutterFlowTheme.of(context).grayLight,
+                    size: 20,
+                  ),
+                  tileColor: FlutterFlowTheme.of(context).grayLight,
+                  dense: false,
                 ),
-                title: Text(
-                  'Help / Support',
-                  style: FlutterFlowTheme.of(context).title3.override(
-                        fontFamily: 'Lexend Deca',
-                        color: FlutterFlowTheme.of(context).grayLight,
-                      ),
-                ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios,
-                  color: FlutterFlowTheme.of(context).grayLight,
-                  size: 20,
-                ),
-                tileColor: FlutterFlowTheme.of(context).grayLight,
-                dense: false,
               ),
               Divider(
                 color: FlutterFlowTheme.of(context).darkBackground,

@@ -484,16 +484,8 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
                     onTap: () async {
                       logFirebaseEvent(
                           'BOOK_DELIVERY_ListTile_k1uidqlr_ON_TAP');
-                      logFirebaseEvent('ListTile_Navigate-To');
-                      await Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.fade,
-                          duration: Duration(milliseconds: 500),
-                          reverseDuration: Duration(milliseconds: 500),
-                          child: MYProfilePageWidget(),
-                        ),
-                      );
+                      logFirebaseEvent('ListTile_Launch-U-R-L');
+                      await launchURL('qonvay.freshesk.com');
                     },
                     child: ListTile(
                       leading: Icon(

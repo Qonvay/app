@@ -405,16 +405,8 @@ class _PaymentPageWidgetState extends State<PaymentPageWidget>
               InkWell(
                 onTap: () async {
                   logFirebaseEvent('PAYMENT_ListTile_vw4co01o_ON_TAP');
-                  logFirebaseEvent('ListTile_Navigate-To');
-                  await Navigator.push(
-                    context,
-                    PageTransition(
-                      type: PageTransitionType.fade,
-                      duration: Duration(milliseconds: 500),
-                      reverseDuration: Duration(milliseconds: 500),
-                      child: MYProfilePageWidget(),
-                    ),
-                  );
+                  logFirebaseEvent('ListTile_Launch-U-R-L');
+                  await launchURL('qonvay.freshesk.com');
                 },
                 child: ListTile(
                   leading: Icon(
