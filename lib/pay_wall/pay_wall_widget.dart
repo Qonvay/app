@@ -115,7 +115,7 @@ class _PayWallWidgetState extends State<PayWallWidget>
                 onPressed: () async {
                   logFirebaseEvent('PAY_WALL_solidQuestionCircle_ICN_ON_TAP');
                   logFirebaseEvent('IconButton_Launch-U-R-L');
-                  await launchURL('qonvay.freshdesk.com');
+                  await launchURL('https://qonvay.freshdesk.com');
                 },
               ),
             ],
