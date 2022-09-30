@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:qonvay/pay_wall/pay_wall_widget.dart';
+
 import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -10,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../subscribe_mileage/subscribe_mileage_widget.dart';
+
 class LoginPageWidget extends StatefulWidget {
   const LoginPageWidget({Key? key}) : super(key: key);
 
@@ -20,9 +26,11 @@ class LoginPageWidget extends StatefulWidget {
 class _LoginPageWidgetState extends State<LoginPageWidget>
     with TickerProviderStateMixin {
   TextEditingController? emailAddressLoginController;
+
   TextEditingController? passwordLoginController;
 
   late bool passwordLoginVisibility;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
@@ -43,6 +51,48 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
     ),
   };
 
+  int no_of_payment = 0;
+  DateTime? subscriptionDate;
+  DateTime? accountCreatedDate;
+  void getData() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((value) async {
+        try {
+          subscriptionDate = value.get('subscription_date').toDate();
+        } catch (e) {
+          subscriptionDate = null;
+        }
+        no_of_payment = value.get('no_of_payment');
+        accountCreatedDate = value.get('created_time').toDate();
+        // if (value.data()!.containsKey('subscription_date')) {
+        //   subscriptionDate = value.get('subscription_date').toDate();
+        // }
+        if (subscriptionDate != null &&
+            DateTime.now().difference(subscriptionDate!).inDays > 30 &&
+            DateTime.now().difference(accountCreatedDate!).inDays > 30 &&
+            no_of_payment > 0) {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: ((context) => PayWallWidget())));
+        } else {
+          await Navigator.pushAndRemoveUntil(
+            context,
+            PageTransition(
+              type: PageTransitionType.fade,
+              duration: Duration(milliseconds: 500),
+              reverseDuration: Duration(milliseconds: 500),
+              child: MainDashboardWidget(),
+            ),
+            (r) => false,
+          );
+        }
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -56,13 +106,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
     passwordLoginController = TextEditingController();
     passwordLoginVisibility = false;
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
-  }
-
-  @override
-  void dispose() {
-    emailAddressLoginController?.dispose();
-    passwordLoginController?.dispose();
-    super.dispose();
   }
 
   @override
@@ -335,22 +378,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                         context,
                                         emailAddressLoginController!.text,
                                         passwordLoginController!.text,
-                                      );
+                                      ).then((value) {
+                                        getData();
+                                      });
                                       if (user == null) {
                                         return;
                                       }
-
-                                      await Navigator.pushAndRemoveUntil(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 500),
-                                          reverseDuration:
-                                              Duration(milliseconds: 500),
-                                          child: MainDashboardWidget(),
-                                        ),
-                                        (r) => false,
-                                      );
                                     },
                                     text: 'Login',
                                     options: FFButtonOptions(

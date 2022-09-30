@@ -94,7 +94,7 @@ class _PaymentPageWidgetState extends State<PaymentPageWidget>
             onPressed: () async {
               logFirebaseEvent('PAYMENT_solidQuestionCircle_ICN_ON_TAP');
               logFirebaseEvent('IconButton_Launch-U-R-L');
-              await launchURL('qonvay.freshdesk.com');
+              await launchURL('https://qonvay.freshdesk.com');
             },
           ),
         ],
@@ -402,26 +402,33 @@ class _PaymentPageWidgetState extends State<PaymentPageWidget>
               Divider(
                 color: FlutterFlowTheme.of(context).darkBackground,
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.support_agent,
-                  color: FlutterFlowTheme.of(context).primaryColor,
-                  size: 25,
+              InkWell(
+                onTap: () async {
+                  logFirebaseEvent('PAYMENT_ListTile_vw4co01o_ON_TAP');
+                  logFirebaseEvent('ListTile_Launch-U-R-L');
+                  await launchURL('https://qonvay.freshdesk.com');
+                },
+                child: ListTile(
+                  leading: Icon(
+                    Icons.support_agent,
+                    color: FlutterFlowTheme.of(context).primaryColor,
+                    size: 25,
+                  ),
+                  title: Text(
+                    'Help / Support',
+                    style: FlutterFlowTheme.of(context).title3.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).grayLight,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: FlutterFlowTheme.of(context).grayLight,
+                    size: 20,
+                  ),
+                  tileColor: FlutterFlowTheme.of(context).grayLight,
+                  dense: false,
                 ),
-                title: Text(
-                  'Help / Support',
-                  style: FlutterFlowTheme.of(context).title3.override(
-                        fontFamily: 'Lexend Deca',
-                        color: FlutterFlowTheme.of(context).grayLight,
-                      ),
-                ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios,
-                  color: FlutterFlowTheme.of(context).grayLight,
-                  size: 20,
-                ),
-                tileColor: FlutterFlowTheme.of(context).grayLight,
-                dense: false,
               ),
               Divider(
                 color: FlutterFlowTheme.of(context).darkBackground,
