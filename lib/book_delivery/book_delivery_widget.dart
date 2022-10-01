@@ -121,8 +121,10 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
                   color: FlutterFlowTheme.of(context).textColor,
                   size: 30,
                 ),
-                onPressed: () {
-                  print('IconButton pressed ...');
+                onPressed: () async {
+                  logFirebaseEvent('BOOK_DELIVERY_solidQuestionCircle_ICN_ON');
+                  logFirebaseEvent('IconButton_Launch-U-R-L');
+                  await launchURL('https://qonvay.freshdesk.com');
                 },
               ),
             ],
@@ -438,26 +440,34 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
                   Divider(
                     color: FlutterFlowTheme.of(context).darkBackground,
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.support_agent,
-                      color: FlutterFlowTheme.of(context).primaryColor,
-                      size: 25,
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent(
+                          'BOOK_DELIVERY_ListTile_k1uidqlr_ON_TAP');
+                      logFirebaseEvent('ListTile_Launch-U-R-L');
+                      await launchURL('https://qonvay.freshdesk.com');
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.support_agent,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 25,
+                      ),
+                      title: Text(
+                        'Help / Support',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
-                    title: Text(
-                      'Help / Support',
-                      style: FlutterFlowTheme.of(context).title3.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.of(context).grayLight,
-                          ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 20,
-                    ),
-                    tileColor: FlutterFlowTheme.of(context).grayLight,
-                    dense: false,
                   ),
                   Divider(
                     color: FlutterFlowTheme.of(context).darkBackground,
@@ -523,20 +533,10 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                  child: FlutterFlowIconButton(
-                    borderColor: Colors.transparent,
-                    borderRadius: 20,
-                    borderWidth: 1,
-                    buttonSize: 60,
-                    fillColor: FlutterFlowTheme.of(context).primaryColor,
-                    icon: Icon(
-                      Icons.add,
-                      color: FlutterFlowTheme.of(context).darkBackground,
-                      size: 30,
-                    ),
+                  child: FFButtonWidget(
                     onPressed: () async {
-                      logFirebaseEvent('BOOK_DELIVERY_PAGE_add_ICN_ON_TAP');
-                      logFirebaseEvent('IconButton_Navigate-To');
+                      logFirebaseEvent('BOOK_DELIVERY_ADD_DELIVERY_BTN_ON_TAP');
+                      logFirebaseEvent('Button_Navigate-To');
                       await Navigator.push(
                         context,
                         PageTransition(
@@ -547,6 +547,29 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
                         ),
                       );
                     },
+                    text: 'Add Delivery',
+                    icon: Icon(
+                      Icons.add,
+                      color: FlutterFlowTheme.of(context).primaryColor,
+                      size: 15,
+                    ),
+                    options: FFButtonOptions(
+                      width: 200,
+                      height: 70,
+                      color: FlutterFlowTheme.of(context).darkBackground,
+                      textStyle: FlutterFlowTheme.of(context)
+                          .subtitle2
+                          .override(
+                            fontFamily: 'Lexend Deca',
+                            color: FlutterFlowTheme.of(context).primaryColor,
+                            fontSize: 18,
+                          ),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
                 Divider(
