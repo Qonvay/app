@@ -25,7 +25,7 @@ class _PurchaseMileageCardWidgetState extends State<PurchaseMileageCardWidget> {
         color: FlutterFlowTheme.of(context).background,
       ),
       child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 15),
+        padding: EdgeInsetsDirectional.fromSTEB(24, 24, 24, 24),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [

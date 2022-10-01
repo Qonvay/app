@@ -36,24 +36,12 @@ String dateTimeFormat(String format, DateTime? dateTime) {
   return DateFormat(format).format(dateTime);
 }
 
-// Future launchURL(String url) async {
-//   var uri = Uri.parse(url).toString();
-//   try {
-//     await launch(uri);
-//   } catch (e) {
-//     throw 'Could not launch $uri: $e';
-//   }
-// }
-
-Future launchURL(String ur) async {
-  var uri = Uri.parse(ur);
-  if (!await launchUrl(
-    uri,
-    mode: LaunchMode.inAppWebView,
-    webViewConfiguration: const WebViewConfiguration(
-        headers: <String, String>{'my_header_key': 'my_header_value'}),
-  )) {
-    throw 'Could not launch $ur';
+Future launchURL(String url) async {
+  var uri = Uri.parse(url).toString();
+  try {
+    await launch(uri);
+  } catch (e) {
+    throw 'Could not launch $uri: $e';
   }
 }
 

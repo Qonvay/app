@@ -55,7 +55,7 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
   void initState() {
     super.initState();
     // On page load action.
-    SchedulerBinding.instance!.addPostFrameCallback((_) async {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
       logFirebaseEvent('BOOK_DELIVERY_bookDelivery_ON_LOAD');
       logFirebaseEvent('bookDelivery_Update-Local-State');
       setState(() => FFAppState().mileageCost = 0.0);
@@ -121,10 +121,8 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
                   color: FlutterFlowTheme.of(context).textColor,
                   size: 30,
                 ),
-                onPressed: () async {
-                  logFirebaseEvent('BOOK_DELIVERY_solidQuestionCircle_ICN_ON');
-                  logFirebaseEvent('IconButton_Launch-U-R-L');
-                  await launchURL('https://qonvay.freshdesk.com');
+                onPressed: () {
+                  print('IconButton pressed ...');
                 },
               ),
             ],
@@ -440,34 +438,26 @@ class _BookDeliveryWidgetState extends State<BookDeliveryWidget>
                   Divider(
                     color: FlutterFlowTheme.of(context).darkBackground,
                   ),
-                  InkWell(
-                    onTap: () async {
-                      logFirebaseEvent(
-                          'BOOK_DELIVERY_ListTile_k1uidqlr_ON_TAP');
-                      logFirebaseEvent('ListTile_Launch-U-R-L');
-                      await launchURL('https://qonvay.freshdesk.com');
-                    },
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.support_agent,
-                        color: FlutterFlowTheme.of(context).primaryColor,
-                        size: 25,
-                      ),
-                      title: Text(
-                        'Help / Support',
-                        style: FlutterFlowTheme.of(context).title3.override(
-                              fontFamily: 'Lexend Deca',
-                              color: FlutterFlowTheme.of(context).grayLight,
-                            ),
-                      ),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        color: FlutterFlowTheme.of(context).grayLight,
-                        size: 20,
-                      ),
-                      tileColor: FlutterFlowTheme.of(context).grayLight,
-                      dense: false,
+                  ListTile(
+                    leading: Icon(
+                      Icons.support_agent,
+                      color: FlutterFlowTheme.of(context).primaryColor,
+                      size: 25,
                     ),
+                    title: Text(
+                      'Help / Support',
+                      style: FlutterFlowTheme.of(context).title3.override(
+                            fontFamily: 'Lexend Deca',
+                            color: FlutterFlowTheme.of(context).grayLight,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      color: FlutterFlowTheme.of(context).grayLight,
+                      size: 20,
+                    ),
+                    tileColor: FlutterFlowTheme.of(context).grayLight,
+                    dense: false,
                   ),
                   Divider(
                     color: FlutterFlowTheme.of(context).darkBackground,

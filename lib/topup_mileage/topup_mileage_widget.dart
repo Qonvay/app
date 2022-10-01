@@ -1,21 +1,11 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_paystack/flutter_paystack.dart';
-
-import '../auth/auth_util.dart';
-import '../auth/firebase_user_provider.dart';
 import '../backend/backend.dart';
+import '../components/payment_pop_up_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
-import '../flutter_flow/flutter_flow_credit_card_form.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main_dashboard/main_dashboard_widget.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -30,10 +20,7 @@ class TopupMileageWidget extends StatefulWidget {
 
 class _TopupMileageWidgetState extends State<TopupMileageWidget>
     with TickerProviderStateMixin {
-  TextEditingController? amountNGNmileageController = TextEditingController();
-
-  final creditCardFormKey = GlobalKey<FormState>();
-  CreditCardModel creditCardInfo = emptyCreditCard();
+  TextEditingController? amountNGNmileageController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -68,17 +55,10 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
       ),
     ),
   };
-  String publicKeyTest =
-      'pk_live_88c6cc1477313b676878e1fa5af5cf170c1498c9'; //pass in the public test key obtained from paystack dashboard here
-
-  final plugin = PaystackPlugin();
 
   @override
   void initState() {
     super.initState();
-    FFAppState().ngnToKmCheck = 0.0;
-    plugin.initialize(publicKey: publicKeyTest);
-
     startPageLoadAnimations(
       animationsMap.values
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
@@ -90,167 +70,14 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
         parameters: {'screen_name': 'topupMileage'});
   }
 
-  //a method to show the message
-  void _showMessage(String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  //used to generate a unique reference for payment
-  String _getReference() {
-    var platform = (Platform.isIOS) ? 'iOS' : 'Android';
-    final thisDate = DateTime.now().millisecondsSinceEpoch;
-    return '$thisDate';
-    // return 'ChargedFrom${platform}_$thisDate';
-  }
-
-  //async method to charge users card and return a response
-  chargeCard() async {
-    var user = FirebaseAuth.instance.currentUser;
-    var charge = Charge()
-      ..amount = amountNGNmileageController!.text == null ||
-              amountNGNmileageController!.text == '' ||
-              amountNGNmileageController == null
-          ? 0
-          : int.parse(amountNGNmileageController!.text) *
-              100 //the money should be in kobo hence the need to multiply the value by 100
-      ..reference = _getReference()
-      ..putCustomField('custom_id',
-          '846gey6w') //to pass extra parameters to be retrieved on the response from Paystack
-      ..email = user!.email;
-
-    CheckoutResponse response = await plugin.checkout(
-      context,
-      method: CheckoutMethod.card,
-      charge: charge,
-    );
-
-    //check if the response is true or not
-    if (response.status == true) {
-      updateBalance();
-      //you can send some data from the response to an API or use webhook to record the payment on a database
-      // _showMessage('Payment was successful!!!');
-      //
-
-    } else {
-      //the payment wasn't successsful or the user cancelled the payment
-      _showMessage('Payment Failed!!!');
-    }
-  }
-
-  void updateBalance() async {
-    if (amountNGNmileageController!.text == '') {
-      _showMessage('Balance should be greater than 0');
-    } else {
-      final usersUpdateData = {
-        'mileage_balance': FieldValue.increment(FFAppState().ngnToKmCheck),
-        'no_of_payment': FieldValue.increment(1),
-      };
-
-      await currentUserReference!
-          .set(usersUpdateData, SetOptions(merge: true))
-          .then((value) {
-        var uid = FirebaseAuth.instance.currentUser!.uid;
-        var transcationData = createTransactionsRecordData(
-          amount: double.parse(amountNGNmileageController!.text),
-          mileagePurchased: FFAppState().ngnToKmCheck,
-          purchaserId: uid,
-          transactionTimestamp: DateTime.now(),
-        );
-        FirebaseFirestore.instance
-            .collection('transactions')
-            .add(transcationData)
-            .then((value) {
-          _showMessage('Payment was successful!!!');
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: ((context) => MainDashboardWidget()),
-            ),
-          );
-        });
-      });
-    }
-  }
-
-  void showBottomSheet() async {
-    await showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      context: context,
-      builder: (ctx) {
-        return Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: Container(
-            height: 180,
-            // child: MaterialButton(
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(10),
-            //   ),
-            //   height: 40,
-            //   color: FlutterFlowTheme.of(context).primaryColor,
-            //   onPressed: () {
-            //     chargeCard(amount, km);
-            //   },
-            //   child: Text(
-            //     'Pay Now',
-            //   ),
-            // ),
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).background,
-              ),
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(24, 24, 24, 24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FFButtonWidget(
-                          onPressed: () async {
-                            chargeCard();
-                          },
-                          text: 'Pay Now',
-                          options: FFButtonOptions(
-                            width: 200,
-                            height: 50,
-                            color: FlutterFlowTheme.of(context).primaryColor,
-                            textStyle:
-                                FlutterFlowTheme.of(context).title3.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: FlutterFlowTheme.of(context)
-                                          .darkBackground,
-                                    ),
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  @override
+  void dispose() {
+    amountNGNmileageController?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // print('value of price is : ${amountNGNmileageController!.text}');
     return StreamBuilder<List<UsersRecord>>(
       stream: queryUsersRecord(
         singleRecord: true,
@@ -278,7 +105,6 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
             ? topupMileageUsersRecordList.first
             : null;
         return Scaffold(
-          resizeToAvoidBottomInset: false,
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).darkBackground,
           body: Form(
@@ -472,47 +298,29 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
                             thickness: 1,
                             color: FlutterFlowTheme.of(context).grayDark,
                           ),
-                          // Padding(
-                          //   padding:
-                          //       EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
-                          //   child: FlutterFlowCreditCardForm(
-                          //     formKey: creditCardFormKey,
-                          //     creditCardModel: creditCardInfo,
-                          //     obscureNumber: true,
-                          //     obscureCvv: true,
-                          //     spacing: 10,
-                          //     textStyle: FlutterFlowTheme.of(context).title3,
-                          //     inputDecoration: InputDecoration(
-                          //       enabledBorder: OutlineInputBorder(
-                          //         borderSide: BorderSide(
-                          //           color:
-                          //               FlutterFlowTheme.of(context).grayDark,
-                          //           width: 3,
-                          //         ),
-                          //         borderRadius: BorderRadius.circular(4),
-                          //       ),
-                          //       focusedBorder: OutlineInputBorder(
-                          //         borderSide: BorderSide(
-                          //           color:
-                          //               FlutterFlowTheme.of(context).grayDark,
-                          //           width: 3,
-                          //         ),
-                          //         borderRadius: BorderRadius.circular(4),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                           Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(20, 40, 20, 20),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                showBottomSheet();
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => Toper()),
-                                // );
+                                logFirebaseEvent(
+                                    'TOPUP_MILEAGE_PAGE_TOP_UP_BTN_ON_TAP');
+                                logFirebaseEvent('Button_Bottom-Sheet');
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding:
+                                          MediaQuery.of(context).viewInsets,
+                                      child: Container(
+                                        height: 180,
+                                        child: PaymentPopUpWidget(),
+                                      ),
+                                    );
+                                  },
+                                ).then((value) => setState(() {}));
                               },
                               text: 'Top Up',
                               icon: Icon(

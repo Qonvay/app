@@ -1,15 +1,10 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:qonvay/backend/backend.dart';
-
 import 'auth/firebase_user_provider.dart';
 import 'auth/auth_util.dart';
-import 'package:stream_transform/stream_transform.dart';
+
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
@@ -22,8 +17,7 @@ void main() async {
 
   FFAppState(); // Initialize FFAppState
 
-  var key;
-  runApp(MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false));
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -44,46 +38,14 @@ class _MyAppState extends State<MyApp> {
   bool displaySplashImage = true;
 
   final authUserSub = authenticatedUserStream.listen((_) {});
-  int no_of_payment = 0;
-  DateTime? subscriptionDate;
-  DateTime? accountCreatedDate;
-  double? balance;
-  void getData() async {
-    if (FirebaseAuth.instance.currentUser != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get()
-          .then((value) {
-        try {
-          accountCreatedDate = value.get('created_time').toDate();
-        } catch (e) {
-          // subscriptionDate = DateTime.now();
-        }
-        try {
-          subscriptionDate = value.get('subscription_date').toDate();
-        } catch (e) {
-          subscriptionDate = null;
-        }
-
-        no_of_payment = value.get('no_of_payment');
-        balance = double.parse(value.get('mileage_balance').toString());
-        // if (value.data()!.containsKey('subscription_date')) {
-        //   subscriptionDate = value.get('subscription_date').toDate();
-        // }
-      });
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-
-    getData();
     userStream = qonvayFirebaseUserStream()
       ..listen((user) => initialUser ?? setState(() => initialUser = user));
     Future.delayed(
-      Duration(seconds: 5),
+      Duration(seconds: 1),
       () => setState(() => displaySplashImage = false),
     );
   }
@@ -103,12 +65,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (subscriptionDate == null) {
-      log('subscription date is null');
-    } else {
-      print('subscription date is : $subscriptionDate');
-    }
-    print('no of payment is : $no_of_payment');
     return MaterialApp(
       title: 'Qonvay',
       localizationsDelegates: [
@@ -124,33 +80,17 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(brightness: Brightness.light),
       themeMode: _themeMode,
       home: initialUser == null || displaySplashImage
-          ? Container(
-              color: Colors.transparent,
-              child: Builder(
-                builder: (context) => Image.asset(
+          ? Builder(
+              builder: (context) => Container(
+                color: Colors.transparent,
+                child: Image.asset(
                   'assets/images/Copy_of_qonvayappsplash_(4).png',
                   fit: BoxFit.cover,
                 ),
               ),
             )
           : currentUser!.loggedIn
-              ? (subscriptionDate != null &&
-                          DateTime.now().difference(subscriptionDate!).inDays >
-                              30 &&
-                          DateTime.now()
-                                  .difference(accountCreatedDate!)
-                                  .inDays >
-                              30 &&
-                          no_of_payment > 0) ||
-                      (accountCreatedDate != null &&
-                          DateTime.now()
-                                  .difference(accountCreatedDate!)
-                                  .inDays >
-                              30 &&
-                          no_of_payment > 0 &&
-                          balance! <= 0.7)
-                  ? PayWallWidget()
-                  : MainDashboardWidget()
+              ? MainDashboardWidget()
               : LoginPageWidget(),
     );
   }

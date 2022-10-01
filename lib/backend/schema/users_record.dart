@@ -64,6 +64,12 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
 
   String? get gender;
 
+  @BuiltValueField(wireName: 'no_of_payment')
+  int? get noOfPayment;
+
+  @BuiltValueField(wireName: 'subscription_date')
+  DateTime? get subscriptionDate;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -87,7 +93,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..locationServices = false
     ..firstName = ''
     ..lastName = ''
-    ..gender = '';
+    ..gender = ''
+    ..noOfPayment = 0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -132,6 +139,8 @@ Map<String, dynamic> createUsersRecordData({
   String? firstName,
   String? lastName,
   String? gender,
+  int? noOfPayment,
+  DateTime? subscriptionDate,
 }) {
   final firestoreData = serializers.toFirestore(
     UsersRecord.serializer,
@@ -157,7 +166,9 @@ Map<String, dynamic> createUsersRecordData({
         ..locationServices = locationServices
         ..firstName = firstName
         ..lastName = lastName
-        ..gender = gender,
+        ..gender = gender
+        ..noOfPayment = noOfPayment
+        ..subscriptionDate = subscriptionDate,
     ),
   );
 
