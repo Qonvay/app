@@ -13,6 +13,7 @@ export 'm_y_profile_page/m_y_profile_page_widget.dart' show MYProfilePageWidget;
 export 'edit_profile/edit_profile_widget.dart' show EditProfileWidget;
 export 'change_password/change_password_widget.dart' show ChangePasswordWidget;
 export 'book_delivery/book_delivery_widget.dart' show BookDeliveryWidget;
+export 'booking_page/booking_page_widget.dart' show BookingPageWidget;
 export 'booking_complete/booking_complete_widget.dart'
     show BookingCompleteWidget;
 export 'delivery_order_list/delivery_order_list_widget.dart'

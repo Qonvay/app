@@ -48,5 +48,5 @@ double calculateDistance(
 }
 
 double ngnToKm(double? ngn) {
-  return ngn! / 200;
+  return ngn! / 120;
 }

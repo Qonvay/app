@@ -37,6 +37,30 @@ class FFAppState {
   double ngnToKmCheck = 0.0;
 
   List<String> receiverLocations = [];
+
+  String destinationFullAddress = '';
+
+  String receiverName = '';
+
+  int receiverPhone = 0;
+
+  bool food = false;
+
+  bool clothing = false;
+
+  bool shoes = false;
+
+  bool electronics = false;
+
+  bool jewlaccess = false;
+
+  bool docs = false;
+
+  bool others = false;
+
+  List<int> bookNum = [];
+
+  String milbaltemp = '';
 }
 
 LatLng? _latLngFromString(String? val) {

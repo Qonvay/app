@@ -8,6 +8,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
+import '../flutter_flow/permissions_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -23,9 +24,10 @@ class CompleteProfileWidget extends StatefulWidget {
 class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
     with TickerProviderStateMixin {
   String uploadedFileUrl = '';
-  TextEditingController? yourPhoneController;
-  TextEditingController? yourAgeController;
   String? yourGenderValue;
+  TextEditingController? yourAgeController;
+  TextEditingController? yourPhoneController;
+  final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'circleImageOnPageLoadAnimation': AnimationInfo(
@@ -142,6 +144,10 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                 child: InkWell(
                   onTap: () async {
                     logFirebaseEvent('COMPLETE_PROFILE_PAGE_userAvatar_ON_TAP');
+                    logFirebaseEvent('userAvatar_Request-Permissions');
+                    await requestPermission(photoLibraryPermission);
+                    logFirebaseEvent('userAvatar_Request-Permissions');
+                    await requestPermission(cameraPermission);
                     logFirebaseEvent('userAvatar_Upload-Photo-Video');
                     final selectedMedia =
                         await selectMediaWithSourceBottomSheet(
@@ -198,141 +204,187 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                   ),
                 ).animated([animationsMap['circleImageOnPageLoadAnimation']!]),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                child: TextFormField(
-                  controller: yourPhoneController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Deca',
-                          color: FlutterFlowTheme.of(context).grayLight,
+              Container(
+                width: double.infinity,
+                child: Form(
+                  key: formKey,
+                  autovalidateMode: AutovalidateMode.disabled,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                        child: TextFormField(
+                          controller: yourPhoneController,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelStyle: FlutterFlowTheme.of(context)
+                                .bodyText1
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context).grayLight,
+                                ),
+                            hintText: 'Your Phone number?',
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .bodyText1
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context).grayLight,
+                                  fontSize: 16,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            filled: true,
+                            fillColor:
+                                FlutterFlowTheme.of(context).darkBackground,
+                            contentPadding:
+                                EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
+                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).textColor,
+                                fontSize: 16,
+                              ),
+                          keyboardType: TextInputType.phone,
+                          validator: (val) {
+                            if (val == null || val.isEmpty) {
+                              return 'Field is required';
+                            }
+
+                            return null;
+                          },
+                        ).animated(
+                            [animationsMap['textFieldOnPageLoadAnimation1']!]),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                        child: TextFormField(
+                          controller: yourAgeController,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelStyle: FlutterFlowTheme.of(context)
+                                .bodyText1
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context).grayLight,
+                                  fontSize: 14,
+                                ),
+                            hintText: 'Your Age?',
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .bodyText1
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context).grayLight,
+                                  fontSize: 16,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            filled: true,
+                            fillColor:
+                                FlutterFlowTheme.of(context).darkBackground,
+                            contentPadding:
+                                EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
+                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).textColor,
+                                fontSize: 16,
+                              ),
+                          keyboardType: TextInputType.number,
+                          validator: (val) {
+                            if (val == null || val.isEmpty) {
+                              return 'Field is required';
+                            }
+
+                            return null;
+                          },
+                        ).animated(
+                            [animationsMap['textFieldOnPageLoadAnimation2']!]),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                        child: FlutterFlowDropDown(
+                          options: ['Man', 'Woman', 'Prefer not to disclose'],
+                          onChanged: (val) =>
+                              setState(() => yourGenderValue = val),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 50,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).grayLight,
+                                fontSize: 16,
+                              ),
+                          hintText: 'Your Gender?',
+                          fillColor:
+                              FlutterFlowTheme.of(context).darkBackground,
+                          elevation: 2,
+                          borderColor: Colors.transparent,
+                          borderWidth: 0,
+                          borderRadius: 8,
+                          margin: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
+                          hidesUnderline: true,
                         ),
-                    hintText: 'Your Phone number?',
-                    hintStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Deca',
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          fontSize: 16,
-                        ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
                       ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    filled: true,
-                    fillColor: FlutterFlowTheme.of(context).darkBackground,
-                    contentPadding:
-                        EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
+                    ],
                   ),
-                  style: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Lexend Deca',
-                        color: FlutterFlowTheme.of(context).textColor,
-                        fontSize: 16,
-                      ),
-                  keyboardType: TextInputType.phone,
-                ).animated([animationsMap['textFieldOnPageLoadAnimation1']!]),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                child: TextFormField(
-                  controller: yourAgeController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Deca',
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          fontSize: 14,
-                        ),
-                    hintText: 'Your Age?',
-                    hintStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Deca',
-                          color: FlutterFlowTheme.of(context).grayLight,
-                          fontSize: 16,
-                        ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    filled: true,
-                    fillColor: FlutterFlowTheme.of(context).darkBackground,
-                    contentPadding:
-                        EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Lexend Deca',
-                        color: FlutterFlowTheme.of(context).textColor,
-                        fontSize: 16,
-                      ),
-                  keyboardType: TextInputType.number,
-                ).animated([animationsMap['textFieldOnPageLoadAnimation2']!]),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                child: FlutterFlowDropDown(
-                  options: ['Man', 'Woman', 'Prefer not to disclose'],
-                  onChanged: (val) => setState(() => yourGenderValue = val),
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: 50,
-                  textStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Lexend Deca',
-                        color: FlutterFlowTheme.of(context).grayLight,
-                        fontSize: 16,
-                      ),
-                  hintText: 'Your Gender?',
-                  fillColor: FlutterFlowTheme.of(context).darkBackground,
-                  elevation: 2,
-                  borderColor: Colors.transparent,
-                  borderWidth: 0,
-                  borderRadius: 8,
-                  margin: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
-                  hidesUnderline: true,
                 ),
               ),
               Padding(
@@ -358,6 +410,26 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                       onPressed: () async {
                         logFirebaseEvent(
                             'COMPLETE_PROFILE_Button-Login_ON_TAP');
+                        logFirebaseEvent('Button-Login_Validate-Form');
+                        if (formKey.currentState == null ||
+                            !formKey.currentState!.validate()) {
+                          return;
+                        }
+
+                        if (yourGenderValue == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Please specify your gender',
+                                style: TextStyle(),
+                              ),
+                              duration: Duration(milliseconds: 4000),
+                              backgroundColor: Color(0x00000000),
+                            ),
+                          );
+                          return;
+                        }
+
                         logFirebaseEvent('Button-Login_Backend-Call');
 
                         final usersUpdateData = createUsersRecordData(

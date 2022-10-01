@@ -1,8 +1,8 @@
 import '../backend/backend.dart';
+import '../book_delivery/book_delivery_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main_dashboard/main_dashboard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -124,7 +124,7 @@ class _BookingCompleteWidgetState extends State<BookingCompleteWidget> {
                           type: PageTransitionType.leftToRight,
                           duration: Duration(milliseconds: 200),
                           reverseDuration: Duration(milliseconds: 200),
-                          child: MainDashboardWidget(),
+                          child: BookDeliveryWidget(),
                         ),
                       );
                     },
