@@ -114,7 +114,7 @@ class _SubscribeMileageWidgetState extends State<SubscribeMileageWidget>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Subscribe To Send Stuff',
+                                'Subscribe',
                                 style: FlutterFlowTheme.of(context).title1,
                               ),
                               Card(

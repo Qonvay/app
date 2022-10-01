@@ -65,6 +65,7 @@ dependencies:
   material: ^1.0.0+2
   mime_type: 1.0.0
   page_transition: 2.0.4
+  permission_handler: 10.0.0
   plugin_platform_interface: 2.1.2
   rxdart: 0.27.4
   shared_preferences: 2.0.15

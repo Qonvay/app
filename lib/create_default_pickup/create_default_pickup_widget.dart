@@ -182,6 +182,17 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                           ),
                           style: FlutterFlowTheme.of(context).bodyText1,
                           textAlign: TextAlign.start,
+                          validator: (val) {
+                            if (val == null || val.isEmpty) {
+                              return 'Field is required';
+                            }
+
+                            if (val.length < 10) {
+                              return 'Requires at least 10 characters.';
+                            }
+
+                            return null;
+                          },
                         ),
                       ),
                       Padding(
@@ -311,6 +322,12 @@ class _CreateDefaultPickupWidgetState extends State<CreateDefaultPickupWidget>
                               onPressed: () async {
                                 logFirebaseEvent(
                                     'CREATE_DEFAULT_PICKUP_Button-Login_ON_TA');
+                                logFirebaseEvent('Button-Login_Validate-Form');
+                                if (formKey.currentState == null ||
+                                    !formKey.currentState!.validate()) {
+                                  return;
+                                }
+
                                 logFirebaseEvent('Button-Login_Backend-Call');
 
                                 final usersUpdateData = createUsersRecordData(
