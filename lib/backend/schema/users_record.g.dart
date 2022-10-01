@@ -165,19 +165,6 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.noOfPayment;
-    if (value != null) {
-      result
-        ..add('no_of_payment')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
-    value = object.subscriptionDate;
-    if (value != null) {
-      result
-        ..add('subscription_date')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(DateTime)));
-    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -284,14 +271,6 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
           result.gender = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'no_of_payment':
-          result.noOfPayment = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
-        case 'subscription_date':
-          result.subscriptionDate = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime?;
-          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -349,10 +328,6 @@ class _$UsersRecord extends UsersRecord {
   @override
   final String? gender;
   @override
-  final int? noOfPayment;
-  @override
-  final DateTime? subscriptionDate;
-  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$UsersRecord([void Function(UsersRecordBuilder)? updates]) =>
@@ -380,8 +355,6 @@ class _$UsersRecord extends UsersRecord {
       this.firstName,
       this.lastName,
       this.gender,
-      this.noOfPayment,
-      this.subscriptionDate,
       this.ffRef})
       : super._();
 
@@ -417,8 +390,6 @@ class _$UsersRecord extends UsersRecord {
         firstName == other.firstName &&
         lastName == other.lastName &&
         gender == other.gender &&
-        noOfPayment == other.noOfPayment &&
-        subscriptionDate == other.subscriptionDate &&
         ffRef == other.ffRef;
   }
 
@@ -442,25 +413,25 @@ class _$UsersRecord extends UsersRecord {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc(0, displayName.hashCode), email.hashCode), password.hashCode), uid.hashCode), age.hashCode),
-                                                                                location.hashCode),
-                                                                            phoneNumber.hashCode),
-                                                                        photoUrl.hashCode),
-                                                                    createdTime.hashCode),
-                                                                userTitle.hashCode),
-                                                            address.hashCode),
-                                                        userLandmark.hashCode),
-                                                    busStop.hashCode),
-                                                mileageBalance.hashCode),
-                                            mileageCost.hashCode),
-                                        pushNotification.hashCode),
-                                    emailNotification.hashCode),
-                                locationServices.hashCode),
-                            firstName.hashCode),
-                        lastName.hashCode),
-                    gender.hashCode),
-                noOfPayment.hashCode),
-            subscriptionDate.hashCode),
+                                                                            $jc($jc($jc($jc(0, displayName.hashCode), email.hashCode), password.hashCode),
+                                                                                uid.hashCode),
+                                                                            age.hashCode),
+                                                                        location.hashCode),
+                                                                    phoneNumber.hashCode),
+                                                                photoUrl.hashCode),
+                                                            createdTime.hashCode),
+                                                        userTitle.hashCode),
+                                                    address.hashCode),
+                                                userLandmark.hashCode),
+                                            busStop.hashCode),
+                                        mileageBalance.hashCode),
+                                    mileageCost.hashCode),
+                                pushNotification.hashCode),
+                            emailNotification.hashCode),
+                        locationServices.hashCode),
+                    firstName.hashCode),
+                lastName.hashCode),
+            gender.hashCode),
         ffRef.hashCode));
   }
 
@@ -488,8 +459,6 @@ class _$UsersRecord extends UsersRecord {
           ..add('firstName', firstName)
           ..add('lastName', lastName)
           ..add('gender', gender)
-          ..add('noOfPayment', noOfPayment)
-          ..add('subscriptionDate', subscriptionDate)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -586,15 +555,6 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   String? get gender => _$this._gender;
   set gender(String? gender) => _$this._gender = gender;
 
-  int? _noOfPayment;
-  int? get noOfPayment => _$this._noOfPayment;
-  set noOfPayment(int? noOfPayment) => _$this._noOfPayment = noOfPayment;
-
-  DateTime? _subscriptionDate;
-  DateTime? get subscriptionDate => _$this._subscriptionDate;
-  set subscriptionDate(DateTime? subscriptionDate) =>
-      _$this._subscriptionDate = subscriptionDate;
-
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -627,8 +587,6 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _firstName = $v.firstName;
       _lastName = $v.lastName;
       _gender = $v.gender;
-      _noOfPayment = $v.noOfPayment;
-      _subscriptionDate = $v.subscriptionDate;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -673,8 +631,6 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
             firstName: firstName,
             lastName: lastName,
             gender: gender,
-            noOfPayment: noOfPayment,
-            subscriptionDate: subscriptionDate,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

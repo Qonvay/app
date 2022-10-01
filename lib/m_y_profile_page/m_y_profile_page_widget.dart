@@ -119,8 +119,10 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                   color: FlutterFlowTheme.of(context).textColor,
                   size: 30,
                 ),
-                onPressed: () {
-                  print('IconButton pressed ...');
+                onPressed: () async {
+                  logFirebaseEvent('M_Y_PROFILE_solidQuestionCircle_ICN_ON_T');
+                  logFirebaseEvent('IconButton_Launch-U-R-L');
+                  await launchURL('https://qonvay.freshdesk.com');
                 },
               ),
             ],
@@ -432,26 +434,33 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                   Divider(
                     color: FlutterFlowTheme.of(context).darkBackground,
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.support_agent,
-                      color: FlutterFlowTheme.of(context).primaryColor,
-                      size: 25,
+                  InkWell(
+                    onTap: () async {
+                      logFirebaseEvent('M_Y_PROFILE_ListTile_b85egqva_ON_TAP');
+                      logFirebaseEvent('ListTile_Launch-U-R-L');
+                      await launchURL('https://qonvay.freshdesk.com');
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.support_agent,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        size: 25,
+                      ),
+                      title: Text(
+                        'Help / Support',
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: FlutterFlowTheme.of(context).grayLight,
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: FlutterFlowTheme.of(context).grayLight,
+                        size: 20,
+                      ),
+                      tileColor: FlutterFlowTheme.of(context).grayLight,
+                      dense: false,
                     ),
-                    title: Text(
-                      'Help / Support',
-                      style: FlutterFlowTheme.of(context).title3.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.of(context).grayLight,
-                          ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: FlutterFlowTheme.of(context).grayLight,
-                      size: 20,
-                    ),
-                    tileColor: FlutterFlowTheme.of(context).grayLight,
-                    dense: false,
                   ),
                   Divider(
                     color: FlutterFlowTheme.of(context).darkBackground,
@@ -1003,17 +1012,11 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget>
                       InkWell(
                         onTap: () async {
                           logFirebaseEvent(
-                              'M_Y_PROFILE_Container_s2it9of2_ON_TAP');
-                          logFirebaseEvent('Container_Navigate-To');
-                          await Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
-                              child: DeliveryOrderListWidget(),
-                            ),
-                          );
+
+                              'M_Y_PROFILE_Container_614ivipp_ON_TAP');
+                          logFirebaseEvent('Container_Launch-U-R-L');
+                          await launchURL('https://qonvay.freshdesk.com');
+                          
                         },
                         child: Material(
                           color: Colors.transparent,

@@ -21,15 +21,19 @@ class RegisterAccountWidget extends StatefulWidget {
 class _RegisterAccountWidgetState extends State<RegisterAccountWidget>
     with TickerProviderStateMixin {
   TextEditingController? emailAddressController;
+
   TextEditingController? firstNameController;
+
   TextEditingController? lastNameController;
+
   TextEditingController? passwordCreateController;
 
   late bool passwordCreateVisibility;
+
   TextEditingController? passwordConfirmController;
 
   late bool passwordConfirmVisibility;
-  final formKey = GlobalKey<FormState>();
+  
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
@@ -68,16 +72,6 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget>
     passwordConfirmVisibility = false;
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'registerAccount'});
-  }
-
-  @override
-  void dispose() {
-    emailAddressController?.dispose();
-    firstNameController?.dispose();
-    lastNameController?.dispose();
-    passwordCreateController?.dispose();
-    passwordConfirmController?.dispose();
-    super.dispose();
   }
 
   @override
@@ -686,15 +680,24 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget>
                                         emailAddressController!.text,
                                         passwordCreateController!.text,
                                       );
+
                                       if (user == null) {
                                         return;
                                       }
+                                      await FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(user.uid)
+                                          .set({
+                                        'no_of_payment': 0,
+                                        'subscription_date': null,
+                                      }, SetOptions(merge: true));
 
                                       final usersCreateData =
                                           createUsersRecordData(
                                         firstName: firstNameController!.text,
                                         lastName: lastNameController!.text,
                                       );
+
                                       await UsersRecord.collection
                                           .doc(user.uid)
                                           .update(usersCreateData);
