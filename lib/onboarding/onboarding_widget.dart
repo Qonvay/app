@@ -4,10 +4,13 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/permissions_util.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart'
+    as smooth_page_indicator;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingWidget extends StatefulWidget {
   const OnboardingWidget({Key? key}) : super(key: key);
@@ -20,32 +23,10 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
     with TickerProviderStateMixin {
   PageController? pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final animationsMap = {
-    'imageOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        scale: 0.6,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-  };
 
   @override
   void initState() {
     super.initState();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
-
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'onboarding'});
   }
 
@@ -70,7 +51,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                     width: 220,
                     height: 70,
                     fit: BoxFit.fitWidth,
-                  ).animated([animationsMap['imageOnPageLoadAnimation']!]),
+                  ),
                 ],
               ),
             ),
@@ -487,7 +468,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                           child: Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                            child: SmoothPageIndicator(
+                            child: smooth_page_indicator.SmoothPageIndicator(
                               controller: pageViewController ??=
                                   PageController(initialPage: 0),
                               count: 3,
@@ -499,7 +480,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                   curve: Curves.ease,
                                 );
                               },
-                              effect: ExpandingDotsEffect(
+                              effect: smooth_page_indicator.ExpandingDotsEffect(
                                 expansionFactor: 2,
                                 spacing: 8,
                                 radius: 16,

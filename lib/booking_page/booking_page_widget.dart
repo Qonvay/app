@@ -13,6 +13,7 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -49,24 +50,6 @@ class _BookingPageWidgetState extends State<BookingPageWidget>
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final animationsMap = {
-    'columnOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: true,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-  };
 
   @override
   void initState() {
@@ -85,11 +68,6 @@ class _BookingPageWidgetState extends State<BookingPageWidget>
     senderLandmarkController = TextEditingController();
     senderNameController = TextEditingController();
     senderPhoneNumberController = TextEditingController();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
   }
 
   @override
@@ -1487,7 +1465,7 @@ class _BookingPageWidgetState extends State<BookingPageWidget>
                     ),
                   ],
                 ),
-              ).animated([animationsMap['columnOnPageLoadAnimation']!]),
+              ),
             ),
           ),
         );

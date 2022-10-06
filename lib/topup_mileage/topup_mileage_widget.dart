@@ -8,6 +8,8 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,48 +25,10 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
   TextEditingController? amountNGNmileageController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final animationsMap = {
-    'columnOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: true,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-    'textFieldOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 40),
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        opacity: 1,
-      ),
-    ),
-  };
 
   @override
   void initState() {
     super.initState();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
-
     amountNGNmileageController = TextEditingController();
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'topupMileage'});
@@ -253,9 +217,7 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
                                 keyboardType:
                                     const TextInputType.numberWithOptions(
                                         signed: true, decimal: true),
-                              ).animated([
-                                animationsMap['textFieldOnPageLoadAnimation']!
-                              ]),
+                              ),
                             ),
                           ),
                           Padding(
@@ -354,7 +316,7 @@ class _TopupMileageWidgetState extends State<TopupMileageWidget>
                   ),
                 ),
               ],
-            ).animated([animationsMap['columnOnPageLoadAnimation']!]),
+            ),
           ),
         );
       },

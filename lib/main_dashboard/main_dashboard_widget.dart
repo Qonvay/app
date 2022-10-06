@@ -11,6 +11,8 @@ import '../m_y_profile_page/m_y_profile_page_widget.dart';
 import '../payment_page/payment_page_widget.dart';
 import '../custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,36 +35,11 @@ class MainDashboardWidget extends StatefulWidget {
 
 class _MainDashboardWidgetState extends State<MainDashboardWidget>
     with TickerProviderStateMixin {
-  final animationsMap = {
-    'columnOnPageLoadAnimation': AnimationInfo(
-      curve: Curves.easeIn,
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: true,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-  };
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
-
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'mainDashboard'});
   }
@@ -960,7 +937,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget>
                         ),
                       ],
                     ),
-                  ).animated([animationsMap['columnOnPageLoadAnimation']!]),
+                  ),
                 ],
               ),
             ),

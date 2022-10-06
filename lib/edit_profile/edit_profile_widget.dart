@@ -11,6 +11,8 @@ import '../flutter_flow/upload_media.dart';
 import '../m_y_profile_page/m_y_profile_page_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,7 +30,9 @@ class EditProfileWidget extends StatefulWidget {
 
 class _EditProfileWidgetState extends State<EditProfileWidget>
     with TickerProviderStateMixin {
+  bool isMediaUploading = false;
   String uploadedFileUrl = '';
+
   TextEditingController? firstNameController;
   TextEditingController? lastNameController;
   TextEditingController? yourEmailController;
@@ -38,34 +42,10 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
   TextEditingController? yourAddressController;
   TextEditingController? yourLandmarkController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: true,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-  };
 
   @override
   void initState() {
     super.initState();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
-
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'editProfile'});
     yourEmailController = TextEditingController(text: currentUserEmail);
   }
@@ -172,30 +152,35 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                         if (selectedMedia != null &&
                             selectedMedia.every((m) =>
                                 validateFileFormat(m.storagePath, context))) {
-                          showUploadMessage(
-                            context,
-                            'Uploading file...',
-                            showLoading: true,
-                          );
-                          final downloadUrls = (await Future.wait(selectedMedia
-                                  .map((m) async => await uploadData(
-                                      m.storagePath, m.bytes))))
-                              .where((u) => u != null)
-                              .map((u) => u!)
-                              .toList();
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          setState(() => isMediaUploading = true);
+                          var downloadUrls = <String>[];
+                          try {
+                            showUploadMessage(
+                              context,
+                              'Uploading file...',
+                              showLoading: true,
+                            );
+                            downloadUrls = (await Future.wait(
+                              selectedMedia.map(
+                                (m) async =>
+                                    await uploadData(m.storagePath, m.bytes),
+                              ),
+                            ))
+                                .where((u) => u != null)
+                                .map((u) => u!)
+                                .toList();
+                          } finally {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            isMediaUploading = false;
+                          }
                           if (downloadUrls.length == selectedMedia.length) {
                             setState(
                                 () => uploadedFileUrl = downloadUrls.first);
-                            showUploadMessage(
-                              context,
-                              'Success!',
-                            );
+                            showUploadMessage(context, 'Success!');
                           } else {
+                            setState(() {});
                             showUploadMessage(
-                              context,
-                              'Failed to upload media',
-                            );
+                                context, 'Failed to upload media');
                             return;
                           }
                         }
@@ -783,7 +768,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                 ],
               ),
             ),
-          ).animated([animationsMap['containerOnPageLoadAnimation']!]),
+          ),
         );
       },
     );

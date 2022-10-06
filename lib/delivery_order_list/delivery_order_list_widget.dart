@@ -6,6 +6,8 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../order_tracking/order_tracking_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,51 +27,11 @@ class DeliveryOrderListWidget extends StatefulWidget {
 
 class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
     with TickerProviderStateMixin {
-  final animationsMap = {
-    'containerOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 30),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-    'containerOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 30),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-  };
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
-
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'deliveryOrderList'});
   }
@@ -412,10 +374,7 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                                                 ),
                                               ),
                                             ),
-                                          ).animated([
-                                            animationsMap[
-                                                'containerOnPageLoadAnimation1']!
-                                          ]),
+                                          ),
                                         );
                                       },
                                     );
@@ -660,10 +619,7 @@ class _DeliveryOrderListWidgetState extends State<DeliveryOrderListWidget>
                                                   ),
                                                 ),
                                               ),
-                                            ).animated([
-                                              animationsMap[
-                                                  'containerOnPageLoadAnimation2']!
-                                            ]),
+                                            ),
                                           );
                                         },
                                       );

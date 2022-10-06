@@ -14,6 +14,8 @@ import '../payment_page/payment_page_widget.dart';
 import '../subscribe_mileage/subscribe_mileage_widget.dart';
 import '../topup_mileage/topup_mileage_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,35 +38,11 @@ class PayWallWidget extends StatefulWidget {
 
 class _PayWallWidgetState extends State<PayWallWidget>
     with TickerProviderStateMixin {
-  final animationsMap = {
-    'columnOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: true,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-  };
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
-
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'payWall'});
   }
 
@@ -729,7 +707,7 @@ class _PayWallWidgetState extends State<PayWallWidget>
                           ),
                         ],
                       ),
-                    ).animated([animationsMap['columnOnPageLoadAnimation']!]),
+                    ),
                   ),
                 ],
               ),

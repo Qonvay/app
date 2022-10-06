@@ -3,6 +3,8 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../login_page/login_page_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,56 +17,11 @@ class GreetingWidget extends StatefulWidget {
 
 class _GreetingWidgetState extends State<GreetingWidget>
     with TickerProviderStateMixin {
-  final animationsMap = {
-    'columnOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: true,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-    'rowOnActionTriggerAnimation': AnimationInfo(
-      curve: Curves.bounceOut,
-      trigger: AnimationTrigger.onActionTrigger,
-      duration: 600,
-      hideBeforeAnimating: false,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-  };
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
-    setupTriggerAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onActionTrigger),
-      this,
-    );
-
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'greeting'});
   }
 
@@ -171,8 +128,7 @@ class _GreetingWidgetState extends State<GreetingWidget>
                               ),
                             ],
                           ),
-                        ).animated(
-                            [animationsMap['rowOnActionTriggerAnimation']!]),
+                        ),
                       ),
                     ),
                   ),
@@ -180,7 +136,7 @@ class _GreetingWidgetState extends State<GreetingWidget>
               ),
             ),
           ],
-        ).animated([animationsMap['columnOnPageLoadAnimation']!]),
+        ),
       ),
     );
   }
