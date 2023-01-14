@@ -1,0 +1,62 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "bookOrder",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "booker_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "order_timestamp",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "bookOrder",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "booker_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "order_status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "order_timestamp",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "transactions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "purchaser_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "transaction_timestamp",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "fcm_tokens",
+      "fieldPath": "fcm_token",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    }
+  ]
+}
